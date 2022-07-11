@@ -32,10 +32,6 @@ void (entity rhook) Reset_Grapple =
         rhook.owner.on_hook = FALSE;
         rhook.owner.hook_out = FALSE;
         rhook.owner.weaponframe = 0;
-/* *check*
-	if (!FLAG_TW)
-		rhook.owner.attack_finished = time + 0.25;
-*/
         rhook.think = SUB_Remove;
         rhook.nextthink = time;
 };
@@ -52,8 +48,6 @@ void () Grapple_Track =
         if (self.enemy.classname == "player" && self.enemy.health <= 0)
         {
                 self.owner.on_hook = FALSE;
-		if ((self.owner.weapon != IT_LIGHTNING) && FLAG_TW)		//tw50
-	                self.owner.attack_finished = time +0.75;
         }
 
         // drop the hook if owner is dead or has released the button
@@ -106,10 +100,7 @@ entity (float head) MakeLink =
 
         newmis.avelocity = '200 200 200';
 
-	if (FLAG_TW)
-	        setmodel (newmis, "progs/link.mdl");
-	else
-	        setmodel (newmis, "progs/bit.mdl");
+	setmodel (newmis, "progs/bit.mdl");
         setorigin (newmis, self.origin);
         setsize (newmis, '0 0 0' , '0 0 0');
 
@@ -263,17 +254,14 @@ void () Anchor_Grapple =
         {
 
                 if (SameTeam(other, self.owner, world) || CountDown || FLAG_STANDBY) {
-// ***hook*** -->
+
 			Reset_Grapple(self.owner.hook);
 			return;
-// ***hook*** <--
+
 		}
 
                 sound (self, CHAN_WEAPON, "player/axhit1.wav", 1, ATTN_NORM);
-		if (FLAG_TW)				
-        	        T_Damage (other, self, self.owner, 1);		// tw50
-		else
-	                T_Damage (other, self, self.owner, 10);
+		T_Damage (other, self, self.owner, 10);
 
                 // make hook invisible since we will be pulling directly
                 // towards the player the hook hit. Quakeworld makes it
@@ -328,8 +316,7 @@ void () Anchor_Grapple =
 
         self.owner.on_hook = TRUE;
 
-	if (!FLAG_TW)
-	        sound (self.owner, CHAN_WEAPON, "weapons/chain2.wav", 1, ATTN_NORM);
+	sound (self.owner, CHAN_WEAPON, "weapons/chain2.wav", 1, ATTN_NORM);
 
         // CHAIN2 is a looping sample. Use LEFTY as a flag so that client.qc
         // will know to only play the tink sound ONCE to clear the weapons
@@ -357,10 +344,7 @@ void () Throw_Grapple =
 	WriteByte (MSG_ONE, SVC_SMALLKICK);
 
         // chain out sound (loops)
-	if (FLAG_TW)
-		sound (self, CHAN_WEAPON, "tw/twharp.wav", 1, ATTN_NORM);
-	else
-	        sound (self, CHAN_WEAPON, "weapons/chain1.wav", 1, ATTN_NORM);
+	sound (self, CHAN_WEAPON, "weapons/chain1.wav", 1, ATTN_NORM);
 
         newmis = spawn();
         newmis.movetype = MOVETYPE_FLYMISSILE;
@@ -371,23 +355,15 @@ void () Throw_Grapple =
 
         makevectors (self.v_angle);
 
-	if (FLAG_TW) {
-	        newmis.velocity = v_forward * 3.125 * self.maxspeed * HOOKSPEED;	// tw50, speed = 1000
-		newmis.angles = vectoangles(newmis.velocity);	
-	} else {
-	        newmis.velocity = v_forward * 2.5 * self.maxspeed * HOOKSPEED;		// Normal speed = 800
-        	newmis.avelocity = '0 0 -500';
-	}
+	newmis.velocity = v_forward * 2.5 * self.maxspeed * HOOKSPEED;		// Normal speed = 800
+	newmis.avelocity = '0 0 -500';
 
 
         newmis.touch = Anchor_Grapple;
         newmis.think = Build_Chain;
         newmis.nextthink = time + 0.1;// don't jam newmis and links into same packet
 
-	if (FLAG_TW)
-	        setmodel (newmis,"progs/twharp.mdl");		//tw50
-	else
-	        setmodel (newmis,"progs/star.mdl");
+	setmodel (newmis,"progs/star.mdl");
         setorigin (newmis, self.origin + v_forward * 16 + '0 0 16');
         setsize(newmis, '0 0 0' , '0 0 0 ');
 
@@ -434,8 +410,7 @@ void () Service_Grapple =
        	              		self.hook.goalentity.think = Remove_Chain;
        	                	self.hook.goalentity.nextthink = time;
        	         	}
-			if (!FLAG_TW)
-				sound(self, CHAN_NO_PHS_ADD+CHAN_WEAPON, "weapons/chain3.wav", 1, ATTN_NORM);
+			sound(self, CHAN_NO_PHS_ADD+CHAN_WEAPON, "weapons/chain3.wav", 1, ATTN_NORM);
 			self.lefty = FALSE;// we've reset the sound channel.
 	        }
 	}

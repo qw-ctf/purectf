@@ -9,7 +9,7 @@
  * Please feel free to use them for your own mod. It would be nice if you credit
  * me, and tell me about it too.
  *
- * I made these routines for my mod "Pure CTF", but they should work ok with any mod with
+ * I made these routines for my mod "Pure CTF", but they should work ok with any mod with 
  * small modifications. I've tried to make the spectator routines as transparent
  * as possible to other code. There are some issues however:
  *
@@ -96,8 +96,8 @@ void() TrackStatus = {
 	}
 	tmp = self.goalentity.netname;
 	maxent = CountEnts(self.goalentity.classname);
-
-	if (self.goalentity.classname == "item_flag_team1")
+	
+	if (self.goalentity.classname == "item_flag_team1") 
 		tmp = "Red Flag";
 	else if (self.goalentity.classname == "item_flag_team2")
 		tmp = "Blue Flag";
@@ -118,44 +118,44 @@ void() TrackStatus = {
 		} if (self.goalentity.items & IT_INVULNERABILITY) {
 			if (flag) sprint(self, PRINT_HIGH, "|");
 			else  sprint(self, PRINT_HIGH, "[");
-			sprint(self, PRINT_HIGH, "666");
+			sprint(self, PRINT_HIGH, "666"); 
 			flag = 1;
 		} if (self.goalentity.items & IT_INVISIBILITY) {
 			if (flag) sprint(self, PRINT_HIGH, "|");
 			else  sprint(self, PRINT_HIGH, "[");
-			sprint(self, PRINT_HIGH, "RING");
+			sprint(self, PRINT_HIGH, "RING"); 
 			flag = 1;
 		} if (self.goalentity.runes & ITEM_RUNE1_FLAG) {
 			if (flag) sprint(self, PRINT_HIGH, "|");
 			else  sprint(self, PRINT_HIGH, "[");
-			sprint(self, PRINT_HIGH, "RES");
+			sprint(self, PRINT_HIGH, "RES"); 
 			flag = 1;
 		} if (self.goalentity.runes & ITEM_RUNE2_FLAG) {
 			if (flag) sprint(self, PRINT_HIGH, "|");
 			else  sprint(self, PRINT_HIGH, "[");
-			sprint(self, PRINT_HIGH, "STR");
+			sprint(self, PRINT_HIGH, "STR"); 
 			flag = 1;
 		} if (self.goalentity.runes & ITEM_RUNE3_FLAG) {
 			if (flag) sprint(self, PRINT_HIGH, "|");
 			else  sprint(self, PRINT_HIGH, "[");
-			sprint(self, PRINT_HIGH, "HASTE");
+			sprint(self, PRINT_HIGH, "HASTE"); 
 			flag = 1;
 		} if (self.goalentity.runes & ITEM_RUNE4_FLAG) {
 			if (flag) sprint(self, PRINT_HIGH, "|");
 			else  sprint(self, PRINT_HIGH, "[");
-			sprint(self, PRINT_HIGH, "REG");
+			sprint(self, PRINT_HIGH, "REG"); 
 			flag = 1;
 		}
 		// *check* fixa för TW
-		if (flag) sprint(self, PRINT_HIGH, "]");
+		if (flag) sprint(self, PRINT_HIGH, "]"); 
 	} else if ((maxent > 1) && (self.goalentity.classname !=  "item_rune")) {
-		sprint(self, PRINT_HIGH, " ");
+		sprint(self, PRINT_HIGH, " "); 
 		tmp2 = ftos(self.goalnumber);
 		sprint(self, PRINT_HIGH, tmp2);
-		sprint(self, PRINT_HIGH, "/");
+		sprint(self, PRINT_HIGH, "/"); 
 		tmp2 = ftos(maxent);
 		sprint(self, PRINT_HIGH, tmp2);
-	}
+	} 
 	sprint(self, PRINT_HIGH, "\n");
 };
 
@@ -194,7 +194,7 @@ void() MoveToGoal = {
 
 	traceline(self.goalentity.origin,  dir2  , TRUE , world );
 
-
+		
 	dir3 = ((trace_endpos - self.view_ofs - self.goalentity.origin ) * TRACKMARGIN ) + trace_endpos - self.view_ofs;
 
 //	dir3_z = dir3_z - 5;
@@ -280,7 +280,7 @@ Checks if the spectator can see his goal, otherwise move to it;
 */
 void() CheckGoalLOS = {
 	traceline(self.goalentity.origin , self.origin  , TRUE , self.goalentity );
-	if ( trace_fraction != 1 )
+	if ( trace_fraction != 1 ) 
 		MoveToGoal();
 };
 
@@ -290,11 +290,11 @@ void() CheckGoalLOS = {
 Checktracking
 
 Check if we need to move/aim to the goal or if it's been
-picked up by someone.
+picked up by someone. 
 ===========
 */
 void() 	CheckTracking = {
-
+ 
 	local entity tmpent;
 
 	if (self.goalentity == world) {
@@ -307,28 +307,28 @@ void() 	CheckTracking = {
 	if ((self.pure & SETINFO_TRACKING) == SETINFO_TRACKING_OFF) {
 		StopTrack();
 		return;
-	}
+	}		
 
 	if ((self.goalentity.classname != "player") || ((self.pure & SETINFO_TRACKING) == SETINFO_TRACKING_CHASE)) {
 		ChaseCam();
-	} else if ((self.pure & SETINFO_TRACKING) == SETINFO_TRACKING_STATIC) {
+	} else if ((self.pure & SETINFO_TRACKING) == SETINFO_TRACKING_STATIC) {		
 		if (self.goallastorigin != self.goalentity.origin) {
 			CheckGoalLOS();
 			AimToGoal();
 		}
 	} else if ((self.pure & SETINFO_TRACKING) == SETINFO_TRACKING_STATIC) {
 		EyeCam();
-	}
+	}		
+	
 
-
-	if (self.goalnotsolid)
+	if (self.goalnotsolid) 
 		if (self.goalentity.solid == SOLID_NOT) {
-			self.goallastorigin = self.goalentity.origin;
+			self.goallastorigin = self.goalentity.origin;	
 			return;
-		} else
+		} else 
 			self.goalnotsolid = 0;
 
-	if (((self.goalentity.classname == "player") && !(self.goalentity.items & self.items) && !(self.goalentity.runes & self.runes)) ||
+	if (((self.goalentity.classname == "player") && !(self.goalentity.items & self.items) && !(self.goalentity.runes & self.runes)) || 
 		(self.goalentity.solid == SOLID_NOT)) {
 
 		// It's gone, or it's owner lost it.
@@ -341,7 +341,7 @@ void() 	CheckTracking = {
 					return;
 				}
 			}
-			// Ok, see if we can find the item or who picked it up.
+			// Ok, see if we can find the item or who picked it up.	
 			tmpent = findradius(self.goallastorigin, 150);
 			while (tmpent) {
 				if ((tmpent != self.goalentity) &&
@@ -356,22 +356,22 @@ void() 	CheckTracking = {
 			StopTrack();
 		}
 	}
-	self.goallastorigin = self.goalentity.origin;
+	self.goallastorigin = self.goalentity.origin;	
 };
 
 
 
 
-/*
+/* 
 ==========
 FindTrack
-
-Find and start tracking of a item of a certain type.
+ 
+Find and start tracking of a item of a certain type. 
 If multiple items, cycle them.
 =========
 */
 void(string trackthis, float finditem, float findflag) FindTrack = {
-
+	
 	local entity oldent, newent, tmpent;
 	local float oldnumber;
 
@@ -379,7 +379,7 @@ void(string trackthis, float finditem, float findflag) FindTrack = {
 	oldent = self.goalentity;
 	oldnumber = self.goalnumber;
 
-
+	
 	if ((self.pure & SETINFO_TRACKING) == SETINFO_TRACKING_OFF) {
 		self.goalentity = world; 	//stop tracking
 		return;
@@ -391,7 +391,7 @@ void(string trackthis, float finditem, float findflag) FindTrack = {
 	SpectatorUpdate();
 
 /* debug?
-	// Runes is special case.
+	// Runes is special case.	
 	if (trackthis == "item_rune")
 */
 
@@ -400,19 +400,19 @@ void(string trackthis, float finditem, float findflag) FindTrack = {
 		newent = find(oldent, classname , trackthis);
 		self.goalnumber = self.goalnumber + 1;
 	}
-
+	
 	// Are we tracking a player with this item?
 	if (finditem) {
 		if ((oldent.classname == "player") && (oldent.items & finditem)) {
 			newent = find(oldent, classname, "player");
-			while ((newent != world) && !(newent.items & finditem)) {
+			while ((newent != world) && !(newent.items & finditem)) {		
 				newent = find(newent, classname, "player");
 			}
 		}
 	} else if (findflag) {
 		if ((oldent.classname == "player") && (oldent.runes & findflag)) {
 			newent = find(oldent, classname, "player");
-			while ((newent != world) && !(newent.runes & findflag)) {
+			while ((newent != world) && !(newent.runes & findflag)) {		
 				newent = find(newent, classname, "player");
 			}
 		}
@@ -422,7 +422,7 @@ void(string trackthis, float finditem, float findflag) FindTrack = {
 	// If new entity, set number to 1
 	if (newent == world)
 		self.goalnumber = 1;
-
+	
 	// Still not found it. If last goalentity was player with the same item type, check for item.
 	if ((newent == world) && (oldent.classname == "player") && ((oldent.items & finditem) || (oldent.runes & findflag))) {
 		newent = find(world, classname , trackthis);
@@ -437,11 +437,11 @@ void(string trackthis, float finditem, float findflag) FindTrack = {
 	if ((newent == world) && !(finditem & IT_ROCKET_LAUNCHER)) {
 		newent = find(world, classname, "player");
 		if (finditem) {
-			while ((newent != world) && !(newent.items & finditem)) {
+			while ((newent != world) && !(newent.items & finditem)) {		
 				newent = find(newent, classname, "player");
 			}
 		} else if (findflag) {
-			while ((newent != world) && !(newent.runes & findflag)) {
+			while ((newent != world) && !(newent.runes & findflag)) {		
 				newent = find(newent, classname, "player");
 			}
 		}
@@ -479,13 +479,13 @@ void() SpectatorConnect =
 	bprint (PRINT_MEDIUM, " entered as Spectator\n");
 
 	self.goalentity = world; // used for impulse 1 below
-	self.motd_endtime = time + 10;
+	self.motd_endtime = time + 10;		
 	self.classname = "spectator";
 
-	if (parm10 < 0)
+	if (parm10 < 0) 
 		SpectatorFirstConnect();
 	else
-		self.admin = parm12;
+		self.admin = parm12;	
 	self.goalentity = world;		// reset tracking
 	CheckInfokey();				// Check setinfo
 	UpdateClientChain();
@@ -504,15 +504,12 @@ called when a spectator disconnects from a server
 */
 void() SpectatorDisconnect =
 {
-	if (self.netname == SPEC_JOINING.netname) SPEC_JOINING_FLAG = 0;
-
 	bprint (PRINT_MEDIUM, self.netname);
 	bprint (PRINT_MEDIUM, " left as Spectator\n");
 // pure obsolete	self.statstate = 0;
 	self.player_flag = self.player_flag | PF_GHOST;
 	parm12 = self.admin;
 	UpdateClientChain();
-
 };
 
 
@@ -531,12 +528,6 @@ void() SpectatorCommands = {
 	sprint(self, PRINT_HIGH, "²-Òåä Æìáç  ´-¶¶¶  ¶-Òõîåó ¸-ÏÆÆ\n");
 	sprint(self, PRINT_HIGH, "---- Spectator Commands -----------\n");
 	sprint(self, PRINT_HIGH, "ãáí      : ãèáîçå ôòáãë íïäå\n");	// *check* wrong column?
-
-	sprint(self, PRINT_HIGH, "******************   IMPORTANT!!   *********************\n");
-	sprint(self, PRINT_HIGH, "****** Use JOINGAME to request to JOIN the game.  ******\n");
-	sprint(self, PRINT_HIGH, "****** Talk to players to get them to ACCEPT you. ******\n");
-	sprint(self, PRINT_HIGH, "****** Or ask an ADMIN nicely to ACCEPT you.      ******\n");
-	sprint(self, PRINT_HIGH, "********************************************************\n");
 };
 
 /*
@@ -549,17 +540,13 @@ Called at the very first connect.
 void() SpectatorFirstConnect = {
 	local string s;
 
-	sprint(self, PRINT_HIGH, "\nSpectator extensions by Methabol/Dalcon\n");
-	sprint(self, PRINT_HIGH, "type \"COMMANDS\" for all new commands.\n\n");
-	if (FLAG_COMPETITION) {
-	sprint(self, PRINT_CHAT, "******************   IMPORTANT!!   *********************\n");
-	sprint(self, PRINT_CHAT, "****** Use JOINGAME to request to JOIN the game.  ******\n");
-	sprint(self, PRINT_CHAT, "****** Talk to players to get them to ACCEPT you. ******\n");
-	sprint(self, PRINT_CHAT, "****** Or ask an ADMIN nicely to ACCEPT you.      ******\n");
-	sprint(self, PRINT_CHAT, "********************************************************\n");
-	}
+	sprint(self, PRINT_HIGH, "\nSpectator extensions by Methabol\n");	
+	sprint(self, PRINT_HIGH, "type \"COMMANDS\" for all new commands.\n");
+
+
 	self.admin = 0;
 	parm12 = 0;
+
 };
 
 /*
@@ -587,7 +574,7 @@ string(entity pl) GetInventoryString = {
 					else if (pl.runes & ITEM_RUNE3_FLAG) tmp2 = " [QUAD|RING|ÈÁÓÔÅ]\n";
 					else if (pl.runes & ITEM_RUNE4_FLAG) tmp2 = " [QUAD|RING|ÒÅÇ]\n";
 					else tmp2 = " [QUAD|RING]\n";
-				}
+				} 
 			else if (pl.items & IT_INVULNERABILITY) {
 					if (pl.runes & ITEM_RUNE1_FLAG) tmp2 = " [QUAD|666|ÒÅÓ]\n";
 					else if (pl.runes & ITEM_RUNE2_FLAG) tmp2 = " [QUAD|666|ÓÔÒ]\n";
@@ -643,11 +630,10 @@ void() SpectatorUpdate = {
 	if (self.motd_endtime > time) {
 		MOTD();
 		return;
-	} else if (self.state) {
-		Menu();
-		return;
 	} else if ((self.motd_endtime + 10) > time) {
-		centerprint(self, "\n\nPress ±-· to start tracking.\n Press ¸ to stop tracking.\n\nType \"ÃÏÍÍÁÎÄÓ\" to list all commands.\nType \"ÓÅÔÔÉÎÇÓ\" to show all settings.\nType \"ÃÐÒÉÎÔ\" to remove this text.\nType \"ÃÁÍ\" to change camera style.\n\nType \"ÊÏÉÎÇÁÍÅ\" to join mid-game");
+// PCP dyna - Version
+		centerprint(self, "ÐõòåÃÔÆ Ðòï Advanced Spectator tracking.\n\nTracking is OFF!\nPress ±-· to start tracking.\n Press ¸ to stop tracking.\n\nType \"ÃÏÍÍÁÎÄÓ\" to list all commands.\nType \"ÓÅÔÔÉÎÇÓ\" to show all settings.\nType \"ÃÐÒÉÎÔ\" to remove this text.\nType \"ÃÁÍ\" to change camera style.");
+// PCP //
 		return;
 	}
 
@@ -657,13 +643,13 @@ void() SpectatorUpdate = {
 
 	TeamUpdateStatusbar(self, tp);
 	return;
-
+	
 	self.oldcolors = 0;
 
 	tmp = self.goalentity.netname;
 	maxent = CountEnts(self.goalentity.classname);
-
-	if (self.goalentity.classname == "item_flag_team1")
+	
+	if (self.goalentity.classname == "item_flag_team1") 
 		tmp = "Red Flag";
 	else if (self.goalentity.classname == "item_flag_team2")
 		tmp = "Blue Flag";
@@ -679,14 +665,14 @@ void() SpectatorUpdate = {
 		tmp4 = getnum(pl.armorvalue);
 		tmp5 = getnum(pl.health);
 		if (pl.weapon == IT_AXE) { tmp6 = " - Axe"; tmp7 = ""; }
-		else if (pl.weapon == IT_GRAPPLE) {tmp6 = " - Hook"; tmp7 = ""; }
-		else if (pl.weapon == IT_SHOTGUN) {tmp6 = " - SG: "; tmp7 = getnum(self.ammo_shells); }
-		else if (pl.weapon == IT_SUPER_SHOTGUN) {tmp6 = " - SSG: "; tmp7 = getnum(pl.ammo_shells); }
-		else if (pl.weapon == IT_NAILGUN) {tmp6 = " - NG: "; tmp7 = getnum(pl.ammo_nails); }
-		else if (pl.weapon == IT_SUPER_NAILGUN) {tmp6 = " - SNG: "; tmp7 = getnum(pl.ammo_nails); }
-		else if (pl.weapon == IT_GRENADE_LAUNCHER) {tmp6 = " - GL: "; tmp7 = getnum(pl.ammo_rockets); }
-		else if (pl.weapon == IT_ROCKET_LAUNCHER) {tmp6 = " - RL: "; tmp7 = getnum(pl.ammo_rockets); }
-		else if (pl.weapon == IT_LIGHTNING) {tmp6 = " - LG: "; tmp7 = getnum(pl.ammo_cells); }
+		else if (pl.weapon == IT_GRAPPLE) {tmp6 = " - Hook"; tmp7 = ""; } 
+		else if (pl.weapon == IT_SHOTGUN) {tmp6 = " - SG: "; tmp7 = getnum(self.ammo_shells); } 
+		else if (pl.weapon == IT_SUPER_SHOTGUN) {tmp6 = " - SSG: "; tmp7 = getnum(pl.ammo_shells); } 
+		else if (pl.weapon == IT_NAILGUN) {tmp6 = " - NG: "; tmp7 = getnum(pl.ammo_nails); } 
+		else if (pl.weapon == IT_SUPER_NAILGUN) {tmp6 = " - SNG: "; tmp7 = getnum(pl.ammo_nails); } 
+		else if (pl.weapon == IT_GRENADE_LAUNCHER) {tmp6 = " - GL: "; tmp7 = getnum(pl.ammo_rockets); } 
+		else if (pl.weapon == IT_ROCKET_LAUNCHER) {tmp6 = " - RL: "; tmp7 = getnum(pl.ammo_rockets); } 
+		else if (pl.weapon == IT_LIGHTNING) {tmp6 = " - LG: "; tmp7 = getnum(pl.ammo_cells); } 
 	} else {
 		if (!maxent || (maxent == 1) || (self.goalentity.classname == "item_rune")) {
 			tmp2 = "";
@@ -714,8 +700,8 @@ void() SpectatorUpdate = {
 		if (FREEZEFLAGS & FREEZE_WORLD)
 			torespawn = ceil(self.goalentity.nextthink + FREEZETIME - time - time);
 		else
-			torespawn = ceil(self.goalentity.nextthink - time);
-
+			torespawn = ceil(self.goalentity.nextthink - time);			
+			
 
 		if (torespawn > 0.9) {
 			tmp3 = "\n\nSeconds to respawn: ";
@@ -727,7 +713,7 @@ void() SpectatorUpdate = {
 		tmp5 = "";
 		tmp6 = "";
 		tmp7 = "";
-	}
+	}		
 
 	centerprint7(self, tmp, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7);
 
@@ -739,7 +725,7 @@ void() SpectatorPeriodic = {
 
 	local string tp;
 
-	if (self.lastupdate > time)
+	if (self.lastupdate > time) 
 		return;
 	if (FLAG_STANDBY)
 		self.lastupdate = time + 0.9;
@@ -747,20 +733,15 @@ void() SpectatorPeriodic = {
 		self.lastupdate = time + 1.75;
 
 	SpectatorUpdate();
-//	if (CheckStuffflag(self))
+	if (CheckStuffflag(self))
 		DoStuffing();
 
 	CheckMapChange();
 	CheckAdmin();
-
+	
 	// rate check
 	if ((self.join_time + 10) < time)
 		CheckRate();
-
-        if (SPEC_JOINING_FLAG) {
-          if (SPEC_JOINING.netname == "") {SPEC_JOINING_FLAG = 0;}
-          if (time > SPEC_JOINING.delay) {bprint (PRINT_MEDIUM, "Attempt to join game has timed out\n");SPEC_JOINING_FLAG = 0;}
-        }
 };
 
 
@@ -788,7 +769,7 @@ void() SpectatorButtons = {
 				} else {
 					FindTrack("item_artifact_super_damage", IT_QUAD, 0);
 				}
-			}
+			}			
 		}
 		self.trackbutton = self.trackbutton | (1);
 	} else  {
@@ -833,7 +814,7 @@ void() SpectatorThink =
 
 	if ((self.join_time + 5) < time) {
 		//QuakeTV Jitter fix? (this is a longshot, but it _will_ fix observer jittering.)
-		SetGravity(self, 0);
+		SetGravity(self, 0);	
 
 		// Fix Skin
 		setinfostring(self, "skin", "ctfr1");

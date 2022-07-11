@@ -441,15 +441,6 @@ entity	activator;		// the entity that activated a trigger or brush
 entity	damage_attacker;	// set by T_Damage
 float	framecount;		// ?
 
-//
-// cvars checked each frame *obsolete*, moved to infovars.qc
-//
-/*
-float		teamplay;
-float		timelimit;
-float		fraglimit;
-float		deathmatch;
-*/
 
 //================================================
 
@@ -477,13 +468,6 @@ float		deathmatch;
 //
 
 
-/* pure -  obsolete
-.void()		th_stand;
-.void()		th_walk;
-.void()		th_run;
-.void()		th_missile;
-.void()		th_melee;
-*/
 .void(entity attacker, float damage)		th_pain;
 .void()		th_die;
 
@@ -495,13 +479,6 @@ float		deathmatch;
 .float  lefty;// Monsters use this. I use it to flag the player's CHAN_WEAP
               // to be cleared (see client.qc) -Wedge
 
-
-/* pure obsolete
-float	AS_STRAIGHT		= 1;
-float	AS_SLIDING		= 2;
-float	AS_MELEE		= 3;
-float	AS_MISSILE		= 4;
-*/
 
 //
 // player only fields
@@ -566,14 +543,12 @@ float		ITEM_RUNE1_FLAG		= 1;
 float		ITEM_RUNE2_FLAG		= 2;
 float		ITEM_RUNE3_FLAG		= 4;
 float		ITEM_RUNE4_FLAG		= 8;
-float		ITEM_RUNE5_FLAG		= 16;		// tw50-->
+float		ITEM_RUNE5_FLAG		= 16;
 float		ITEM_RUNE6_FLAG		= 32;
 float		ITEM_RUNE7_FLAG		= 64;
 float		ITEM_RUNE8_FLAG		= 128;		
 float		ITEM_RUNE_MASK		= 255;		// <-- t50
 
-
-//1.99b3 float		ITEM_TWRUNE_MASK	= 15;
 
 // ZOID: Capture the flag, ThunderWalker:  altered
 
@@ -586,7 +561,6 @@ float PF_GOTFLAG	= 32;	// Got Enemy flag.
 float PF_GHOST		= 64;	// Connection tracking.
 float PF_KILLMERESTART	= 128;	// Kill player and respawn.
 float PF_KILLMESWAP	= 256;	// Kill, change team and respawn.
-float PF_DENIED         = 512; 
 float PF_KILLME		= 384;	// Mask for Killme
 
 // ITEM_ENEMY_FLAG
@@ -796,34 +770,3 @@ void(vector where, float set) multicast	= #82;	// sends the temp message to a se
 												// of clients, possibly in PVS or PHS
 
 //=======================================9====================================
-
-
-// tw50 -->
-// AIRG_WEAPON_START
-
-float IT_AIRGUN   = 8388608;			// AirFist constant.
-float AIRG_IMPULSEVALUE = 47;			// Airfist impulse
-float AIRG_DOUBLETAPIMPULSE = 2;		// Toggle impulse
-float AIRG_SHOWINWEAPONLIST = TRUE;		// Cycleweapons list
-float AIRG_ALWAYSHAVE = TRUE;			// Always have
-float AIRG_WEAPONRANK = 6.5;			// Weapon rank.
-
-
-.float AIRG_Flags;				// entity flags.
-
-.entity AIRG_FlyTracker;			// Variables used to track when to
-						// turn of FLY movetype for flying entitys
-// Constant used on the AIRG_Flags to specifiy that we have converted this
-// flying monsters movetype from MOVETYPE_STEP to MOVETYPE_FLY (see horn.qc for
-// more info).
-float AIRG_STEPCONVERTEDTOFLY = 2;
-float AIRG_EXCLUDEENTITY = 1;			// Setting an entity's AIRG_Flags excludes it from harm
-.float AIRG_FireCount;				// Used in the Max Fire Rate Calculations.
-.float AIRG_Timeout;
-void() launch_horn;
-float PW_IMPLUSE = 48;  			// Impulse used for the previous weapon command
-.float PW_prevweapon;
-
-
-// tw50 <--
-// <-- check

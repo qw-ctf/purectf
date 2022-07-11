@@ -12,50 +12,29 @@ float kickid2;
 float kickwarning2;
 
 
-void(entity pl, float specs) ShowPings = {
+void(entity pl) ShowPings = {
 	local entity e;
 	local float x;
 	local string tp;
-	if (specs) e = CLIENT_CHAIN; else e = PLAYER_CHAIN;
-
-	sprint(pl, PRINT_HIGH, "PING RATE TEAM   PROXY      NAME\n");
-	sprint(pl, PRINT_HIGH, "------------------------------------------\n");
+	e = PLAYER_CHAIN;
+	sprint(pl, PRINT_HIGH, "PING AVRG RATE NAME\n");
+	sprint(pl, PRINT_HIGH, "----------------------\n");
 	while (e) {
-		x = stof(infokey(e, "ping"));
+		x = stof(infokey(e, "ping"));	
 		if (x > 9999) x = 9999;
 		sPrintRight(pl, x, 4, " ");
-//		x = AveragePing(e);
-//		if (x > 9999) x = 9999;
-//		sPrintRight(pl, x, 5, " ");
+		x = AveragePing(e);
+		if (x > 9999) x = 9999;
+		sPrintRight(pl, x, 5, " ");
 		x = stof(infokey(e, "rate"));
 		if (x > 9999) x = 9999;
 		sPrintRight(pl, x, 5, " ");
-		if (e.classname == "spectator") tp = " [SPEC] ";
-		else if (e.steam == TEAM_COLOR1) tp = " [RED ] ";
-		else if (e.steam == TEAM_COLOR2) tp = " [BLUE] ";
-		else tp = " [----] ";
-		sprint(pl, PRINT_HIGH, tp);
-
-		x = 0;
-		if (infokey(e, "*z_ver") != "") {sprint(pl, PRINT_HIGH, "[ZQ ]");x = x + 1;}
-		if (infokey(e, "FAQ-Proxy") != "") {sprint(pl, PRINT_HIGH, "[FAQ]");x = x + 1;}
-		if (infokey(e, "Qizmo") != "") {sprint(pl, PRINT_HIGH, "[QIZ]");x = x + 1;}
-		if (infokey(e, "Cheapo") != "") {sprint(pl, PRINT_HIGH, "[CHP]");x = x + 1;}
-		if (infokey(e, "NFProxy") != "") {sprint(pl, PRINT_HIGH, "[NFP]");x = x + 1;}
-		if (infokey(e, "NITRO") != "") {sprint(pl, PRINT_HIGH, "[NIT]");x = x + 1;}
-		if (infokey(e, "*FuhQuake") != "") {sprint(pl, PRINT_HIGH, "[Fuh]");x = x + 1;}
-		if (infokey(e, "*Client") != "") {sprint(pl, PRINT_HIGH, "[MQW]");x = x + 1;}
-
-		if (x == 0) sprint(pl, PRINT_HIGH, "           ");
-		else if (x == 1) sprint(pl, PRINT_HIGH, "      ");
-		else sprint(pl, PRINT_HIGH, " ");
-
+		sprint(pl, PRINT_HIGH, " ");
 		sprint(pl, PRINT_HIGH, e.netname);
-		if (IsAdmin(e)) sprint(pl, PRINT_HIGH, " [ADMIN]");
 		sprint(pl, PRINT_HIGH, "\n");
 		e = e.clientchain;
 	}
-	sprint(pl, PRINT_HIGH, "------------------------------------------\n");
+	sprint(pl, PRINT_HIGH, "----------------------\n");
 };
 
 
@@ -88,7 +67,7 @@ void() makecounter = {
 	local entity e;
 
 	e = spawn();
-
+	
 	e.think = cthink;
 	e.nextthink = time + 0.1;
 
@@ -106,7 +85,7 @@ void() SetPing = {
 };
 
 void() CheckPing = {
-
+	
 	local string tp;
 	local float x;
 
@@ -122,12 +101,12 @@ void() CheckPing = {
 
 	x = stof(infokey(self, "ping"));
 
-	if (!self.pingcheck)
+	if (!self.pingcheck) 
 		self.pingcheck = 500;
 
 	self.pingcheck = (self.pingcheck * 2 + x) / 3;	// Weighted average
 
-
+	
 	if (VAR_PINGBAN) {
 		if (self.pingcheck < VAR_PINGBAN)
 			BanClient(self, "Kicked because of too low ping.");
@@ -145,7 +124,7 @@ void() CheckPing = {
 			tp = ftos(VAR_HPBBAN);
 			sprint(self, PRINT_HIGH, tp);
 			sprint(self, PRINT_HIGH, "!\n");
-		}
+		}	
 	}
 };
 
@@ -192,7 +171,7 @@ void (float id, float ping) pingkick = {
 
 void () CheckPingBan = {
 	local float pingban;
-	local float id1, ping1, id2, ping2;
+	local float id1, ping1, id2, ping2; 	
 	local float tmp1, tmp2;
 	local string tmps;
 
@@ -205,7 +184,7 @@ void () CheckPingBan = {
 		return;
 
 	pingban = stof(infokey(world,"pingban"));
-	if (!pingban)
+	if (!pingban) 
 		return;
 
 //	bprint(PRINT_HIGH, "DEBUG: Checking pings\n");
@@ -218,29 +197,29 @@ void () CheckPingBan = {
 		tmp1 = id1; id1 = id2; id2 = tmp1;
 		tmp1 = ping1; ping1 = ping2; ping2 = tmp1;
 	}
-
+			
 	if (id1 && (ping1 <= pingban)) {
 		if (id1 == kickid1) {
 			kickwarning1 = kickwarning1 + 1;
 			if (kickwarning1 > 2)
 				pingkick(id1 , pingban);
 		} else { kickid1 = id1;	kickwarning1 = 1; }
-	} else { kickid1 = -1;	kickwarning1 = 0; }
-
+	} else { kickid1 = -1;	kickwarning1 = 0; }	
+		
 	if (id2 && (ping2 <= pingban)) {
 		if (id2 == kickid2) {
 			kickwarning2 = kickwarning2 + 1;
 			if (kickwarning2 > 2)
 				pingkick(id2 , pingban);
 		} else { kickid2 = id2;	kickwarning2 = 2; }
-	} else { kickid2 = -1;	kickwarning2 = 0; }
-
+	} else { kickid2 = -1;	kickwarning2 = 0; }	
+	
 	localcmd("exec kick.cfg\n");
 };
 
 void() CalcTeamPing = {
 	local float redping, blueping, rednum, bluenum;
-	local entity e;
+	local entity e;	
 
 	redping = 0; blueping = 0; rednum = 0; bluenum = 0;
 
@@ -252,17 +231,17 @@ void() CalcTeamPing = {
 		} else if ((e.steam == TEAM_COLOR2)) {
 			blueping = blueping + e.pingsum;
 			bluenum = bluenum + e.pingtimes;
-		}
+		}		
 		e = e.clientchain;
 	}
 
-	if (rednum)
+	if (rednum)	
 		REDPING = floor(redping / rednum);
-	else
+	else 		
 		REDPING = 0;
-	if (bluenum)
+	if (bluenum)	
 		BLUEPING = floor(blueping / bluenum);
-	else
+	else 		
 		BLUEPING = 0;
 };
 

@@ -465,8 +465,8 @@ void(float x) PrintTime2All = {
 
 	min = floor(x / 60);
 	sec = floor(x - min * 60);
-	
-	bPrintRight(min, 1, "0");
+
+	bPrintRight(min, 1 , "0");
 	bprint(PRINT_HIGH, ":");
 	bPrintRight(sec, 2, "0");
 };

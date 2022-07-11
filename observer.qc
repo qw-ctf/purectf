@@ -157,8 +157,6 @@ float(entity pl) UnsetObserver = {
 void() SwapObserver = {
 	if (!AccessAdmin()) {
 		return;
-	} else if (FLAG_ARENA) {
-		sprint(self, PRINT_HIGH, "You can't do this in arena mode.\n");
 	} else if (self.classname == "spectator") {
 		sprint(self, PRINT_HIGH, "Spectators can't do this.\n");
 	} else if (self.classname == "observer") {

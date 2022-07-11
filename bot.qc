@@ -13,11 +13,9 @@
 void() BotThink;
 void() Spawn20Bots;
 void() SpawnBot;
-void() FakeSetup;
 
 void() DoSpawnBot = {
 	self.clientflags = self.clientflags | CLIENT_BOT;
-	self.classname = "BOT";
 // 	self.clientflags = self.clientflags | (CLIENT_BOT); 
 	SetNewParms();
 	ClientConnect();
@@ -28,14 +26,9 @@ void() DoSpawnBot = {
 };
 
 void() SpawnBot = {
-	FakeSetup();
 	local entity oself;
 	oself = self;
-	self.clientflags = self.clientflags | CLIENT_BOT;
-	self.classname = "BOT";
 	self = spawn();
-	self.classname = "BOT";
-	self.clientflags = self.clientflags | CLIENT_BOT;
 	self.think = DoSpawnBot; 
 	self.nextthink = time + random() + 0.5;
 	self = oself;
@@ -59,6 +52,8 @@ void() BotThink = {
 
 
 void(entity client, string s) REAL_STUFFCMD = {};
+
+
 
 void(entity client, string s) STUFFCMD = {
 	if (self.clientflags & CLIENT_BOT)

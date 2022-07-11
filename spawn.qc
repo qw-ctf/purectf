@@ -292,7 +292,6 @@ void (vector org, float fteam, float angl) SpawnTeamStart =
 {
 
 	local entity st;
-	if (ARENA_INHIBIT) return;
 	st = spawn();
 	st.origin = org;
 	setorigin(st, org);

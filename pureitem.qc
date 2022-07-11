@@ -134,10 +134,6 @@ void() TossRune =
 	local entity e;
 	local float spd;
 
-	if (FLAG_TW) {
-		menolike();
-		return;
-	}
 	if (!FLAG_TOSSRUNE || IsObserver(self))
 		return;
 
@@ -207,14 +203,11 @@ void() TossFlag =
 		return;
 	}
 
-	if (!self.player_flag & PF_GOTFLAG)		// TW
-		return;
 
 	if ((self.steam == TEAM_COLOR1)) 
 		kn = "item_flag_team2";
 	else
 		kn = "item_flag_team1";
-	self.player_flag = self.player_flag - (self.player_flag & (PF_GOTFLAG));		// TW
 	e = find(world, classname, kn);
 	if (e != world)
 		TeamTossFlag(e);

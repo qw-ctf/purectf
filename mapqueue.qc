@@ -71,8 +71,8 @@ void() NextLevel = {
 
 	// ctf episode one
 	else if (mapname == "ctf1") nextmap = "ctf2";
-	else if (mapname == "ctf2") { if (FLAG_TW) nextmap = "ctf4"; else  nextmap = "ctf3";}	
-	else if (mapname == "ctf3") nextmap = "ctf4";	// No CTF3 in TW
+	else if (mapname == "ctf2") nextmap = "ctf3";
+	else if (mapname == "ctf3") nextmap = "ctf4";
 	else if (mapname == "ctf4") nextmap = "ctf5";
 	else if (mapname == "ctf5") nextmap = "ctf6";
 	else if (mapname == "ctf6") nextmap = "ctf7";
@@ -82,8 +82,8 @@ void() NextLevel = {
 	// ctf episode two
 	else if (mapname == "ctf2m1") nextmap = "ctf2m2";
 	else if (mapname == "ctf2m2") nextmap = "ctf2m3";
-	else if (mapname == "ctf2m3") { if (FLAG_TW) nextmap = "ctf2m5"; else  nextmap = "ctf2m4";}
-	else if (mapname == "ctf2m4") nextmap = "ctf2m5";	// No ctf2m4 in TW.
+	else if (mapname == "ctf2m3") nextmap = "ctf2m4";
+	else if (mapname == "ctf2m4") nextmap = "ctf2m5";
 	else if (mapname == "ctf2m5") nextmap = "ctf2m6";
 	else if (mapname == "ctf2m6") nextmap = "ctf2m7";
 	else if (mapname == "ctf2m7") nextmap = "ctf2m8";

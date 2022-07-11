@@ -85,14 +85,7 @@ void(entity targ, entity attacker, entity inflictor) Killed =
 	self.th_die ();
 
 	if (IsClassPlayer(self)) {
-		if (FLAG_ARENA && FLAG_COMPETITION && self.killed) {
-			SetKilledObserver(self);
-			self.player_flag = self.player_flag | (PF_KILLMERESTART);
-		} else if (FLAG_ARENA && !FLAG_COMPETITION) {
-			RemoveFromArenaPlayers(self);
-			PutinQue(self);
-			self.player_flag = self.player_flag | (PF_KILLMERESTART);
-		} else if (FORCE_RESPAWN) {
+		if (FORCE_RESPAWN) {
 			self.forcerespawn = time + FORCE_RESPAWN;
 		} 
 	}
@@ -112,10 +105,6 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage= {
 	local	entity	oldself;
 	local	float	save;
 	local	float	take;
-	// ThunderWalker: stuff needed you'll see		// tw50
-	local 	float	john;
-	local	float	sue;
-	local	float	marc;
 
 	if ((!targ.takedamage) || !targ)
 		return;
@@ -133,95 +122,20 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage= {
 	// used by buttons and triggers to set activator for target firing
 	damage_attacker = attacker;
 
-	// Check for quad and strength on the attacker
-	if (FLAG_TW) {		// tw50
-		if ((attacker.super_damage_finished > time) && !(self.twflags & TW_KILLING)) {
-			if (DEATHMATCH == 4) 
-				damage = damage * 8;
-			else
-				damage = damage * 4;
-		}
-		if ((attacker.runes & ITEM_RUNE2_FLAG) && (attacker.weapon != IT_NAILGUN))
-			damage = damage * STRENGTH;	// ***Pure***
-	} else {
-		if (attacker.super_damage_finished > time) {
-			if (DEATHMATCH == 4) 
-				damage = damage * 8;
-			else
-				damage = damage * 4;
-		}
-		if (attacker.runes & ITEM_RUNE2_FLAG)
-			damage = damage * STRENGTH;	// ***Pure***
-	}
-
-	// tw50 --> Thunderwalker Runes & Stuff
-	if (FLAG_TW) {		
-		sue = attacker.health + (damage * 0.66);
-
-		// ThunderWalker: Vampirism rune mojo
-		if ((attacker.runes & ITEM_RUNE7_FLAG) && (targ.classname == "player") && targ != attacker && !(SameTeam(targ, attacker, world)))
-			{
-			if (attacker.health > 199)
-				attacker.health = attacker.health;
-			else if (sue > 200)
-				attacker.health = 200;
-			else
-				attacker.health = sue;
-			if (attacker.invincible_sound < time)
-			{
-				sound (attacker, CHAN_BODY, "tw/vampire.wav", 1, ATTN_NORM);
-				attacker.invincible_sound = time + 0.5;
-			}
-		}
-		if (attacker.weapon == IT_AIRGUN)
-       		{
-			if (targ.hook_out)
-		        {
-				Reset_Grapple (targ.hook);
-				targ.attack_finished = time + 0.5;
-				targ.hook_out = FALSE;
-		        }
-       		 }
-
-		if ((targ.runes & ITEM_RUNE6_FLAG) && (targ.hook_out))
-		{
-			Reset_Grapple (targ.hook);
-			targ.attack_finished = time + 1;		// *check* snipebug?
-			targ.hook_out = FALSE;
-		}
-
-		// ThunderWalker: No damage after respawn
-		if (targ.justin > time)
-			damage = 0;
-
-		if (attacker.weapon == IT_LIGHTNING)
-			targ.twflags = targ.twflags | (TW_SNIPERDEATH);
+	if (attacker.super_damage_finished > time) {
+		if (DEATHMATCH == 4) 
+			damage = damage * 8;
 		else
-			targ.twflags = targ.twflags | (TW_SNIPERDEATH);
-
-		// ThunderWalker: Can't kill before vote
-		if ((gamestart) && attacker.classname == "player")
-		{
-			if (targ.classname == "player")
-			{
-				if (!targ.voted)
-					damage = 0;
-			}
-		}
+			damage = damage * 4;
 	}
-// tw50 <--
+	if (attacker.runes & ITEM_RUNE2_FLAG)
+		damage = damage * STRENGTH;	// ***Pure***
 
 
 	// Check for Resistance
 	if (targ.runes & ITEM_RUNE1_FLAG) {
-		// ThunderWalker: Surprise for sniping resistance
-		if ((attacker.weapon == IT_LIGHTNING) && FLAG_TW) {		// tw50
-			damage = damage*0.05;
-			sound (targ, CHAN_BODY, "tw/twgiggle.wav", 1, ATTN_NORM);
-		} else {
-			damage = damage * RESISTANCE;	// ***Pure***
-			ResistanceSound(targ);
-		}
+		damage = damage * RESISTANCE;	// ***Pure***
+		ResistanceSound(targ);
 	}
  
 	// *XXX* EXPERT CTF mark players who hurt the flag carrier, so they 
@@ -259,19 +173,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage= {
 	if ( (inflictor != world) && (targ.movetype == MOVETYPE_WALK) )	{
 		dir = targ.origin - (inflictor.absmin + inflictor.absmax) * 0.5;
 		dir = normalize(dir);
-		if (FLAG_TW) {	//tw50
-			//ThunderWalker: Sniper throws you about
-			if (attacker.weapon == IT_LIGHTNING && inflictor.classname != "flare")
-				targ.velocity = targ.velocity*0;
-			// ThunderWalker: Added momentum for protection rune
-			else if((targ.runes & ITEM_RUNE6_FLAG)) {
-				if (attacker == targ || !(SameTeam(attacker, targ, world)))
-					targ.velocity = targ.velocity + dir*2550;
-			} else
-				targ.velocity = targ.velocity + dir*damage*8;
-		} else {
-			targ.velocity = targ.velocity + dir*damage*8;
-		}
+		targ.velocity = targ.velocity + dir*damage*8;
 	}
 
 	// check for godmode or invincibility
@@ -301,28 +203,13 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage= {
                 return;
 		
 	// do the damage
-	if (FLAG_TW) {
-		marc = (random()*1)+1;
-
-		// ThunderWalker: Player does not gib from sniper
-		john = targ.health - take;
-		if (attacker.weapon == IT_LIGHTNING && john < 0 && random() < 0.5)
-			targ.health = -5;
-		else
-		targ.health = john;
-	} else {
-		targ.health = targ.health - take;
-	}		
+	targ.health = targ.health - take;	
 
 	if (targ.health <= 0)
 	{
 		Killed (targ, attacker, inflictor);
 		return;
 	}
-
-	// TW50: De-cloak if hurt
-	if (FLAG_TW && (targ.runes & ITEM_RUNE8_FLAG))
-		DecloakTarget(targ);
 
 
 
@@ -380,13 +267,6 @@ void(entity inflictor, entity attacker, float damage, entity ignore) T_RadiusDam
 //***discharge*** <--
 
 				if (points > 0) {
-					if (FLAG_TW && (head.runes & ITEM_RUNE6_FLAG)) {
-						if (head.invincible_sound < time) {
-							sound (head, CHAN_ITEM, "tw/protect.wav", 1, ATTN_NORM);
-							head.invincible_sound = time + 1;
-						}
-						points = points * 0.07;
-					}
 					if (CanDamage (head, inflictor)) {
 						T_Damage (head, inflictor, attacker, points);
 					}

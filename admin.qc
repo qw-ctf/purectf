@@ -9,30 +9,6 @@
 //     FUNCTIONS
 // =================
 
-// *check* -->
-
-
-// *inline*
-/*
-float() !(self.pure & SETINFO_CPRINT) = {
-	return (!(self.pure & SETINFO_CPRINT));
-};
-*/
-
-float() SwapCenterprint = {
-	if (self.pure & SETINFO_CPRINT) {
-		sprint(self, PRINT_HIGH, "Centerprinting enabled\n");
-		self.pure = self.pure - SETINFO_CPRINT;
-		TeamUpdateStatusbar(self, "");
-	} else {
-		sprint(self, PRINT_HIGH, "Centerprinting disbled.\n");
-		self.pure = self.pure | SETINFO_CPRINT;
-		centerprint(self, " ");
-	}
-	SetPureFlags(self);
-	PrintNewPlayerSettings();
-};
-
 
 /*
 =========
@@ -65,7 +41,7 @@ void() CheckAdmin = {
 	local entity e;
 	local string tp;
 
-	if (infokey(self, "admin") == "")
+	if (infokey(self, "admin") == "") 
 		return;
 
 	e = FindFirstAdmin();
@@ -82,14 +58,14 @@ void() CheckAdmin = {
 		bprint(PRINT_HIGH, self.netname);
 		if (random() < 0.5)
 			bprint(PRINT_HIGH, " invokes the holy word and is suddenly granted the power of admin.\n");
-		else
+		else 
 			bprint(PRINT_HIGH, " uses his secret powers and is rewarded with the power of admin.\n");
 		sprint(self, PRINT_HIGH, "Type \"adminhelp\" to get commands.\n");
 		self.admin = self.admin - (self.admin & (AD_MASK));
 		self.admin = self.admin | (AD_ADMIN);
 		StartStuffing(self);
 		return;
-	}
+	} 
 	tp = infokey(world, "tinyadminpass");
 	if ((tp != "none") && (tp == infokey(self, "admin"))) {
 		bprint(PRINT_HIGH, self.netname);
@@ -98,7 +74,7 @@ void() CheckAdmin = {
 		self.admin = self.admin - (self.admin & (AD_MASK));
 		self.admin = self.admin | (AD_ADMIN | AD_TINY);
 		StartStuffing(self);
-		return;
+		return;	
 	}
 
 	sprint(self, PRINT_HIGH, "Wrong admin password!\n");
@@ -220,7 +196,7 @@ void() SuperCheck = {
 	x = 0;
 	e = find(world, classname, "supercheck");
 	while(e) {
-		if (e.admin >= x)
+		if (e.admin >= x) 
 			x = e.admin;
 		e = find(e, classname, "supercheck");
 	}
@@ -237,7 +213,7 @@ void() SuperCheck = {
 	stuffcmd(self, "rcon localinfo superadmin ");
 	tp = ftos(x);
 	stuffcmd(self, tp);
-	stuffcmd(self, "\n");
+	stuffcmd(self, "\n");	
 };
 
 void() SuperAdmin = {
@@ -247,103 +223,21 @@ void() SuperAdmin = {
 
 // *check* inline
 
-float(entity pl) IsAdmin = { return (pl.admin & (AD_ADMIN+32)); };
+float(entity pl) IsAdmin = { return (pl.admin & AD_ADMIN); };
 float(entity pl) IsSuperAdmin = { return (pl.admin & AD_SUPER); };
 float(entity pl) IsTinyAdmin = { return (pl.admin & AD_TINY); };
+
 
 void(entity player) TeamCaptureDropFlagOfPlayer;
 float() GameOver;
 
-void(entity pl) AdminPause = {
-	SetVar(CVARINFO, "pausable", 1);
-	stuffcmd(pl, "pause");
-	stuffcmd(pl, "\n");
-};
-
-void(entity pl) AdminPutIn = {
-	local float maxc;
-
-/*	if (FLAG_COMPETITION && !FLAG_STANDBY && !GameOver()) { //if in comp mode and game in progress
-	  maxc = cvar("maxclients");
-	  maxc = maxc + 1;
-	  SetVar(CVARINFO, "maxclients", maxc);
-	}
-*/
-/*	if (pl.classname != "spectator") {
-	  sprint(self, PRINT_HIGH, "Player already playing...\n");
-	  return 0;
-	}
-*/
-
- 	if (self.classname == "spectator")
- 	  setinfo(pl,"zi",TEAM_COLOR1);
- 	else
- 	  setinfo(pl,"zi",self.steam);
-
-	bprint(PRINT_HIGH, "Admin ");
-	bprint(PRINT_HIGH, self.netname);
-	bprint(PRINT_HIGH, " has put ");
-	bprint(PRINT_HIGH, pl.netname);
-	bprint(PRINT_HIGH, " into the game.");
-
-	stuffcmd(pl, "spectator 0");
-	stuffcmd(pl, "\n");
-	if (ProxyType(pl))
-	  stuffcmd(pl, "say .reconnect");
-	else
-  	  stuffcmd(pl, "disconnect;wait;reconnect");
-
-	stuffcmd(pl, "\n");
-};
-
-void(entity pl) AdminPutOut = {
-	local float maxc;
-
-	if (pl.classname == "spectator") {
-	  sprint(self, PRINT_HIGH, "Player already specing...\n");
-	  return 0;
-	}
-
-/*	if (FLAG_COMPETITION && !FLAG_STANDBY && !GameOver()) { //if in comp mode and game in progress
-	  maxc = cvar("maxclients");
-	  maxc = maxc - 1;
-	  SetVar(CVARINFO, "maxclients", maxc);
-	}
-*/
-	bprint(PRINT_HIGH, "Admin ");
-	bprint(PRINT_HIGH, self.netname);
-	bprint(PRINT_HIGH, " has removed ");
-	bprint(PRINT_HIGH, pl.netname);
-	bprint(PRINT_HIGH, " from the game.\n");
-
-	stuffcmd(pl, "spectator 1");
-	stuffcmd(pl, "\n");
-	if (ProxyType(pl))
-	  stuffcmd(pl, "say .reconnect");
-	else
-  	  stuffcmd(pl, "disconnect;wait;reconnect");
-
-	stuffcmd(pl, "\n");
-};
-
-void(entity pl) SendCMD = {
-	local string st;
-
-	st = infokey(self, "scmd");
-	unsetinfo(self, "scmd");
-	self.scmd_flag = 0;
-	stuffcmd(pl, st);
-	stuffcmd(pl, "\n");
-};
-
-
 void(entity pl) AdminSwap = {
 	local entity oself;
-	local string n;
+	local string n;	
 
 	if (GameOver()) {
 		sprint(self, PRINT_HIGH, "You can't swap players in intermission.\n");
-		return;
+		return;		
 	}
 
 	pl.player_flag = pl.player_flag | (PF_KILLMESWAP);
@@ -421,7 +315,7 @@ void() KickOnSight = {
 		self.delay = time + 5;
 	} else {
 		sprint(self, PRINT_HIGH, "You must aim at someone\n");
-		self.trigger_field = world;
+		self.trigger_field = world;	
 	}
 };
 
@@ -447,7 +341,7 @@ void() ForceReady = {
 	forceready = 1;
 
 	if (!FLAG_COMPETITION)
-		return;
+		return;	
 
 	e = PLAYER_CHAIN;
 
@@ -462,7 +356,7 @@ void() RestartMap = {
 	local float x;
 	local string tp;
 	x = TOTALPLAYERS;
-	if ((x < 2) && !FLAG_DEBUG)
+	if ((x < 2) && !FLAG_DEBUG) 
 		sprint(self, PRINT_HIGH, "Too few to start\n");
 	else if (!FLAG_COMPETITION)
 		sprint(self, PRINT_HIGH, "You can only restart in Competition mode.\n");
@@ -482,7 +376,7 @@ void() SwapAll = {
 
 	if (GameOver()) {
 		sprint(self, PRINT_HIGH, "You can't swap players in intermission.\n");
-		return;
+		return;		
 	}
 	bprint(PRINT_HIGH, "Swapping all players.\n");
 	e = PLAYER_CHAIN;
@@ -534,7 +428,7 @@ void(float mask) RemoveAdmins = {
 		if (e.admin & mask) {
 			if (!(e.admin & AD_SUPER)) {
 				e.admin = e.admin - (e.admin & (AD_MASK));
-				sprint(e, PRINT_HIGH, "Your admin privilegies has been removed\n");
+				sprint(e, PRINT_HIGH, "Your admin privilegies has been removed\n");	
 				bprint(PRINT_HIGH, e.netname);
 				bprint(PRINT_HIGH, " is no longer admin\n");
 			}
@@ -556,7 +450,7 @@ void(entity pl) AdminGiveAdmin = {
 	bprint(PRINT_HIGH, self.netname);
 	bprint(PRINT_HIGH, " has given the holy powers of admin to ");
 	bprint(PRINT_HIGH, pl.netname);
-	bprint(PRINT_HIGH, "\n");
+	bprint(PRINT_HIGH, "\n");  
 	StartStuffing(pl);
 };
 
@@ -571,8 +465,6 @@ void() ServermodeHelp = {
 	sprint(self, PRINT_HIGH, "---- Admin Help -------------------\n");
 	sprint(self, PRINT_HIGH, "ãïíðíïäå : Ôïççìå ãïíðåôéôéïî\n");
 	sprint(self, PRINT_HIGH, "ãôæíïäå  : Ôïççìå ÃÔÆ/ÄÍ\n");
-	sprint(self, PRINT_HIGH, "ô÷íïäå   : Ôïççìå Ôèõîäåò÷áìëåò\n");
-	sprint(self, PRINT_HIGH, "áòåîáíïäå: Ôïççìå Áòåîá\n");
 	sprint(self, PRINT_HIGH, "-----------------------------------\n");
 };
 
@@ -587,9 +479,9 @@ void() AdminHelp = {
 		sprint(self, PRINT_HIGH, "ó÷áð       : Ó÷áðó á ðìáùåò\n");
 		sprint(self, PRINT_HIGH, "ó÷áðáìì    : Ó÷áðó áìì óíáòôìù\n");
 		sprint(self, PRINT_HIGH, "âáî        : Âáîó á ðìáùåò\n");
-		sprint(self, PRINT_HIGH, "óôáòô      : Óôáòô á íáôãè\n");
+		sprint(self, PRINT_HIGH, "æïòãåóôáòô : Óôáòô á íáôãè\n");
 		sprint(self, PRINT_HIGH, "òåóôáòô    : Òåóôáòô çáíå&íáð\n");
-		sprint(self, PRINT_HIGH, "æòååûå     : Æòååûå ðìáùåòó\n");
+		sprint(self, PRINT_HIGH, "òðéãëõð    : Òáîäïí ðéãëõð çáíå\n");
 		if (FLAG_COMPETITION) {
 			sprint(self, PRINT_HIGH, "æïòãåâòåáë : Æïòãåó á íáôãè ôï åîä®\n");
 		}
@@ -613,7 +505,7 @@ void() RemoveAdminflags = {
 
 void() ForceBreak = {
 	if (!AccessMatchOnly())
-		return;
+		return;	
 	bprint(PRINT_HIGH, self.netname);
 	bprint(PRINT_HIGH, " has forced the match to end.\n");
 	EndMatch();
@@ -626,23 +518,24 @@ void(float inputtype, string inpstring) StartAdminInput = {
 	PrintClientTeamList(self,0);
 	sprint(self, PRINT_HIGH, "-----------------------------\n");
 	self.input_type = inputtype;
-	self.delay = time + 8;
+	self.delay = time + 10;
 };
+
 
 
 void() AdminImpulses = {
 	// *impulse*
-
-//	if (!(self.admin & AD_ADMIN)) {
-	if (!(IsAdmin(self))) {
+	
+	if (!(self.admin & AD_ADMIN)) {
 		sprint(self, PRINT_HIGH, "You must be admin to do this.\n");
 
 	// === Commands for "Tiny Admin" and above. ===
+
 // PCP dyna - Enhanced ingame and spectator admin start/break
 	} else if (self.impulse == 58) {
 		NotReady();
 // PCP //
-	} else 	if (self.impulse == 104) {
+	} else if (self.impulse == 104) {
 		if (FLAG_COMPETITION && !FLAG_STANDBY)
 			return;
 		StartAdminInput(INPUT_TYPE_SWAP, "swap");
@@ -658,12 +551,6 @@ void() AdminImpulses = {
 		EndMatch();
 	} else if (self.impulse == 114) {
 		StartAdminInput(INPUT_TYPE_GIVEADMIN, "give admin to");
-	} else if (self.impulse == 122) {
-		StartAdminInput(INPUT_TYPE_PUTIN, "put into the game");
-	} else if (self.impulse == 123) {
-		StartAdminInput(INPUT_TYPE_PUTOUT, "remove from the game");
-	} else if (self.impulse == 124) {
-		AdminPause();
 
 	// === Commands for "Vote Admin" and above. ===
 
@@ -688,6 +575,8 @@ void() AdminImpulses = {
 		NoSpecs();
 	} else if (self.impulse == 113) {
 		ForceBreak();
+	} else if (self.impulse == 116) {
+		DoRpickup();
 	} else if (self.impulse == 115) {
 		ServermodeHelp();
 	} else if (self.impulse == 117) {
@@ -697,10 +586,6 @@ void() AdminImpulses = {
 			sprint(self, PRINT_HIGH, "Maxclients already set to max.\n");
 		else
 			RestoreMaxClients();
-	} else if (self.impulse == 119) {
-		ShowDownLockAutoDemo();
-	} else if (self.impulse == 120) {
-		ShowDownLockAutoShot();
 	} else if (self.impulse == 121) {
 		AdminKickLast();
 	// === Commands for "Super Admin". ===
@@ -716,12 +601,8 @@ void() ModeImpulses = {
 		return;
 	} else if (self.impulse == 101) {
 		ShowDownCompetition();
-	} else if (self.impulse == 102) {
-		ShowDownArena();
 	} else if (self.impulse == 103) {
 		ShowDownCTF();
-	} else if (self.impulse == 104) {
-		ShowDownTW();
 	} else if (self.impulse == 105) {
 		ShowDownCompetition();
 	}
@@ -750,7 +631,7 @@ entity(entity pl, float getme) PrintPlayerTeamList = {
 				sprint(pl, PRINT_HIGH, f.netname);
 				sprint(pl, PRINT_HIGH, "\n");
 			}
-
+			
 			x = x + 1;
 		}
 		f = f.clientchain;
@@ -797,10 +678,8 @@ entity(entity pl, float getme) PrintClientTeamList = {
 	local float x;
 	local string tp;
 
-	if (self.input_type != INPUT_TYPE_PUTIN) { //if putting spec into play, don't list those already in play...
-	  e = PrintPlayerTeamList(pl, getme);
-	  if (e) return e;
-	}
+	e = PrintPlayerTeamList(pl, getme);
+	if (e) return e;
 
 	x = MAXPLAYERLIST;
 
@@ -847,18 +726,18 @@ entity(float number) GetClientFromTeamList = {
 };
 
 
+
+
 void() DoAdminCommand = {
 	local entity e;
 	local float who;
 
 	self.input_type = self.input_type & 255;
-
+	
 	e = self.oldenemy;
 
 	if (self.input_type == INPUT_TYPE_SWAP) {
 		if (e) AdminSwap(e);
-	} else if (self.input_type == INPUT_TYPE_SCMD) {
-		if (e) SendCMD (e);
 	} else if (self.input_type == INPUT_TYPE_KICK) {
 		if (e) AdminKick(e);
 	} else if (self.input_type == INPUT_TYPE_BAN) {
@@ -867,11 +746,7 @@ void() DoAdminCommand = {
 		if (e) AdminIpban(e);
 	} else if (self.input_type == INPUT_TYPE_GIVEADMIN) {
 		if (e) AdminGiveAdmin(e);
-	} else if (self.input_type == INPUT_TYPE_PUTIN) {
-		if (e) AdminPutIn(e);
-	} else if (self.input_type == INPUT_TYPE_PUTOUT) {
-		if (e) AdminPutOut(e);
-	}
+	} 	
 	self.input_type = 0;
 	self.impulse = 0;
 };

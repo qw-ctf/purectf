@@ -146,70 +146,7 @@ string(string shortname) FindMap = {
 	else if (shortname == "ctf3m8")  return "The Place of Two Bases";
 	else if (shortname == "ctf3m9")  return "The CHEAT Complex 2: Barkfalls";
 
-	// Rocket Arena
-	// http://www.planetquake.com/servers/arena/
-
-	else if (shortname == "23ar-a") return "PlatArena";
-	else if (shortname == "2pyramid") return "Two Pyramids";
-	else if (shortname == "2towers") return "Twin Towers Arena";
-	else if (shortname == "aforts") return "Arena Forts";
-	else if (shortname == "arenarg2") return "Rocket Jump This";
-	else if (shortname == "arenarg3") return "Edge of Insanity";
-	else if (shortname == "arenarg4") return "Sponge Bath";
-	else if (shortname == "arenarg5") return "The Wicked Empty Base";
-	else if (shortname == "arenarg6") return "The Pit";
-	else if (shortname == "arenax") return "ArenaX";
-	else if (shortname == "arenazap") return "Zaphods Arena";
-	else if (shortname == "arendm1a") return "Place To Die";
-	else if (shortname == "arenrg3a") return "Edge Of Insanity";
-	else if (shortname == "arma4") return "Armageddon 4";
-	else if (shortname == "avarena1") return "Archiac Arena";
-	else if (shortname == "avarena2") return "Bridge Under The River Quake";
-	else if (shortname == "avarena3") return "Specatator Sport";
-	else if (shortname == "avarena4") return "Stone Cold";
-	else if (shortname == "avarena5") return "R_Speeds Be Damned";
-	else if (shortname == "barena1") return "Bowl Arena";
-	else if (shortname == "basarena") return "Base Arena";
-	else if (shortname == "bbarena") return "Blood Bath";
-	else if (shortname == "bunmoo3") return "First Bunny On The Moon";
-	else if (shortname == "bunski") return "Ski Bunny";
-	else if (shortname == "chamber1") return "Chamber Of Pain";
-	else if (shortname == "crandome") return "Cran Dome";
-	else if (shortname == "czarena1") return "Platforms";
-	else if (shortname == "dm2arena") return "Claustarena";
-	else if (shortname == "egyptra") return "Egyptra";
-	else if (shortname == "evilplay") return "The Evil Playground";
-	else if (shortname == "fishthis") return "Fish This!";
-	else if (shortname == "football") return "Rocket Football";
-	else if (shortname == "gear8") return "Censored";
-	else if (shortname == "gearpr0n") return "Pornogeddon";
-	else if (shortname == "gnurena") return "Seek And Hide";
-	else if (shortname == "hill20") return "King Of The Hill";
-	else if (shortname == "iarena2") return "2 Castles";
-	else if (shortname == "id3") return "Dm6 Arena";
-	else if (shortname == "lowgrav") return "Reduced Gravity";
-	else if (shortname == "marena2") return "Arena 2";
-	else if (shortname == "marena3") return "Arena 3";
-	else if (shortname == "marena4") return "Arena 4";
-	else if (shortname == "marenrg1") return "Multi Arena";
-	else if (shortname == "mayan1") return "Mayan Showdown";
-	else if (shortname == "mayanmod") return "Mayan Showdown";
-	else if (shortname == "nilsrar3") return "Nils Arena";
-	else if (shortname == "pitarena") return "Pit Arena";
-	else if (shortname == "ptucket") return "Pawtucket Palladium";
-	else if (shortname == "ra_funk1") return "Funadooda's Revenge";
-	else if (shortname == "ra_funkf") return "Funadooda's Revenge";
-	else if (shortname == "ralien") return "Alien Arena";
-	else if (shortname == "rarena3") return "Rage Arena";
-	else if (shortname == "rgarden") return "Rock Garden";
-	else if (shortname == "soyarena") return "Flesh Arena";
-	else if (shortname == "terrain2") return "Terrain";
-	else if (shortname == "uarena1") return "Unknown Arena";
-	else if (shortname == "unholy") return "Unholy Chapel";
-	else if (shortname == "xarena3") return "X-Arena";
-	else if (shortname == "yard1") return "The Backyard";
-
-	// PCP *HrZ* - At the constant nagging by yokozuna, i've added his mapnames :P
+	// PCP HrZ - At the constant nagging by yokozuna, i've added his mapnames :P
 	else if (shortname == "e2m1pro") return "The Prostallation";
 	else if (shortname == "e4m3pro") return "The Quad God Shrine";
 	// PCP dyna - More maps

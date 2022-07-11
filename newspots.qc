@@ -5,9 +5,6 @@
 // *****************************************************************
 
 
-entity(vector wallorg, float wallangle) SpawnVerticalWall;
-
-
 void() cyclespot = {
 	local entity spot;
 
