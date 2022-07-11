@@ -1,17 +1,13 @@
-../qwprogs.dat
+qwprogs.dat
 
 defs.qc
 
-// Purectf -->
-// *obsolete* puredefs.qc		
+// Purectf -->		
 
 defconst.qc		// Constant defines
 deffield.qc		// Entity field defines
 defvars.qc		// Variable defines
 deffuncs.qc		// Function prototypes
-// PCP dyna - UserID
-sneekUID.qc		// extensies QCC: userid's
-// PCP //
 infovars.qc		// Serverinfo & localinfo settings
 custom.qc
 purectf.qc
@@ -34,7 +30,6 @@ observer.qc
 multiwep.qc
 commands.qc
 nocheats.qc
-menu.qc
 bot.qc
 // Purectf <--
 
@@ -70,13 +65,6 @@ misc.qc
 
 server.qc
 
-// TW -->
-twrunes.qc
-base.qc
-boom.qc
-toss.qc
-horn.qc
-// TW <--
 
 
 // ***purectf*** -->
@@ -85,9 +73,11 @@ spawn.qc
 mapsnew1.qc
 mapsnew2.qc
 newspots.qc
-maparena.qc
-arena.qc
 mapents.qc
 // ***purectf*** <--
 
+
+// *** PureCTF Pro >>
+newpcp.qc
+// << orP FTCerUP ***
 

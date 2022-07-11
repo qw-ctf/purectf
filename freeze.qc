@@ -7,7 +7,7 @@
 void(entity pl, float newspeed) SetSpeed = {
         if (!IsClient(pl))
                 return;
-	if (pl.maxspeed != newspeed)
+	if (pl.maxspeed != newspeed) 
 		pl.maxspeed = newspeed;
 };
 void(entity pl, float newgravity) SetGravity = {
@@ -44,16 +44,14 @@ void(entity pl) SetPlayerSpeed = {
 		SetSpeed(pl, 0);
 	} else {
 		spd = SV_MAXSPEED;
-		if (pl.runes & ITEM_RUNE3_FLAG)
+		if (pl.runes & ITEM_RUNE3_FLAG) 
 			if (SET_RUNES == IS_PURE)
 				spd = spd * HASTESPEED;
-		if (FLAG_RLJUMPCTF && self.player_flag & PF_GOTFLAG)
-			spd = 0;
 		SetSpeed(pl, spd);
 	}
-	if (FREEZEFLAGS & FREEZE_GRAVITY)
+	if (FREEZEFLAGS & FREEZE_GRAVITY) 
 		SetGravity(pl, 0);
-	else
+	else 
 		SetGravity(pl, 1);
 };
 
@@ -79,12 +77,12 @@ void(float what) UnFreeze = {
 };
 
 void() DoPause = {
-
-// *check* kolla att det inte händer när det inte ska hända. spara gamla freeze också. Frys Endtime?
+	
+	// *check* kolla att det inte händer när det inte ska hända. spara gamla freeze också. Frys Endtime?
 
 /*    *check*
-//	if (RESTART || EndCountDown)
-//		return;
+	if (RESTART || EndCountDown)
+		return;
 
 	if (!FREEZE) {
 		if (FLAG_STANDBY)
@@ -92,14 +90,12 @@ void() DoPause = {
 		else
 			FreezeAll();
 		bprint(PRINT_HIGH, "Game paused");
-		FREEZE = 1;
 	} else {
 		if (FLAG_STANDBY)
 			UnFreezePlayers();
 		else
 			UnFreezeAll();
 		bprint(PRINT_HIGH, "Game restarted");
-		FREEZE = 0;
 	}
 	if (!FLAG_STANDBY) {
 		bprint(PRINT_HIGH, " at ");
@@ -116,20 +112,21 @@ void() DoPause = {
 };
 
 
+
 void() ToggleFreeze = {
 /* *check* kolla mot olika freezar
+
 	if (RESTART || EndCountDown)
 		return;
-
 	if (!FREEZE) {
 		if (!IsAdmin(self)) {
 			if (FindFirstAdmin())
 				sprint(self, PRINT_HIGH, "Ask the admin to pause the game\n");
 			else if (PAUSES_BYVOTE)
 				StartVote(" wants to pause the game. ", 4);
-			else
+			else 
 				sprint(self, PRINT_HIGH, "Pauses disabled.\n");
-		} else 	if (PAUSES_DISABLE && !IsSuperAdmin(self))
+		} else 	if (PAUSES_DISABLE && !IsSuperAdmin(self)) 
 			sprint(self, PRINT_HIGH, "Pauses disabled.\n");
 		else
 			DoPause();
@@ -138,7 +135,7 @@ void() ToggleFreeze = {
 			DoPause();
 		else if (FindFirstAdmin())
 			sprint(self, PRINT_HIGH, "Ask the admin to unpause.\n");
-		else
+		else 
 			StartVote(" wants to unpause the game. ", 4);
 	}
 */
@@ -213,8 +210,8 @@ void() UnFreezeItems = {
 	}
 	if (!FLAG_STANDBY) {			// *check* under countdown då?
 		RED_PICKUP = RED_PICKUP + frozetime;
-		BLUE_PICKUP = BLUE_PICKUP + frozetime;
-
+		BLUE_PICKUP = BLUE_PICKUP + frozetime;	
+	
 		e = find(world, classname, "item_flag_team1");
 		e.super_time = e.super_time + frozetime;
 		e = find(world, classname, "item_flag_team2");

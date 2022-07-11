@@ -12,8 +12,6 @@ float AUDIOLIMIT;
 	// client.qc
 float pregameover;
 	// infovar.qc
-float FLAG_LOCKAUTODEMO;
-float FLAG_LOCKAUTOSHOT;
 	//
 float OBSOLETEFLAG;				// Used by Checkinfokey
 float modelindex_eyes, modelindex_player;	// Used to set playermodel.
@@ -22,7 +20,6 @@ entity ARENAPLAYER2;
 	// freeze.qc
 float FREEZEFLAGS;
 float FREEZETIME;
-float FREEZE;
 	// ctfgame.qc
 float VOTEEXIT_TIME_LIMIT;
 	//
@@ -69,31 +66,12 @@ float FLAG_ERASE;
 entity ERASETHIS;
 	// spawn.qc
 entity LAST_TELEPORTER;
-	// arena.qc
-float ARENA_INHIBIT;
-float ARENA_SPECFLAG;
 	//
 float FLAG_FUNSOUNDS;
 	// mapqueue.qc
 float LASTQUEUE;
-	// twrunes.qc - Cloaking
-float bippy;		// Time until cloaking
-float gene;		// Time until stopping "flash"
-float CLOAKED;		// 0=visible 1=cloaked
-	// arena.qc - force wins used for debugging.
-float FORCEBLUEWIN;
-float FORCEREDWIN;
 	// admin.qc
 entity LAST_CONNECTED;	// Last connected player, used for kicklast.
-
-entity SPEC_JOINING;
-float SPEC_JOINING_FLAG;
-
-float BlueCaps;
-float BlueWins;
-
-float RedCaps;
-float RedWins;
 
 
 //
@@ -117,10 +95,7 @@ float PLAYER_MINRATE;			// "playerminrate" Lower limit for player rate.
 float SPEC_MAXRATE;			// "specmaxrate" Limit spectator rate.
 	// "mode" Server modes
 float FLAG_ANKAMAPS;
-float FLAG_ARENA;
 float FLAG_CTF;
-float FLAG_TW;
-float FLAG_AIRFIST;
 float FLAG_SHOWDOWN;			// Showdown mode.
 float FLAG_COMPETITION;			// Competition mode.
 	//
@@ -165,7 +140,6 @@ float FLAG_DISABLE_RESPAWNKILLFIX;	// Disable respawn frags
 float FLAG_DISABLE_CAPTURE_BASE_SPAWN;	// Disable spawn in bases after capture.
 float FLAG_ISAUTOPAUSED;		// Pause because of diss
 float FLAG_AUTOSPECTALK;			// Autoset spectalk
-float FLAG_RLJUMPCTF;			// Flag for Rocketjump CTF
 float FLAG_GRAPPLESKY;
 float VAR_DISABLEPOWERUPS;
 float BIT_NOQUAD = 1;
@@ -180,6 +154,7 @@ float PAUSES_BYVOTE;
 float VAR_PINGBAN;
 float VAR_HPBBAN;
 float STARTDELAY;
+	
 
 	// pureitem.qc
 float RANDOMRESPAWN;
@@ -199,7 +174,3 @@ float ARMORRESPAWN;			// armor respawns.
 string TP_STRING;
 string DMM_STRING;
 string TL_STRING;
-
-string VOTE_MAPT;
-string SEND_CMD;
-

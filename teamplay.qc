@@ -21,9 +21,7 @@ float FLAG_AT_BASE = 0;
 float FLAG_CARRIED = 1;
 float FLAG_DROPPED = 2;
 float FLAG_RETURN = 3; 		// ***Hangfix*** (flag is scheduled for return)
-// float FLAG_TOSSED = 4;		// ***pure CTF *** (moved to purectf.qc)
 
-float TW_CAPTURE_ESCORT_FLAG_BONUS_RADIUS = 400;		//tw50
 
 // =================
 //     VARIABLES
@@ -52,46 +50,25 @@ float TEAM_CAPTURE_ATTACKER_PROTECT_RADIUS; 		// the radius around an object bei
 //     FUNCTIONS
 // =================
 
-void() SetTeamParameters = {		// tw50 -->
-	if (FLAG_TW) {
-		TEAM_CAPTURE_CAPTURE_BONUS = 15; 
-		TEAM_CAPTURE_TEAM_BONUS = 2; 
-		TEAM_CAPTURE_RECOVERY_BONUS = 1; 
-		TEAM_CAPTURE_FLAG_BONUS = 2; 
-		TEAM_CAPTURE_FRAG_CARRIER_BONUS = 5; 
-		TEAM_CAPTURE_FLAG_RETURN_TIME = 30;
-		//
-		TEAM_CAPTURE_CARRIER_DANGER_PROTECT_BONUS = 3; 
-		TEAM_CAPTURE_CARRIER_PROTECT_BONUS = 2; 
-		TEAM_CAPTURE_FLAG_DEFENSE_BONUS = 3; 
-		TEAM_CAPTURE_RETURN_FLAG_ASSIST_BONUS = 1;
-		TEAM_CAPTURE_FRAG_CARRIER_ASSIST_BONUS = 1; 
-		//
-		TEAM_CAPTURE_TARGET_PROTECT_RADIUS = 550; 
-		TEAM_CAPTURE_ATTACKER_PROTECT_RADIUS = 550;
-		//
-		VOTEEXIT_TIME_LIMIT = 90;
-	} else {
-		TEAM_CAPTURE_CAPTURE_BONUS = 15; 
-		TEAM_CAPTURE_TEAM_BONUS = 10; 
-		TEAM_CAPTURE_RECOVERY_BONUS = 1; 
-		TEAM_CAPTURE_FLAG_BONUS = 0; 
-		TEAM_CAPTURE_FRAG_CARRIER_BONUS = 2; 
-		TEAM_CAPTURE_FLAG_RETURN_TIME = 40; 
-		// bonuses
-		TEAM_CAPTURE_CARRIER_DANGER_PROTECT_BONUS = 2; 
-		TEAM_CAPTURE_CARRIER_PROTECT_BONUS = 1; 
-		TEAM_CAPTURE_FLAG_DEFENSE_BONUS = 1; 
-		TEAM_CAPTURE_RETURN_FLAG_ASSIST_BONUS = 1; 
-		TEAM_CAPTURE_FRAG_CARRIER_ASSIST_BONUS = 2; 
-		// radii
-		TEAM_CAPTURE_TARGET_PROTECT_RADIUS = 400;
-		TEAM_CAPTURE_ATTACKER_PROTECT_RADIUS = 400; 
-		//
-		VOTEEXIT_TIME_LIMIT = 60;
-	}
-	SetBaseZoneRadius();
-};					//tw50 <--
+void() SetTeamParameters = {
+	TEAM_CAPTURE_CAPTURE_BONUS = 15; 
+	TEAM_CAPTURE_TEAM_BONUS = 10; 
+	TEAM_CAPTURE_RECOVERY_BONUS = 1; 
+	TEAM_CAPTURE_FLAG_BONUS = 0; 
+	TEAM_CAPTURE_FRAG_CARRIER_BONUS = 2; 
+	TEAM_CAPTURE_FLAG_RETURN_TIME = 40; 
+	// bonuses
+	TEAM_CAPTURE_CARRIER_DANGER_PROTECT_BONUS = 2; 
+	TEAM_CAPTURE_CARRIER_PROTECT_BONUS = 1; 
+	TEAM_CAPTURE_FLAG_DEFENSE_BONUS = 1; 
+	TEAM_CAPTURE_RETURN_FLAG_ASSIST_BONUS = 1; 
+	TEAM_CAPTURE_FRAG_CARRIER_ASSIST_BONUS = 2; 
+	// radii
+	TEAM_CAPTURE_TARGET_PROTECT_RADIUS = 400;
+	TEAM_CAPTURE_ATTACKER_PROTECT_RADIUS = 400; 
+	//
+	VOTEEXIT_TIME_LIMIT = 60;
+};
 
 // Return a name for the color of a team
 string(float Team) GetTeamColor =
@@ -461,11 +438,6 @@ void() TeamCheckSkinandTeam = {
 				s = infokey(world, "redskin");
 			else
 				s = infokey(world, "blueskin");
-		} else if (FLAG_TW) {
-			if ((self.steam == TEAM_COLOR1))
-				s = "twred";
-			else
-				s = "twblue";
 		} else if (random() < 2) {			// debug *check* fix so both skins are used?
 			if ((self.steam == TEAM_COLOR1))
 				s = "ctfr1";
@@ -618,8 +590,8 @@ void() TossBackpack =
 	
 	// Check for nails
 	if ((self.weapon == IT_SUPER_NAILGUN) || 
-	    (!FLAG_TW && (self.weapon == IT_NAILGUN)) ||
-	    (!(self.items & IT_NAILGUN) && (!(self.items & IT_SUPER_NAILGUN) || FLAG_TW))) {
+	    (self.weapon == IT_NAILGUN) ||
+	    (!(self.items & IT_NAILGUN) && (!(self.items & IT_SUPER_NAILGUN)))) {
 		if (self.ammo_nails >= 20 )
 			item.ammo_nails = 20;
 		else
@@ -641,8 +613,7 @@ void() TossBackpack =
 
 	// See if we're using the lightning gun or TW laser
 	if ( (self.weapon == IT_LIGHTNING) ||
-	     (FLAG_TW && (self.weapon == IT_NAILGUN)) ||
-             (!(self.items & IT_LIGHTNING) && (!FLAG_TW || !(self.items & IT_NAILGUN)))) { 
+             (!(self.items & IT_LIGHTNING))) { 
 		if( self.ammo_cells >= 20 ) 
 			item.ammo_cells = 20;
 		else
@@ -658,10 +629,7 @@ void() TossBackpack =
 
 	TossItem(self, item, 500);
 
-	if (FLAG_TW)
-		setmodel (item, "progs/tw_back.mdl");		// tw50
-	else	
-		setmodel (item, "progs/backpack.mdl");
+	setmodel (item, "progs/backpack.mdl");
 
 
 	setsize(item, '-16 -16 0', '16 16 56');
@@ -756,7 +724,7 @@ void() TossWeapon = {
 		return;
 	if (DEATHMATCH != 1)
 		return;  // only in deathmatch 1
-	if ((self.weapon == IT_AIRGUN) || (self.weapon == IT_AXE) || (self.weapon == IT_SHOTGUN) || (self.weapon == IT_GRAPPLE) )
+	if ((self.weapon == IT_AXE) || (self.weapon == IT_SHOTGUN) || (self.weapon == IT_GRAPPLE) )
 		return;
 		
 	item = spawn();
@@ -766,10 +734,7 @@ void() TossWeapon = {
 	
 	if (self.weapon == IT_SUPER_SHOTGUN)
 	{
-		if (FLAG_TW)
-			setmodel (item, "progs/twg_shot.mdl");		//tw50
-		else
-			setmodel (item, "progs/g_shot.mdl");
+		setmodel (item, "progs/g_shot.mdl");
 		item.weapon = IT_SUPER_SHOTGUN;
 		item.netname = "Double-barrelled Shotgun";
 		item.classname = "weapon_supershotgun";
@@ -778,13 +743,8 @@ void() TossWeapon = {
 
 	if( self.weapon == IT_NAILGUN )
 	{
-		if (FLAG_TW) {
-			setmodel (item, "progs/twlaser.mdl");		//tw50
-			item.netname = "Laser Rifle";
-		} else {
-			item.netname = "nailgun";
-			setmodel (item, "progs/g_nail.mdl");
-		}
+		item.netname = "nailgun";
+		setmodel (item, "progs/g_nail.mdl");
 		item.weapon = IT_NAILGUN;
 		item.classname = "weapon_nailgun";
 		self.items = self.items - IT_NAILGUN;
@@ -819,13 +779,8 @@ void() TossWeapon = {
 	
 	if( self.weapon == IT_LIGHTNING )
 	{
-		if (FLAG_TW) {
-			setmodel (item, "progs/g_snipe1.mdl");
-			item.netname = "Sniper Rifle";
-		} else {
-			setmodel (item, "progs/g_light.mdl");
-			item.netname = "Thunderbolt";
-		}
+		setmodel (item, "progs/g_light.mdl");
+		item.netname = "Thunderbolt";
 		item.weapon = 3;
 		item.classname = "weapon_lightning";
 		self.items = self.items - IT_LIGHTNING;
@@ -897,7 +852,7 @@ void () TeamCaptureRegenFlags =
 void(entity flg) TeamDropFlag =
 {
 	local entity item, f, oself;
-	local entity p, escort;			// tw50
+	local entity p;			// tw50
 
 	p = flg.owner;
 	if (p.classname != "player")		// tw50
@@ -909,19 +864,6 @@ void(entity flg) TeamDropFlag =
 	else
 		bprint(PRINT_HIGH, " ìïóô the ÒÅÄ flag!\n"); // red
 
-// tw50 -->
-// ThunderWalker: Be by guy when he gets flag, be there when he caps
-// neither of you die in between they you get a happy bonus
-	if (FLAG_TW) {
-		escort = find(world, classname, "player");
-		while(escort != world)
-		{
-		if (SameTeam(escort, p , world))
-			escort.twflags = escort.twflags - (escort.twflags & (TW_ESCORTING));
-		escort = escort.chain;
-		}
-	}
-// tw50 <--
 
 	LogFlagdrop(p);		//GSLog
 
@@ -946,12 +888,12 @@ void(entity player) TeamCaptureDropFlagOfPlayer =
 	local string kn;
 	local entity e;
 
-// tw50 -->
 	if (!(player.player_flag & PF_GOTFLAG))
 		return;
+
 	if (player.classname != "player")
 		return;
-// tw50 <--
+
 	if ((player.steam == TEAM_COLOR1)) 
 		kn = "item_flag_team2";
 	else
@@ -959,7 +901,7 @@ void(entity player) TeamCaptureDropFlagOfPlayer =
 	player.player_flag = player.player_flag - (player.player_flag & (PF_GOTFLAG));	// tw50
 	e = find(world, classname, kn);
 	if (e != world) {
-		if (FLAG_ARENA && (player.player_flag & PF_KILLME))
+		if (player.player_flag & PF_KILLME)
 			RegenFlag(e);
 		else
 			TeamDropFlag(e);
@@ -1082,46 +1024,10 @@ void() TeamCaptureFlagTouch =
 				// other gets another 10 frag bonus
 				LogCapture(other, TEAM_CAPTURE_CAPTURE_BONUS);	//gslog
 
-// tw50 -->
 				last_flag_capture = time;
 				last_capture_team = other.steam;
 				sound (other, CHAN_VOICE, SOUND_CAPTURE, 1, ATTN_NONE); // ThunderWalker: SPOOOONNN!!!
-				if (FLAG_TW) {
-					// ThunderWalker: Happy bonuses for capping the flag
-					if (other.health <= 99)
-						other.health = 100;
-					if (other.sniper_ammo <= 4)
-						other.sniper_ammo = 5;
-					if (other.armorvalue <= 49)
-						other.armorvalue = 50;
-					other.twflags = other.twflags - (other.twflags & (TW_ACME));
-				
-					if (other.flares != 10)
-						other.flares = 10;
-					// ThunderWalker: Escort gets happy bonuses too	
-					escort = findradius(other.origin, TW_CAPTURE_ESCORT_FLAG_BONUS_RADIUS);
-				
-					while (escort) {
-						if ((escort.classname == "player") && (escort != other) && (escort.steam == other.steam)) {	
-							if (escort.twflags & TW_ESCORTING) {
-								timmy = escort.health + 25;
-								if (timmy >= 101)
-									escort.health = 100;
-								else
-									escort.health = timmy;
-								if (escort.sniper_ammo <= 4)
-									escort.sniper_ammo = escort.sniper_ammo + 1;
-								LogEscort(escort, 5);
-								escort.twflags = escort.twflags - (escort.twflags & (TW_ACME));
-								escort.twflags = escort.twflags - (escort.twflags & (TW_ESCORTING));
-								// *escort bug*
-							} else
-								LogEscort(escort, 3);
-						}
-						escort = escort.chain;
-					}	
-				}
-// tw50 <--
+
 				// possum: 3 loops in one
 				LoopThroughPlayersAfterCapture();
 
@@ -1176,17 +1082,6 @@ void() TeamCaptureFlagTouch =
 	other.player_flag = other.player_flag | (PF_GOTFLAG);
 	other.items = other.items | self.items;
 
-// tw50 -->
-	// ThunderWalker: touch something and invince go away
-	if(other.justin > time) {
-	other.justin = 0;
-	self.attack_finished = time;
-	}
-	// ThunderWalker: can't teleport with flag
-	// other.transtime = 0;
-// tw50 <--
-
-
 // ***rljumpctf*** --> Freeze player.
 	SetPlayerSpeed(other);
 // ***rljumpctf*** <--
@@ -1213,17 +1108,6 @@ void() TeamCaptureFlagTouch =
 		self.owner.effects = self.owner.effects | EF_FLAG2;
 	setmodel(self, "");
 
-// tw50 -->
-	// ThunderWalker: sets the escort flag
-	escort = findradius(self.owner.origin, TW_CAPTURE_ESCORT_FLAG_BONUS_RADIUS);
-	while(escort) {
-		if (escort.classname == "player" && escort != self.owner) {
-			if (escort.steam == self.owner.steam)
-				escort.twflags = escort.twflags | (TW_ESCORTING);
-		}
-		escort = escort.chain;
-	}
-// tw50 <--
 	p = find(world, classname, "player");
 	while (p != world) {
 		if (p != other) {
@@ -1423,7 +1307,6 @@ void() spawn_item_flag =
 		remove(self);
 		return;
 	}
-	self.AIRG_Flags = AIRG_EXCLUDEENTITY;
 
 	setmodel (self, "progs/flag.mdl");
 	self.noise = SOUND_GETFLAG;
@@ -1435,7 +1318,6 @@ void() spawn_item_flag =
 };
 
 void() item_flag_team1 = {
-	if (ARENA_INHIBIT) {remove(self);return;}
 	self.steam = TEAM_COLOR1;
 	self.items = IT_KEY2;
 	self.skin = 0;
@@ -1446,7 +1328,6 @@ void() item_flag_team1 = {
 
 void() item_flag_team2 =
 {
-	if (ARENA_INHIBIT) {remove(self);return;}
 	self.steam = TEAM_COLOR2;
 	self.items = IT_KEY1;
 	self.skin = 1;
@@ -1459,12 +1340,11 @@ void() item_flag_team2 =
 // Team base starting locations
 void() info_player_team1 =
 {
-	if (ARENA_INHIBIT) {remove(self);return;}
 };
 
 void() info_player_team2 =
 {
-	if (ARENA_INHIBIT) {remove(self);return;}
+	//if (ARENA_INHIBIT) {remove(self);return;}
 };
 
 /*QUAKED func_ctf_wall (0 .5 .8) ?

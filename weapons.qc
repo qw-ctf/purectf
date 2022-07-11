@@ -5,9 +5,6 @@
 void () player_hook1; // prototype from player.qc
 void () player_hook3; // prototype from player.qc
 
-void () player_harpoon1; // prototype from player.qc
-void () player_harpoon3; // prototype from player.qc
-
 void (entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 void () player_run;
 void(entity bomb, entity attacker, float rad, entity ignore) T_RadiusDamage;
@@ -44,12 +41,6 @@ void() W_Precache =
 	precache_model ("progs/g_rock2.mdl");
 	precache_model ("progs/g_light.mdl");
 
-// tw50 -->
-	if (FLAG_AIRFIST) {
-		precache_sound ("weapons/agfire.wav");	// Air gun fire
-		precache_sound ("weapons/agfail.wav");	// Air gun failed fire
-		precache_sound ("weapons/agwater.wav");	// Air gun under water shot
-	}
 };
 
 float() crandom =
@@ -332,10 +323,7 @@ void() W_FireShotgun =
 {
 	local vector dir;
 
-	if (FLAG_TW)
-		sound (self, CHAN_WEAPON, "tw/tw_shot.wav", 1, ATTN_NORM);
-	else
-		sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM);	
+	sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM);	
 
 	msg_entity = self;
 	WriteByte (MSG_ONE, SVC_SMALLKICK);
@@ -360,10 +348,8 @@ void() W_FireSuperShotgun =
 		W_FireShotgun ();
 		return;
 	}
-	if (FLAG_TW)
-		sound (self ,CHAN_WEAPON, "tw/tw_shot2.wav", 1, ATTN_NORM);
-	else
-		sound (self ,CHAN_WEAPON, "weapons/shotgn2.wav", 1, ATTN_NORM);	
+
+	sound (self ,CHAN_WEAPON, "weapons/shotgn2.wav", 1, ATTN_NORM);	
 
 	msg_entity = self;
 	WriteByte (MSG_ONE, SVC_BIGKICK);
@@ -373,57 +359,7 @@ void() W_FireSuperShotgun =
 	FireBullets (14, dir, '0.14 0.08 0');
 };
 
-// tw50 -->
-/*
-==========================
-ThunderWalker Sniper Code
-an adaption of id's shotgun
-code
-==========================
-*/
-void(vector dir) FireSniper =
-{
 
-	local	vector	src;
-	local	float	snipdamg;
-
-	makevectors(self.v_angle);
-
-	src = self.origin + v_forward*10;
-	src_z = self.absmin_z + self.size_z * 0.7;
-
-	ClearMultiDamage ();
-
- 	traceline (src, src + dir*2048, FALSE, self);
- 	puff_org = trace_endpos - dir*4;
-
-	snipdamg = 244 + random()*17;
-
-		traceline (src, src + dir*2048, FALSE, self);
-		if (trace_fraction != 1.0)
-			TraceAttack (snipdamg, dir);
-
-	ApplyMultiDamage ();
-	Multi_Finish ();
-};
-
-void() W_FireSniper =
-{
-	local vector dir;
-
-	sound (self, CHAN_WEAPON, "tw/tfsniper.wav", 1, ATTN_NORM);
-
-	msg_entity = self;
-	WriteByte (MSG_ONE, SVC_SMALLKICK);
-	if (!FLAG_STANDBY && (DEATHMATCH != 4))
-		self.currentammo = self.sniper_ammo = self.sniper_ammo - 1;
-	dir = aim (self, 100000);
-	FireSniper (dir);
-};
-
-
-
-// tw50 <--
 /*
 ==============================================================================
 
@@ -448,8 +384,7 @@ void() T_MissileTouch =
 		remove(self);
 		return;
 	}
-	if (FLAG_TW) damg = 80 + random()*16;
-	else damg = 100 + random()*20;
+	damg = 100 + random()*20;
 	
 	if (other.health)
 	{
@@ -485,8 +420,7 @@ void() W_FireRocket =
 	if (!FLAG_STANDBY  && (DEATHMATCH != 4))
 		self.currentammo = self.ammo_rockets = self.ammo_rockets - 1;
 
-	if (FLAG_TW)	sound (self, CHAN_WEAPON, "tw/twrkt.wav", 1, ATTN_NORM);
-	else	sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);
+	sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);
 
 	msg_entity = self;
 	WriteByte (MSG_ONE, SVC_SMALLKICK);
@@ -671,14 +605,8 @@ void() GrenadeExplode =
 {
 	if (FreezeThink())
 		return;
-	if (FLAG_TW) {
-		// ThunderWalker:  Needed to do damage for direct hits with people who have protection rune
-		if (other.runes & ITEM_RUNE6_FLAG)
-			T_Damage (other, self, self.owner, 95);
-		T_RadiusDamage (self, self.owner, 95, world);
-	} else {
-		T_RadiusDamage (self, self.owner, 120, world);
-	}
+
+	T_RadiusDamage (self, self.owner, 120, world);
 
 	WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
 	WriteByte (MSG_MULTICAST, TE_EXPLOSION);
@@ -718,10 +646,8 @@ void() W_FireGrenade =
 {	
 	if (!FLAG_STANDBY  && (DEATHMATCH != 4))
 		self.currentammo = self.ammo_rockets = self.ammo_rockets - 1;
-	if (FLAG_TW)
-		sound (self, CHAN_WEAPON, "tw/twgrenad.wav", 1, ATTN_NORM);
-	else	
-		sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
+
+	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
 
 	msg_entity = self;
 	WriteByte (MSG_ONE, SVC_SMALLKICK);
@@ -763,271 +689,12 @@ void() W_FireGrenade =
 
 	newmis.think = GrenadeExplode;
 
-	if (FLAG_TW && (TEAMPLAY & TW_FLOUNDERVISION_FLAG))
-		setmodel (newmis, "progs/fish.mdl");
-	else
-		setmodel (newmis, "progs/grenade.mdl");
+	setmodel (newmis, "progs/grenade.mdl");
 
 	setsize (newmis, '0 0 0', '0 0 0');		
 	setorigin (newmis, self.origin);
 };
 
-
-// tw50 -->
-
-void() flare_touch;
-void() flare_bright;
-void() flare_dim;
-
-
-/*
-=========================================================================
-Flares Code Begins Here.
-=========================================================================
-*/
-
-/*
-================================
-launch_flare
-
-rework of id's launch_spike code
-================================
-*/
-void(vector org, vector dir) launch_flare =
-{
-	if (self.flares == 0) {
-		PrintStatusbar(self, "You are out of flares!!!",1);
-		return;
-	}
-	if (FLAG_TW && (self.runes & ITEM_RUNE8_FLAG))
-	        DecloakTarget(self);
-
-	if (!FLAG_STANDBY && (DEATHMATCH != 4))
-		self.flares = self.flares - 1;
-
-	if (self.flares == 2)
-		sprint (self, PRINT_HIGH, "2 flares left!\n");
-	if (self.flares == 1)
-		sprint (self, PRINT_HIGH, "1 flare left!\n");
-	if (self.flares == 0)
-		sprint (self, PRINT_HIGH, "Out of flares!\n");
-
-	msg_entity = self;
-//	WriteByte (MSG_ONE, SVC_SMALLKICK);
-
-	newmis = spawn ();
-	newmis.owner = self;
-	newmis.movetype = MOVETYPE_FLYMISSILE;
-	newmis.solid = SOLID_BBOX;
-	newmis.classname = "flare";
-
-// set newmis speed
-
-	makevectors (self.v_angle);
-	newmis.velocity = aim(self, 1000);
-	newmis.velocity = newmis.velocity * 1750;
-	newmis.angles = vectoangles(newmis.velocity);
-
-	newmis.touch = flare_touch;
-	newmis.think = flare_bright;
-	newmis.nextthink = time + 3;
-
-// set newmis duration
-//	newmis.nextthink = time + 5;
-//	newmis.think = SUB_Remove;
-
-        setmodel (newmis, "progs/flare.mdl");
-	setsize (newmis, '0 0 0', '0 0 0');
-	setorigin (newmis, self.origin + '0 0 16');
-
-        newmis.effects = EF_DIMLIGHT;
-
-};
-
-/*
-============================
-flare_touch
-
-rework of id's spike_touch()
-============================
-*/
-void() flare_touch =
-{
-local float rand;
-	if (other == self.owner)
-		return;
-
-        if (other.classname == "door" || other.classname == "plat")
-                {
-                remove(self);
-                return;
-                }
-
-	if (other.solid == SOLID_TRIGGER)
-		return; // trigger field, do nothing
-
-	if (pointcontents(self.origin) == CONTENT_SKY)
-	{
-		remove(self);
-		return;
-	}
-
-// has the flare hit something that bleeds?
-	if (other.takedamage)
-	{
-                // If so, spawn some blood
-		spawn_touchblood (9);
-                // also do one point of damage
-		T_Damage (other, self, self.owner, 1);
-
-/*
-Don't remove the flare unless it is still flying. Otherwise, monsters or
-other players can come up and 'pull' your flare out of the wall
-*/
-	      if (self.velocity != '0 0 0')
-			remove(self);
-	}
-	else
-	{
-        // Write information to the network
-		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-		WriteByte (MSG_BROADCAST, TE_SPIKE);
-		WriteCoord (MSG_BROADCAST, self.origin_x);
-		WriteCoord (MSG_BROADCAST, self.origin_y);
-		WriteCoord (MSG_BROADCAST, self.origin_z);
-	}
-
-//Stop the flare, but do not remove it.
-	self.movetype = MOVETYPE_NONE;
-// Fix it so that flare only partially embeds itself (thanks, Luke)
-        self.origin = self.origin - self.velocity * 0.005;
-     	self.velocity = '0 0 0';
-	self.touch = SUB_Null;
-};
-
-
-/*
-==============================
-flare_bright()
-
-This function makes the flare
-emit brighter light
-==============================
-*/
-
-void() flare_bright =
-{
-	local vector    vel;
-// Make the flare get BRIGHT by setting .effects bit
-        self.effects = EF_BRIGHTLIGHT;
-// Give it 10 seconds at maximum intensity
-        self.nextthink = time + 10;
-// After 10 seconds, call flare_dim
-	self.think = flare_dim;
-// Play a sound for flare ignition
-	sound (self, CHAN_WEAPON, "tw/flareup.wav", 1, ATTN_NORM);
-
-// Set up some red and yellow sparks
-	vel = '0 0 150';
-//	particle (self.origin+vel*0.01,vel,111,150);
-//       vel = '0 0 120';
-//	particle (self.origin+vel*0.01,vel,73,200);
-
-
-
-/*
-==============================
-flare_dim()
-
-This function makes the flare
-go dim again
-==============================
-*/
-};
-
-void() flare_dim =
-{
-// Make the flare get dim by setting .effects bit
-        self.effects = EF_DIMLIGHT;
-// Give it 15 seconds before burnout
-	self.nextthink = time + 5;
-// After 15 seconds remove the flare from the game
-	self.think = SUB_Remove;
-};
-
-
-
-
-
-/*
-===================================================================
-End of Flare Code  -    Steve Bond 8/1/96 adapted for TW by Marc Rittierodt 4/97
-===================================================================
-*/
-/*
-========================
-ThundeWalker Laser Code
-adaption of id rocket
-code
-========================
-*/
-void() LaserTouch =
-{
-	if (other == self.owner)
-		return;		// don't explode on owner
-
-	if (self.cnt)
-		return;
-
-	self.cnt = 1;
-	if (pointcontents(self.origin) == CONTENT_SKY)
-	{
-		remove(self);
-		return;
-	}
-	if (other.health)
-		T_Damage (other, self, self.owner, 58 );
-
-remove(self);
-
-};
-
-void() W_FireLaser =
-{
-	if (!FLAG_STANDBY && (DEATHMATCH != 4))
-		self.currentammo = self.ammo_cells = self.ammo_cells - 1;
-
-	sound (self, CHAN_WEAPON, "tw/twlaz04.wav", 1, ATTN_NORM);
-
-	newmis = spawn();
-	newmis.owner = self;
-	newmis.movetype = MOVETYPE_FLYMISSILE;
-	newmis.solid = SOLID_BBOX;
-	newmis.classname = "laser";
-	newmis.cnt = 0;
-	
-	makevectors (self.v_angle);
-	newmis.velocity = aim(self, 1000);
-	newmis.velocity = newmis.velocity * 1900;
-	newmis.angles = vectoangles(newmis.velocity);
-	
-	newmis.touch = LaserTouch;
-	newmis.nextthink = time + 3;
-	newmis.think = SUB_Remove;
-
-	if ((self.steam == TEAM_COLOR2))
-		setmodel (newmis, "progs/twbolt-b.mdl");
-	else
-		setmodel (newmis, "progs/twbolt1.mdl");
-
-	setsize (newmis, '0 0 0', '0 0 0');
-	setorigin (newmis, self.origin + v_forward*8 + '0 0 16');
-
-};
-
-
-
-// tw50 <--
 
 //=============================================================================
 
@@ -1071,10 +738,7 @@ void() W_FireSuperSpikes =
 	sound (self, CHAN_WEAPON, "weapons/spike2.wav", 1, ATTN_NORM);
 	self.attack_finished = time + 0.2;
 	if (!FLAG_STANDBY && (DEATHMATCH != 4)) {
-		if (FLAG_TW)
-			self.currentammo = self.ammo_nails = self.ammo_nails - 1;
-		else
-			self.currentammo = self.ammo_nails = self.ammo_nails - 2;
+		self.currentammo = self.ammo_nails = self.ammo_nails - 2;
 	}
 	dir = aim (self, 1000);
 	launch_spike (self.origin + '0 0 16', dir);
@@ -1230,10 +894,7 @@ void() W_SetCurrentAmmo =
 	{
 		self.currentammo = 0;
 		if (FLAG_HOOK) {
-			if (FLAG_TW)
-				self.weaponmodel = "progs/twharpgn.mdl";
-			else
-				self.weaponmodel = "progs/v_star.mdl";
+			self.weaponmodel = "progs/v_star.mdl";
 		} else
 			self.weaponmodel = "progs/v_axe.mdl";
 		self.weaponframe = 0;
@@ -1241,34 +902,22 @@ void() W_SetCurrentAmmo =
 	else if (self.weapon == IT_SHOTGUN)
 	{
 		self.currentammo = self.ammo_shells;
-		if (FLAG_TW)
-			self.weaponmodel = "progs/twvshota.mdl";
-		else
-			self.weaponmodel = "progs/v_shot.mdl";
+		self.weaponmodel = "progs/v_shot.mdl";
 		self.weaponframe = 0;
 		self.items = self.items | IT_SHELLS;
 	}
 	else if (self.weapon == IT_SUPER_SHOTGUN)
 	{
 		self.currentammo = self.ammo_shells;
-		if (FLAG_TW)
-			self.weaponmodel = "progs/twvshot2.mdl";
-		else
-			self.weaponmodel = "progs/v_shot2.mdl";
+		self.weaponmodel = "progs/v_shot2.mdl";
 		self.weaponframe = 0;
 		self.items = self.items | IT_SHELLS;
 	}
 	else if (self.weapon == IT_NAILGUN)
 	{
-		if (FLAG_TW) {
-			self.currentammo = self.ammo_cells;
-			self.weaponmodel = "progs/twlaserh.mdl";
-			self.items = self.items | IT_CELLS;
-		} else {
-			self.currentammo = self.ammo_nails;
-			self.weaponmodel = "progs/v_nail.mdl";
-			self.items = self.items | IT_NAILS;
-		}
+		self.currentammo = self.ammo_nails;
+		self.weaponmodel = "progs/v_nail.mdl";
+		self.items = self.items | IT_NAILS;
 		self.weaponframe = 0;
 	}
 	else if (self.weapon == IT_SUPER_NAILGUN)
@@ -1294,23 +943,12 @@ void() W_SetCurrentAmmo =
 	}
 	else if (self.weapon == IT_LIGHTNING)
 	{
-		if (FLAG_TW) {
-			self.currentammo = self.sniper_ammo;
-			self.weaponmodel = "progs/v_sniper.mdl";
-		} else {
-			self.currentammo = self.ammo_cells;
-			self.weaponmodel = "progs/v_light.mdl";
-			self.items = self.items | IT_CELLS;
-		}
+		self.currentammo = self.ammo_cells;
+		self.weaponmodel = "progs/v_light.mdl";
+		self.items = self.items | IT_CELLS;
 		self.weaponframe = 0;
 	}
-// tw50 -->
-	else if ((self.weapon == IT_AIRGUN) && FLAG_AIRFIST) {
-		self.currentammo = 0;
-		self.weaponmodel = "progs/v_airgun.mdl";
-		self.weaponframe = 0;
-	}
-// tw50 <--
+
 	else
 	{
 		self.currentammo = 0;
@@ -1334,22 +972,17 @@ float() W_BestWeapon =
 	
 	it = self.items;
 
-	if (!FLAG_TW && self.waterlevel <= 1 && self.ammo_cells >= 1 && (it & IT_LIGHTNING) )
+	if (self.waterlevel <= 1 && self.ammo_cells >= 1 && (it & IT_LIGHTNING) )
 		return IT_LIGHTNING;
 	else if(self.ammo_nails >= 2 && (it & IT_SUPER_NAILGUN) )
 		return IT_SUPER_NAILGUN;
 	else if(self.ammo_shells >= 2 && (it & IT_SUPER_SHOTGUN) )
 		return IT_SUPER_SHOTGUN;
-	else if(!FLAG_TW && self.ammo_nails >= 1 && (it & IT_NAILGUN) )
-		return IT_NAILGUN;
-	else if(FLAG_TW && self.ammo_cells >= 1 && (it & IT_NAILGUN) )
+	else if(self.ammo_nails >= 1 && (it & IT_NAILGUN) )
 		return IT_NAILGUN;
 	else if(self.ammo_shells >= 1 && (it & IT_SHOTGUN) )
 		return IT_SHOTGUN;
-// tw50-->
-	else if (FLAG_AIRFIST && AIRG_SHOWINWEAPONLIST == TRUE && (it & IT_AIRGUN))
-			return IT_AIRGUN;
-// tw50 <--
+
 	return IT_AXE;
 };
 
@@ -1376,10 +1009,6 @@ float() W_CheckNoAmmo =
 	if (self.weapon == IT_AXE)
 		return TRUE;
 
-// tw50 -->
-	if (FLAG_AIRFIST && (self.weapon == IT_AIRGUN))
-		return TRUE;
-// tw50
 
 	if (self.weapon == IT_GRAPPLE)
 		return TRUE;
@@ -1407,7 +1036,6 @@ void()	player_shot1;
 void()	player_nail1;
 void()	player_light1;
 void()	player_rocket1;
-void()  player_snipe1;
 
 void() W_Attack =
 {
@@ -1423,46 +1051,17 @@ void() W_Attack =
 		if (FREEZEFLAGS & FREEZE_WEAPONS_BUT_HOOK)
 			return;
 	}
-// ***pure***
 
-	// ThunderWalker:  Like in Star Trek, you cannot fire while cloaked
-	if (FLAG_TW && (self.runes & ITEM_RUNE8_FLAG))
-		DecloakTarget(self);
-
-
-	makevectors	(self.v_angle);			// calculate forward angle for velocity
-// pure - obsolete	self.show_hostile = time + 1;	// wake monsters up
 
 	if (self.weapon == IT_GRAPPLE) {
 
-		if ((self.player_flag & PF_GOTFLAG) && FLAG_RLJUMPCTF)	// ***rljumpctf*** --> Remove hook if the player have the flag.
-			return;		
-/* debug
-		if (FLAG_TW)
-			if (self.grapples > 6 && self.grappletime > time)
-				PrintStatusbar(self, "Warning! Grapple is Overheating!!!",1);
-*/
 		if (self.hook_out) {
-			if (FLAG_TW)
-				player_harpoon3 ();		// tw50
-			else
-				player_hook3 ();
+			player_hook3 ();
 		} else {
-			if (FLAG_TW)
-				player_harpoon1 ();		// tw50
-			else
-				player_hook1 ();
+			player_hook1 ();
 		}
 		self.attack_finished = time + 0.1;
-/* *obsolete* dummy TW grapplecheck
-		if (FLAG_TW) {
-			if (self.grappletime < time) {
-				self.grappletime = time + 2;
-				self.grapples = 0;
-			}
-			self.grapples = self.grapples + 1;
-		}
-*/
+
 	}
 
 	if (self.weapon == IT_AXE)
@@ -1490,16 +1089,10 @@ void() W_Attack =
 		W_FireShotgun ();
 		// RUNE: rune of hell magic
 		if (self.runes & ITEM_RUNE3_FLAG) {
-			if (FLAG_TW)
-				self.attack_finished = time + (0.2 / HASTERATE);
-			else
-				self.attack_finished = time + (0.6 / HASTERATE);
+			self.attack_finished = time + (0.6 / HASTERATE);
 			HasteSound();
 		} else {
-			if (FLAG_TW)
-				self.attack_finished = time + 0.3;
-			else
-				self.attack_finished = time + 0.5;
+			self.attack_finished = time + 0.5;
 		}
 	}
 	else if (self.weapon == IT_SUPER_SHOTGUN)
@@ -1508,32 +1101,15 @@ void() W_Attack =
 		W_FireSuperShotgun ();
 		// RUNE: rune of hell magic
 		if (self.runes & ITEM_RUNE3_FLAG) {
-			if (FLAG_TW)
-				self.attack_finished = time + (0.5 / HASTERATE);
-			else
-				self.attack_finished = time + (0.8 / HASTERATE);
+			self.attack_finished = time + (0.8 / HASTERATE);
 			HasteSound();
 		} else {
-			if (FLAG_TW)
-				self.attack_finished = time + 0.45;
-			else
-				self.attack_finished = time + 0.7;
+			self.attack_finished = time + 0.7;
 		}
 	}
 	else if (self.weapon == IT_NAILGUN)
 	{
-		if (FLAG_TW) {
-		        player_shot1();
-	                W_FireLaser();
-        	        if (self.runes & ITEM_RUNE3_FLAG)
-                        {
-                	        self.attack_finished = time + 0.2;
-                       		HasteSound();
-                        } else
-                		self.attack_finished = time + 0.35;
-		} else {
-			player_nail1 ();
-		}
+		player_nail1 ();
 	}
 	else if (self.weapon == IT_SUPER_NAILGUN)
 	{
@@ -1563,34 +1139,9 @@ void() W_Attack =
 	}
 	else if (self.weapon == IT_LIGHTNING)
 	{
-		if (FLAG_TW) {
-		        player_snipe1();
-			W_FireSniper();
-			if ((self.runes & ITEM_RUNE3_FLAG) && self.sniper_ammo != 0) {
-				self.attack_finished = time + 3.25;
-				HasteSound();
-			} else if (self.sniper_ammo != 0) {
-				self.attack_finished = time + 6.5;
-			} else
-				self.attack_finished = time + 0.8;
-			// *check* snipeprint
-			if (self.sniper_ammo == 4)
-				PrintStatusbar(self, "Reloading - 4 Shots remaining!",1);
-			else if (self.sniper_ammo == 3)
-				PrintStatusbar(self, "Reloading - 3 Shots remaining!",1);
-			else if (self.sniper_ammo == 2)
-				PrintStatusbar(self, "Reloading - 2 Shots remaining!",1);
-			else if (self.sniper_ammo == 1)
-				PrintStatusbar(self, "Reloading - Last shot!",1);
-			else if (self.sniper_ammo == 0)
-				PrintStatusbar(self, "Out of ammo!",1);
-		} else {
-			self.attack_finished = time + 0.1;
-			sound (self, CHAN_AUTO, "weapons/lstart.wav", 1, ATTN_NORM);
-			player_light1();
-		}
-	} else if (FLAG_AIRFIST && (self.weapon == IT_AIRGUN)) {
-		launch_horn();
+		self.attack_finished = time + 0.1;
+		sound (self, CHAN_AUTO, "weapons/lstart.wav", 1, ATTN_NORM);
+		player_light1();
 	}
 
 };
@@ -1602,11 +1153,6 @@ W_ChangeWeapon
 ============
 */
 void() W_ChangeWeapon = {
-
-	// Lock TW Sniper
-	if ((time < self.attack_finished) && FLAG_TW && (self.weapon == IT_LIGHTNING))
-		return;
-
 
 	local	float	it, am, fl;
 
@@ -1623,18 +1169,7 @@ void() W_ChangeWeapon = {
 			fl = IT_AXE;
 	} else if (self.impulse == 22) {
 		// Ok, hook feeling is important, so I'll include ALL possible functions here.
-		if (FLAG_TW) {	// *check* fix correctly later
-			// === tw 5.0 === (same as 3wave 4.21?)
-			fl = IT_GRAPPLE;
-			if (self.weapon != IT_GRAPPLE) {
-				sprint (self, PRINT_HIGH , "Grappling Hook Selected\n");
-				if (self.hook_out)
-					sound (self, CHAN_WEAPON, "weapons/bounce2.wav", 1, ATTN_NORM);	
-	
-				self.hook_out = FALSE;
-				self.on_hook = FALSE;
-			}
-		} else if (SET_HOOK == IS_PURE) {
+		if (SET_HOOK == IS_PURE) {
 			// ==== Standard Pure ====
 			// Remove the hook if it's out. (Like switching by 2x impulse 1)
 			fl = IT_GRAPPLE;
@@ -1678,22 +1213,12 @@ void() W_ChangeWeapon = {
 			am = 1;
 	} else if (self.impulse == 4 || self.impulse == 34) {
 		fl = IT_NAILGUN;
-		if (FLAG_TW) {
-			if (self.ammo_cells < 1)
+		if (self.ammo_nails < 1)
 				am = 1;
-		} else {
-			if (self.ammo_nails < 1)
-				am = 1;
-		}
 	} else if (self.impulse == 5) {
 		fl = IT_SUPER_NAILGUN;
-		if (FLAG_TW) {
-			if (self.ammo_nails < 1)
+		if (self.ammo_nails < 2)
 				am = 1;
-		} else {
-			if (self.ammo_nails < 2)
-				am = 1;
-		}
 	} else if (self.impulse == 35) {
 		fl = IT_SUPER_NAILGUN;
 		if (self.ammo_nails < 2)
@@ -1708,28 +1233,10 @@ void() W_ChangeWeapon = {
 			am = 1;
 	} else if (self.impulse == 8 || self.impulse == 38) {
 		fl = IT_LIGHTNING;
-		if (FLAG_TW) {
-			if (self.sniper_ammo < 1)
-				am = 1;
-		} else {
-			if (self.ammo_cells < 1)
-				am = 1;
-		}
+		if (self.ammo_cells < 1)
+			am = 1;
 	}
-// tw50 -->
-	if (FLAG_AIRFIST) {
-		if (self.impulse == AIRG_IMPULSEVALUE) {
-			fl = IT_AIRGUN;
-		}
 
-		// if already have the weapon or if you don't have the weapon, try the
-		// double tap impulse.
-		if((self.weapon == fl || !(self.items & fl) || am == 1) && AIRG_DOUBLETAPIMPULSE == self.impulse) {
-			fl = IT_AIRGUN;
-			am = 0;
-		}
-	}
-// tw50 <--
 
 	self.impulse = 0;
 	
@@ -1783,10 +1290,6 @@ void() CheatCommand =
 
 	self.weapon = IT_ROCKET_LAUNCHER;
 
-	if (FLAG_TW) {
-		self.ammo_cells = 60;
-		self.items = self.items | IT_AIRGUN;
-	}
 	self.impulse = 0;
 	W_SetCurrentAmmo ();
 };
@@ -1800,10 +1303,6 @@ Go to the next weapon with ammo
 */
 void() CycleWeaponCommand =
 {
-	// Lock TW Sniper
-	if ((time < self.attack_finished) && FLAG_TW && (self.weapon == IT_LIGHTNING))
-		return;
-
 
 	local	float	it, am;
 
@@ -1826,35 +1325,17 @@ void() CycleWeaponCommand =
 			if (self.ammo_shells < 1)
 				am = 1;
 		} else if (self.weapon == IT_SHOTGUN) {
-		    	if (FLAG_AIRFIST && (AIRG_SHOWINWEAPONLIST == TRUE)) {	// tw50
-				self.weapon = IT_AIRGUN;
-			} else {
-				self.weapon = IT_SUPER_SHOTGUN;
-				if (self.ammo_shells < 2)
-					am = 1;
-			}
-	  	} else if( FLAG_AIRFIST && (self.weapon == IT_AIRGUN)) {	// tw50
 			self.weapon = IT_SUPER_SHOTGUN;
 			if (self.ammo_shells < 2)
 				am = 1;
-		} else if (self.weapon == IT_SUPER_SHOTGUN) {
+	  	} else if (self.weapon == IT_SUPER_SHOTGUN) {
 			self.weapon = IT_NAILGUN;
-			if (FLAG_TW) {
-				if (self.ammo_cells < 1)
-					am = 1;
- 			} else {
-				if (self.ammo_nails < 1)
-					am = 1;
-			}
+			if (self.ammo_nails < 1)
+				am = 1;
 		} else if (self.weapon == IT_NAILGUN) {
 			self.weapon = IT_SUPER_NAILGUN;
-			if (FLAG_TW) {
-				if (self.ammo_nails < 1)
-					am = 1;
- 			} else {
-				if (self.ammo_nails < 2)
-					am = 1;
-			}
+			if (self.ammo_nails < 2)
+				am = 1;
 		} else if (self.weapon == IT_SUPER_NAILGUN) {
 			self.weapon = IT_GRENADE_LAUNCHER;
 			if (self.ammo_rockets < 1)
@@ -1865,13 +1346,8 @@ void() CycleWeaponCommand =
 				am = 1;
 		} else if (self.weapon == IT_ROCKET_LAUNCHER) {
 			self.weapon = IT_LIGHTNING;
-			if (FLAG_TW) {
-				if (self.sniper_ammo < 1)
-					am = 1;
- 			} else {
-				if (self.ammo_cells < 1)
-					am = 1;
-			}
+			if (self.ammo_cells < 1)
+				am = 1;
 		}
 	
 		if ( (it & self.weapon) && am == 0)
@@ -1892,9 +1368,6 @@ Go to the prev weapon with ammo
 */
 void() CycleWeaponReverseCommand =
 {
-	// Lock TW Sniper
-	if ((time < self.attack_finished) && FLAG_TW && (self.weapon == IT_LIGHTNING))
-		return;
 
 	local	float	it, am;
 	
@@ -1929,13 +1402,8 @@ void() CycleWeaponReverseCommand =
 		else if (self.weapon == IT_SUPER_NAILGUN)
 		{
 			self.weapon = IT_NAILGUN;
-			if (FLAG_TW) {
-				if (self.ammo_cells < 1)
-					am = 1;
- 			} else {
-				if (self.ammo_nails < 1)
-					am = 1;
-			}
+			if (self.ammo_nails < 1)
+				am = 1;
 		}
 		else if (self.weapon == IT_NAILGUN)
 		{
@@ -1944,20 +1412,7 @@ void() CycleWeaponReverseCommand =
 				am = 1;
 		}		
 		else if (self.weapon == IT_SUPER_SHOTGUN) {
-// tw50 -->
-	    	if (FLAG_AIRFIST && (AIRG_SHOWINWEAPONLIST == TRUE)) {
-				self.weapon = IT_AIRGUN;
-			} else {
-				self.weapon = IT_SHOTGUN;
-				if (self.ammo_shells < 1)
-					am = 1;
-			}
-
-		} else if (FLAG_AIRFIST && (self.weapon == IT_AIRGUN)) {
 			self.weapon = IT_SHOTGUN;
-			if (self.ammo_shells < 1)
-				am = 1;
-// tw50 <--
 		}
 		else if (self.weapon == IT_SHOTGUN) {
 			self.weapon = IT_AXE;
@@ -1965,13 +1420,8 @@ void() CycleWeaponReverseCommand =
 			self.weapon = IT_GRAPPLE;
 		} else if (self.weapon == IT_GRAPPLE) {
 			self.weapon = IT_LIGHTNING;
-			if (FLAG_TW) {
-				if (self.sniper_ammo < 1)
-					am = 1;
- 			} else {
-				if (self.ammo_cells < 1)
-					am = 1;
-			}
+			if (self.ammo_cells < 1)
+				am = 1;
 		}
 	
 		if ( (it & self.weapon) && am == 0)
@@ -2022,9 +1472,6 @@ PreviousWeaponCommand
 */
 void() PreviousWeaponCommand =
 {
-	// Lock TW Sniper
-	if ((time < self.attack_finished) && FLAG_TW && (self.weapon == IT_LIGHTNING))
-		return;
 
 	local	float	fl, am;
 	
@@ -2048,13 +1495,9 @@ void() PreviousWeaponCommand =
 	}
 
 	else if (self.weapon == IT_NAILGUN) {
-		if (FLAG_TW) {
-			if (self.ammo_cells < 1)
-				am = 1; 
-		} else {
-			if (self.ammo_nails < 1)
-				am = 1;
-		}
+		if (self.ammo_nails < 1)
+			am = 1;
+		
 	} else if (self.weapon == IT_SUPER_NAILGUN) {
 		if (self.ammo_nails < 1)
 			am = 1;
@@ -2064,13 +1507,8 @@ void() PreviousWeaponCommand =
 			am = 1;
 	}
 	else if (self.weapon == IT_LIGHTNING) {
-		if (FLAG_TW) {
-			if (self.sniper_ammo < 1)
-				am = 1; 
-		} else {
-			if (self.ammo_cells < 1)
-				am = 1;
-		}
+		if (self.ammo_cells < 1)
+			am = 1;
 	}
 	// ignore AXE -- no ammo needed
 
@@ -2091,36 +1529,6 @@ void() W_WeaponFrame =
 {
 	if (time < self.attack_finished)
 		return;
-
-// tw50 -->
-	if (FLAG_TW) {
-		if ((self.weapon == IT_LIGHTNING) && (time > self.attack_finished) && (time < self.attack_finished +1))
-			//*check* snipeprint
-			PrintStatusbar(self, "Sniper Rifle is Ready!",1);
-		// ThunderWalker: Handles whether you should be visible or not with cloaking rune
-		if (self.runes & ITEM_RUNE8_FLAG) {
-			CheckCloak();
-		}
-
-		// ThunderWalker: Teleport mojo
-		if (self.twflags & TW_TRANSTIME)
-		{
-			if (self.player_flag & PF_GOTFLAG)
-			{
-				PrintStatusbar(self, "Nice Try, Bucko",1);
-				self.twflags = self.twflags - (self.twflags & (TW_TRANSTIME));
-			} else {
-				whereigo = SelectTeleSpot();
-				spawn_tfog(self.origin);
-				spawn_tfog(whereigo.origin);
-				spawn_tdeath(whereigo.origin, self);
-				self.origin = whereigo.origin;
-				self.twflags = self.twflags - (self.twflags & (TW_TRANSTIME));
-				self.twflags = self.twflags | (TW_ACME);
-			}
-		}
-	}
-// tw50 <--
 
 
 // check for attack
@@ -2158,9 +1566,6 @@ Plays sound if needed
 void() SuperDamageSound =
 {
 
-	if (FLAG_TW && (self.weapon == IT_NAILGUN))
-		return;
-
 
 // RUNE play super damage sound if player has Black Magic, too
 	if ((self.runes & ITEM_RUNE2_FLAG) && 
@@ -2193,7 +1598,7 @@ float haste_sound;
 // Plays regeneration sound if needed
 //
 void() RegenerationSound = {
-	if (self.runes & ITEM_RUNE4_FLAG || (FLAG_TW && (self.runes & ITEM_RUNE5_FLAG))) {
+	if (self.runes & ITEM_RUNE4_FLAG) {
 		if (regeneration_sound < time) {
 			regeneration_sound = time + 1;
 			sound(self, CHAN_BODY, "rune/rune4.wav", 1, ATTN_NORM);

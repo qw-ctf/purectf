@@ -12,13 +12,16 @@
 //     VARIABLES
 // =================
 	// Scores and disconnects -->
+float RedCaps;
+float RedWins;
 float RedDisconnects;
 float RedDisconnectscore;
-
+float BlueCaps;
+float BlueWins;
 float BlueDisconnects;
 float BlueDisconnectscore;
 // =================
-//      FIELDS
+//      FIELDS  
 // =================
 
 // =================
@@ -68,12 +71,6 @@ void(entity pl) ShowScores = {
 		sPrintRight(pl, BlueCaps, 5, " ");
 		sprint(pl, PRINT_HIGH, "\n");
 	}
-	if (FLAG_ARENA && FLAG_COMPETITION) {
-		sprint(pl, PRINT_HIGH, "Wins       ");
-		sPrintRight(pl, RedWins, 4, " ");
-		sPrintRight(pl, BlueWins, 5, " ");
-		sprint(pl, PRINT_HIGH, "\n");
-	}
 
 	CalcTeamPing();
 
@@ -92,7 +89,7 @@ void(entity pl) ShowScores = {
 void(entity pl) ScoreAddCapture = {
 	if ((pl.steam == TEAM_COLOR1)) {
 		RedCaps = RedCaps + 1;
-	} else {
+	} else { 
 		BlueCaps = BlueCaps + 1;
 	}
 };
@@ -101,7 +98,7 @@ void(entity pl) ScoreAddDisconnect = {
 	if (FLAG_DEBUG)
 		bprint(PRINT_HIGH, "Saving score.\n");
 	if (self.frags <= 0)
-		return;
+		return; 
 	if ((self.steam == TEAM_COLOR1)) {
 		RedDisconnects = RedDisconnects + 1;
 		RedDisconnectscore = RedDisconnectscore + self.frags;
@@ -131,7 +128,7 @@ void() ScoresRecoverFrags = {
 			bprint(PRINT_HIGH, " frags from the last disconnect.\n");
 			self.frags = self.frags + BlueDisconnectscore;
 			BlueDisconnectscore = 0;
-		}
+		} 
 	}
 };
 
@@ -140,17 +137,17 @@ void() ScoresRecoverFrags = {
 void(entity pl) GetRank = {
 	local float RedScore, BlueScore;
 	local float x, Rank;
-
+	
 	RedScore = RedDisconnectscore + teamscr1;
 	BlueScore = BlueDisconnectscore + teamscr2 ;
 
 	x = time - pl.join_time;
 	if (!x) x = 1;
-	if ((pl.steam == TEAM_COLOR1))
+	if ((pl.steam == TEAM_COLOR1)) 
 		Rank = ((pl.frags / x) / RedScore) * TEAM1 * 100;
-	else if ((pl.steam == TEAM_COLOR2))
+	else if ((pl.steam == TEAM_COLOR2)) 
 		Rank = ((pl.frags / x) / BlueScore) * TEAM2 * 100;
-	else
+	else 
 		Rank = 100;
 	if (Rank < 1) Rank = 1;
 	pl.rank = rint(Rank);
@@ -160,8 +157,8 @@ void() UpdateRank = {
 
 	local entity e,f ;
 	local float NEXTTEAM;
-	local float x;
-
+	local float x;	
+	
 	TraversePlayers(GetRank);
 	if (random() < 0.5)
 		NEXTTEAM = TEAM_COLOR1;
@@ -174,9 +171,9 @@ void() UpdateRank = {
 		e = PLAYER_CHAIN;
 		while(e) {
 			if (e.rank > f.rank)
-				f = e;
+				f = e; 
 			e = e.clientchain;
-		}
+		}	
 		if (f) {
 			f.lastteam = NEXTTEAM;
 			if (FLAG_DEBUG) {	// *debug*
@@ -184,7 +181,7 @@ void() UpdateRank = {
 				sprint(f, PRINT_HIGH, "Next map, you'll belong to team ");
 				tp =ftos(NEXTTEAM);
 				sprint(f, PRINT_HIGH, tp);
-				sprint(f, PRINT_HIGH, "\n");
+				sprint(f, PRINT_HIGH, "\n"); 
 			}
 			NEXTTEAM = TEAM_COLOR1 + TEAM_COLOR2 - NEXTTEAM;
 			f.rank = 0;
@@ -198,7 +195,7 @@ void() UpdateRank = {
 void() StopMVD = {
 	localcmd("stop\n");
 };
-// PCP // 
+// PCP //
 
 void() TeamEndScore = {
 	local string s;
@@ -211,16 +208,12 @@ void() TeamEndScore = {
 	teamscr1 = teamscr1 + RedDisconnectscore;
 	teamscr2 = teamscr2 + BlueDisconnectscore;
 
-	e = spawn();
-	e.think = StopDemosThink;
-	e.nextthink = time + 2;
-
 	e = CLIENT_CHAIN;
 	while (e) {
 		sprint(e, PRINT_HIGH, "\n");
-		ShowScores(e);
+		ShowScores(e);	
 		sprint(e, PRINT_HIGH, "\n");
-		if ((ProxyType(e) == PROXY_QIZMO) && FLAG_COMPETITION)
+		if ((ProxyType(e) == PROXY_QIZMO) && FLAG_COMPETITION) 
 			stuffcmd(e, "say proxy: time\n");
 		e = e.clientchain;
 	}
@@ -262,5 +255,5 @@ void() TeamEndScore = {
 	e = spawn();
 	e.think = StopMVD;
 	e.nextthink = time + 5;
-// PCP // 
+// PCP //
 };

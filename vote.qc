@@ -29,15 +29,14 @@ void() ClearVote = {
 		e.voted = e.voted - (e.voted & (VOTE_YES | VOTE_NO));
 		e = e.clientchain;
 	}
-	VOTE_MAPT = "    ";
 	VOTED_YES = 0;
 	VOTED_NO = 0;
 	VOTED_NOTHING = 0;
 	VOTE_FUNCTION = SUB_Null;
-	VOTE_TEXT = string_null;
+	VOTE_TEXT = string_null;	
 	VOTE_STARTER = world;
 	VOTE_TIMEOUT = 0;
-};
+};	
 
 
 void() CheckVotes = {
@@ -55,12 +54,12 @@ void() CheckVotes = {
 // PCP dyna - UserID
 //		if( isRegular(e) ) {
 // PCP //
-		if (e.voted & VOTE_YES)
-			VOTED_YES = VOTED_YES + 1;
-		else if (e.voted & VOTE_NO)
-			VOTED_NO = VOTED_NO + 1;
-		else
-			VOTED_NOTHING = VOTED_NOTHING + 1;
+			if (e.voted & VOTE_YES)
+				VOTED_YES = VOTED_YES + 1;		
+			else if (e.voted & VOTE_NO)
+				VOTED_NO = VOTED_NO + 1;	
+			else 
+				VOTED_NOTHING = VOTED_NOTHING + 1;		
 // PCP dyna - UserID
 //		}
 // PCP //
@@ -130,23 +129,22 @@ void(string votetext, void() votefunction) StartVote = {
 		sprint(self, PRINT_HIGH,  "Vote already in progress.\n");
 		return;
 	}
-//	if (self.voted & VOTE_START) {
-//		sprint(self, PRINT_HIGH,  "You only get one vote per map\n");
-//		return;
-//	}
-// stupid idea of 1 vote per map, maybe 3 votes per map?.
+	if (self.voted & VOTE_START) {
+		sprint(self, PRINT_HIGH,  "You only get one vote per map\n");
+		return;
+	}		
 
 	VOTE_TEXT = votetext;
 	VOTE_STARTER = self;
-	VOTE_TIMEOUT = time + 30; //was 45
+	VOTE_TIMEOUT = time + 45;
 	VOTE_FUNCTION = votefunction;
 
 // PCP dyna - UserID
 	bprint(PRINT_HIGH, VOTE_STARTER.netname);
 	bprint(PRINT_HIGH, " wants to ");
 	bprint(PRINT_HIGH, VOTE_TEXT);
-	if (VOTE_MAPT != "    ") {bprint (PRINT_HIGH,VOTE_MAPT);bprint (PRINT_HIGH,".");}
 	bprint(PRINT_HIGH, " Type ÙÅÓ or ÎÏ to Vote. ");
+	self.voted = VOTE_START | VOTE_YES;
 //	e = PLAYER_CHAIN;
 //	while (e) {
 //		if( isRegular(e) ) {
@@ -159,9 +157,8 @@ void(string votetext, void() votefunction) StartVote = {
 //		e = e.clientchain;
 //	}
 // PCP //
-	sprint(self, PRINT_HIGH, "Vote started. Stop it with 'óôïðöïôå'\n");
-	self.voted = VOTE_START | VOTE_YES;
 	CheckVotes();
+	sprint(self, PRINT_HIGH, "Vote started. Stop it with 'óôïðöïôå'\n");
 };
 
 void() StopVote = {
@@ -205,8 +202,8 @@ void() StartVoteExit = {
 		sprint(self, PRINT_HIGH, "Voteexit disabled.\n");
 	} else if (VOTEEXIT_FLAG) {
 		sprint(self, PRINT_HIGH, "Only one voteexit per map.\n");
-	} else if (time < 10) {
-		sprint(self, PRINT_HIGH, "You can't voteexit the first 10 seconds.\n");
+	} else if (time < 20) {
+		sprint(self, PRINT_HIGH, "You can't voteexit the first 20 seconds.\n");
 	} else {
 		VOTEEXIT_FLAG = 1;
 		StartVote("exit this map.", VotedExitmap);
@@ -232,37 +229,27 @@ void() StartAdminVote = {
 	}
 };
 
-void() StartVoteMap = {
-	StartVote("change map to ", MapVoted);
-};
+
 
 // PCP dyna - VoteCenterprint
 /*
 float () VoteCenterprint = {
-	local string s1,s2,s3,s4,s5,ss;
+	local string s1,s2,s3,s4,ss;
 	if (!VOTE_TIMEOUT)
 		return 0;
 	if (self.voted & (VOTE_YES | VOTE_NO))
 		return 0;
-//	if (VOTE_MAPT != "    ") return 0;//dont show if voting for map
-        if (FLAG_COMPETITION && !FLAG_STANDBY && !GameOver()) return 0;//dont show if in comp mode and game started
 	s1 = VOTE_STARTER.netname;
 	s2 = " wants to\n";
-	s5 = string_null;
-	if (VOTE_MAPT != "    ") {
-	  s3 = VOTE_MAPT;
-	  s5 = VOTE_TEXT;
-        }else { 
-          s3 = VOTE_TEXT;
-        }
-        
+	s3 = VOTE_TEXT;
 	s4 = "\n\nType ÙÅÓ or ÎÏ in the\nconsole to vote.\n";
 	ss = "*****************************\n*****************************\n*****************************\n";
-	centerprint7(self, ss, s1,s2,s5,s3,s4, ss);
+	centerprint6(self, ss, s1,s2,s3,s4, ss);
 	return 1;
 };
 */
 // PCP //
+
 
 void()	CheckVoteTimeout = {
 	if (VOTE_TIMEOUT > time)

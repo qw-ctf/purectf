@@ -4,25 +4,11 @@
 //  Report bugs and ideas to: methabol@bt.nu
 // *****************************************************************
 
-float(string tp) IsArenamap = {
-	return ((tp == "arenax") ||	(tp == "terrain2") || (tp == "xarena3") || (tp == "arenazap") ||
-		(tp == "arenarg2") || (tp == "arenrg3a") || (tp == "mayan1") || (tp == "2pyramid") ||
-		(tp == "2towers") || (tp == "arenarg4") || (tp == "arenarg5") || (tp == "arenarg6") ||
-		(tp == "arma4") || (tp == "crandome") || (tp == "egyptra") ||
-		(tp == "hill20") || (tp == "iarena2") || (tp == "pitarena") || (tp == "ra_funkf") ||
-		(tp == "rgarden") || (tp == "barena1") || (tp == "bbarena2") || (tp == "dm2arena") ||
-		(tp == "marena2") || (tp == "marena3") || (tp == "marena4") || (tp == "rarena3") ||
-		(tp == "soyarena") || (tp == "uarena1") || (tp == "23ar-a") || (tp == "arendm1a") ||
-		(tp == "basarena") || (tp == "bunmoo3") || (tp == "bunski") || (tp == "chamber1") ||
-		(tp == "dom2_1ra") || (tp == "football") || (tp == "gear8") || (tp == "gnurena") ||
-		(tp == "id3") || (tp == "lowgrav") || (tp == "nilsrar3") || (tp == "pen2") ||
-		(tp == "ptucket") || (tp == "unholy") || (tp == "yard1"));
-};
 
 float (string tp) IsCTFMap = {
-	return ((tp == "ctf1") || (tp == "ctf2") || (tp == "ctf3") || (tp == "ctf4") ||
-		(tp == "ctf5") || (tp == "ctf6") || (tp == "ctf7") || (tp == "ctf8") ||
-		(tp == "ctf2m1") || (tp == "ctf2m2") || (tp == "ctf2m3") || (tp == "ctf2m4") ||
+	return ((tp == "ctf1") || (tp == "ctf2") || (tp == "ctf3") || (tp == "ctf4") || 
+		(tp == "ctf5") || (tp == "ctf6") || (tp == "ctf7") || (tp == "ctf8") || 
+		(tp == "ctf2m1") || (tp == "ctf2m2") || (tp == "ctf2m3") || (tp == "ctf2m4") || 
 		(tp == "ctf2m5") || (tp == "ctf2m6") || (tp == "ctf2m7") || (tp == "ctf2m8"));
 	// *check* more maps
 };
@@ -158,10 +144,8 @@ void() Episode1Spawn =
 		SpawnTeamStart('706 1681 20' , TEAM_COLOR1 , 0);
 		SpawnTeamStart('704 1528 20' , TEAM_COLOR1 , 90);
 		SpawnTeamStart('500 1811 16' , TEAM_COLOR1 , 0);
-		SpawnTeamStart('713 1631 16' , TEAM_COLOR1 , 90);
 		SpawnTeamStart('533 1421 16' , TEAM_COLOR1 , 0);
 		SpawnTeamStart('297 1834 16' , TEAM_COLOR1 , 0);
-		SpawnTeamStart('780 1681 20' , TEAM_COLOR1 , -137);
 		SpawnTeamStart('121 1620 16' , TEAM_COLOR1 , 180);
 		SpawnFlag('704 1616 20' , TEAM_COLOR1 , 0);
 		spawn_health('-560 1732 -240' , 2);
@@ -234,7 +218,6 @@ void() Episode1Spawn =
 		SpawnTeamStart('492 -220 280' , TEAM_COLOR1 , 270);
 		SpawnFlag('592 -150 300' , TEAM_COLOR1 , 180);
 	}
-
 };
 
 void() Episode1Change =
@@ -297,7 +280,6 @@ void() Episode1Change =
 	} else if (mapname == "e1m8") {
 		return;
 	}
-
 };
 
 
@@ -321,19 +303,19 @@ void() Episode2Spawn =
 		SpawnFlag('1800 416 244' , TEAM_COLOR1 , 0);
 
 	} else if (mapname == "e2m2") {
-		SpawnTeamStart('1902 -76 300', TEAM_COLOR2 , 180);
-		SpawnTeamStart('1902 -176 300', TEAM_COLOR2 , 180);
-		SpawnTeamStart('1902 -276 300', TEAM_COLOR2 , 180);
-		SpawnTeamStart('1982 -76 300', TEAM_COLOR2 , 180);
-		SpawnTeamStart('1982 -176 300', TEAM_COLOR2 , 180);
-		SpawnTeamStart('1982 -276 300', TEAM_COLOR2 , 180);
+		SpawnTeamStart('1902 -76 200', TEAM_COLOR2 , 180);
+		SpawnTeamStart('1902 -176 200', TEAM_COLOR2 , 180);
+		SpawnTeamStart('1902 -276 200', TEAM_COLOR2 , 180);
+		SpawnTeamStart('1982 -76 200', TEAM_COLOR2 , 180);
+		SpawnTeamStart('1982 -176 200', TEAM_COLOR2 , 180);
+		SpawnTeamStart('1982 -276 200', TEAM_COLOR2 , 180);
 		SpawnFlag('2062 -176 240' , TEAM_COLOR2 , 0);
-		SpawnTeamStart('-186 -1724 420' , TEAM_COLOR1 , 90);
-		SpawnTeamStart('-266 -1724 420' , TEAM_COLOR1 , 90);
-		SpawnTeamStart('-346 -1724 420' , TEAM_COLOR1 , 90);
-		SpawnTeamStart('-176 -1872 420' , TEAM_COLOR1 , 90);
-		SpawnTeamStart('-256 -1872 420' , TEAM_COLOR1 , 90);
-		SpawnTeamStart('-336 -1872 420' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('-186 -1724 248' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('-266 -1724 248' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('-346 -1724 248' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('-176 -1872 264' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('-256 -1872 264' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('-336 -1872 264' , TEAM_COLOR1 , 90);
 		SpawnFlag('-256 -1952 300' , TEAM_COLOR1 , 0);
 		spawn_func_wall("*37");
 		spawn_func_wall("*36");
@@ -449,7 +431,7 @@ void() Episode2Spawn =
 		self.target = "t60";
 		self.classname = "trigger_multiple";
 		self.sounds = 3;
-		self.model = "*68";
+		self.model = "*68";	
 		trigger_multiple();
 
 
@@ -476,7 +458,6 @@ void() Episode2Spawn =
 		spawn_rocketlauncher('2128 1792 -352');
 		spawn_lightning('1135 -800 -80');
 	}
-
 };
 
 void() Episode2Change =
@@ -599,7 +580,6 @@ void() Episode2Change =
 		e = FindByOrigin("trap_spikeshooter" , '192 1752 -208');
 		remove(e);
 	}
-	
 };
 
 
@@ -767,19 +747,19 @@ void() Episode3Spawn =
 		spawn_supernailgun('288 -736 8');
 		spawn_supernailgun('768 -120 8');
 		spawn_rocketlauncher('-936 -824 152');
-		SpawnTeamStart('288 -2655 152', TEAM_COLOR2 , 270);
-		SpawnTeamStart('286 -3202 144', TEAM_COLOR2 , 270);
-		SpawnTeamStart('288 -3392 152', TEAM_COLOR2 , 270);
-		SpawnTeamStart('-85 -3042 24', TEAM_COLOR2 , 0);
-		SpawnTeamStart('289 -3047 24', TEAM_COLOR2 , 0);
 		SpawnTeamStart('877 -3050 24', TEAM_COLOR2 , 90);
+		SpawnTeamStart('289 -3047 24', TEAM_COLOR2 , 0);
+		SpawnTeamStart('-85 -3042 24', TEAM_COLOR2 , 0);
+		SpawnTeamStart('288 -3392 152', TEAM_COLOR2 , 270);
+		SpawnTeamStart('286 -3202 144', TEAM_COLOR2 , 270);
+		SpawnTeamStart('288 -2655 152', TEAM_COLOR2 , 270);
 		SpawnFlag('284 -3432 152' , TEAM_COLOR2 , 0);
-		SpawnTeamStart('-1088 -288 32' , TEAM_COLOR1 , 270);
-		SpawnTeamStart('-1093 -588 8' , TEAM_COLOR1 , 270);
-		SpawnTeamStart('-929 -713 24' , TEAM_COLOR1 , 90);
-		SpawnTeamStart('-1249 -713 24' , TEAM_COLOR1 , 90);
-		SpawnTeamStart('-652 -652 24 ' , TEAM_COLOR1 , 180);
 		SpawnTeamStart('-1788 -350 88' , TEAM_COLOR1 , 0);
+		SpawnTeamStart('-652 -652 24 ' , TEAM_COLOR1 , 180);
+		SpawnTeamStart('-1249 -713 24' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('-929 -713 24' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('-1093 -588 8' , TEAM_COLOR1 , 270);
+		SpawnTeamStart('-1088 -288 32' , TEAM_COLOR1 , 270);
 		SpawnFlag('-1086 -288 28' , TEAM_COLOR1 , 0);
 	} else if (mapname == "e3m7") {
 		spawn_supershotgun('-850 -496 -344');
@@ -825,7 +805,7 @@ void() Episode3Change =
 		e = FindByModel("door" , "*50");
 		e.speed  = 150;
 		e.wait  = 4;
-
+	
 	} else if (mapname == "e3m2") {
 		e = FindByTarget("trigger_once" , "t38");
 		remove(e);
@@ -874,7 +854,7 @@ void() Episode3Change =
 		remove(e);
 		e = FindByModel("train" , "*21");
 		remove(e);
-
+	
 	} else if (mapname == "e3m4") {
 		e = FindByOrigin("item_artifact_invulnerability" , '-256 -1984 216');
 		remove(e);
@@ -899,8 +879,6 @@ void() Episode3Change =
 		remove(e);
 
 	} else if (mapname == "e3m6") {
-//		e = FindByOrigin("weapon_nailgun" , '288 -736 8');
-//		remove(e);
 		e = FindByModel("door" , "*61");
 		remove(e);
 		e = FindByModel("door" , "*60");
@@ -921,8 +899,8 @@ void() Episode3Change =
 		e.spawnflags  = 1;
 		setmodel (e, "maps/b_rock1.bsp");
 		e.aflag = 10;
-//		e = FindByOrigin("weapon_supershotgun", '768 -120 8');
-//		remove(e);
+		e = FindByOrigin("weapon_supershotgun", '768 -120 8');
+		remove(e);
 	} else if (mapname == "e3m7") {
 		e = FindByOrigin("item_armorInv" , '-960 848 -64');
 		remove(e);
@@ -1041,16 +1019,12 @@ void() Episode4Spawn = {
 		SpawnTeamStart('2630 430 -104', TEAM_COLOR2 , 180);
 		SpawnTeamStart('2447 439 -104', TEAM_COLOR2 , 180);
 		SpawnFlag('2200 544 -60' , TEAM_COLOR2 , 0);
-		SpawnTeamStart('1232 -1347 152' , TEAM_COLOR1 , 0);
-		SpawnTeamStart('1232 -1447 152' , TEAM_COLOR1 , 0);
-		SpawnTeamStart('1232 -1547 152' , TEAM_COLOR1 , 0);
+		SpawnTeamStart('1232 -1347 152' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('1232 -1447 152' , TEAM_COLOR1 , 90);
+		SpawnTeamStart('1232 -1547 152' , TEAM_COLOR1 , 90);
 		SpawnTeamStart('1132 -1347 152' , TEAM_COLOR1 , 90);
 		SpawnTeamStart('1132 -1447 152' , TEAM_COLOR1 , 90);
 		SpawnTeamStart('1132 -1547 152' , TEAM_COLOR1 , 90);
-		SpawnTeamStart('1132 -1200 152' , TEAM_COLOR1 , -152);
-		SpawnTeamStart('1232 -1200 152' , TEAM_COLOR1 , -152);
-		SpawnTeamStart('1132 -1062 152' , TEAM_COLOR1 , -45);
-		SpawnTeamStart('1232 -1062 152' , TEAM_COLOR1 , -45);
 		SpawnFlag('1182 -1647 172' , TEAM_COLOR1 , 0);
 
 	} else if (mapname == "e4m4") {
@@ -1187,7 +1161,7 @@ void() Episode4Spawn = {
 		spawn_armor('-1255 -190 -136' , 2);
 
 
-	} else if (mapname == "e4m8") {	
+	} else if (mapname == "e4m8") {
 		spawn_armor('0 146 -104' , 1);
 		spawn_health('1666 -1900 24' , 0);
 		spawn_armor('2961 945 192' , 1);
@@ -1254,28 +1228,17 @@ void() Episode4Change = {
 		e = FindByOrigin("item_armorInv" , '-1056 -8 -136');
 		remove(e);
 	} else if (mapname == "e4m8") {
-		e = FindByOrigin("weapon_rocketlauncher" , '2048 -1008 256');
+		e = FindByOrigin("item_artifact_invulnerability" , '1928 1184 28');
 		remove(e);
-		e = FindByOrigin("weapon_supernailgun" , '2064 360 128');
-		remove(e);
-//		e = FindByOrigin("item_artifact_invulnerability" , '1928 1184 28');  //bugged, remove this and everything goes crazy on e4m8
-//		remove(e);
 		e = FindByOrigin("item_artifact_super_damage" , '608 352 -360');
 		remove(e);
 		e = FindByOrigin("item_armor1" , '1168 248 -584');
-		remove(e);
-		e = FindByOrigin("weapon_lightning" , '1056 -1440 0');
-		remove(e);
-//		e = FindByOrigin("weapon_rocketlauncher" , '2048 -1008 256');
-//		remove(e);
-		e = FindByOrigin("weapon_rocketlauncher" , '608 416 -384');
 		remove(e);
 		e = FindByTargetname("info_teleport_destination" , "t231");
 		setorigin(e , '1952 -875 115');
 		e = FindByTargetname("info_teleport_destination" , "t243");
 		setorigin(e , '1760 -1376 287');
 	}
-
 };
 
 
@@ -1471,7 +1434,7 @@ void() DMEpisodeChange = {
 		e = FindByTargetname("info_teleport_destination" , "t1");
 		setorigin(e , '178 1174 -93');
 		e.mangle_y = 0;
-
+	
 	} else if (mapname == "dm2") {
 		e = FindByTarget("trigger_teleport" , "t14");
 		remove(e);
@@ -1577,8 +1540,8 @@ void() AnkaMaps = {
 		RemoveByOrigin("weapon_grenadelauncher", '-360 1064 -8');
 		SpawnItem("weapon_lightning", '-360 1064 -8');
 	} else if (mapname == "e2m3") {
-		RemoveByOrigin("weapon_rocketlauncher", '56 1144 128');
-		RemoveByOrigin("weapon_lightning", '1216 1784 -264');
+		RemoveByOrigin("weapon_rocketlauncher", '56 1144 128');	
+		RemoveByOrigin("weapon_lightning", '1216 1784 -264');	
 		SpawnItem("weapon_rocketlauncher", '1216 1784 -264');
 		SpawnItem("weapon_lightning", '56 1144 128');
 		SpawnItem("weapon_rocketlauncher", '1170 -450 280');
@@ -1656,17 +1619,9 @@ void() CorrectMaps = {
 		if (FLAG_DEBUG) bprint(PRINT_HIGH, "correcting twctf2m7\n");
 		SpawnBlock('-630 -1600 315', '100 200 100');
 		SpawnBlock('-630 1400 315', '100 200 100');
-	} else if (mapname == "ukctfl1c") {
-  		RemoveByOrigin("info_player_team2",'1168 -768 928');
-  		RemoveByOrigin("info_player_team2",'832 -768 928');
-  		RemoveByOrigin("info_player_team2",'508 -1184 960');
-		SpawnTeamStart('1168 -768 920', TEAM_COLOR1, 180);
-		SpawnTeamStart('832 -768 920', TEAM_COLOR1, 0);
-		SpawnTeamStart('508 -1184 920', TEAM_COLOR1, 180);
 	}
 };
 
-void() ArenaEpisodeSpawn;
 
 
 void() SpawnMaps = {
@@ -1675,7 +1630,7 @@ void() SpawnMaps = {
 	NOSPAWN = 1;		// debug
 
 	NOSPAWN = 0;
-
+	
 	if (!find(world, classname, "item_flag_team1") && !find(world, classname, "item_flag_team2")) {
 		e = find(world, classname, "item_flag_team1_temp");
 		if (e) {e.classname = "item_flag_team1"; if (FLAG_DEBUG) bprint(PRINT_HIGH, "red flag found\n");}
@@ -1690,7 +1645,7 @@ void() SpawnMaps = {
 		Custom2Change();
 		if (FLAG_DEBUG)		// debug
 			bprint(PRINT_HIGH, "Maps converted ok.\n");
-
+		
 	} else {
 		if (FLAG_DEBUG)		// debug
 			bprint(PRINT_HIGH, "Already converted maps detected.\n");
@@ -1705,16 +1660,10 @@ void() SpawnMaps = {
 };
 
 
-void() ArenaMaps;
-
 void() SpawnCTFMaps =
-{
+{	
 	local entity e;
 
-	if (FLAG_ARENA) {
-		ArenaMaps();
-		ArenaEpisodeSpawn();
-	}
 	if (FLAG_CTF) {
 		EntityDebug = 0;
 		if (!(stof(infokey(world, "nodynamicmaps")))) {
@@ -1730,13 +1679,13 @@ void() SpawnCTFMaps =
 
 			e = spawn();
 			e.think = SpawnMaps;
-			e.nextthink = time  + 0.5;
+			e.nextthink = time  + 0.5; 		
 
 			// Spawn CTF Conversion
 		}
 
-
-
+	
+	
 		ExtraTeamSpots();		// *check* obsolete?
 	}
 };

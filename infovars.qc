@@ -10,7 +10,7 @@ string COUNTDOWN_TEXT;
 float CountDown;
 
 entity team1_lastspawn;		// from teamplay.qc
-entity team2_lastspawn;
+entity team2_lastspawn;	
 
 /* obsolete
 float KILLME_NOT = 0;
@@ -67,7 +67,7 @@ float(float tp) GetCTFTP = {
 	if (x == 3) return 3;
 	else if (x == 4) return 4;
 	else if (x == 8) return 2;
-	else return 0;
+	else return 0;	
 };
 
 //
@@ -85,23 +85,16 @@ void() UpdateEveryMinute = {
 	HASTESPEED = localinfo("hastespeed", 1.25);
 	STRENGTH = localinfo("strength", 2);
 	RESISTANCE = localinfo("resistance", 0.5);
-	if (FLAG_TW) {
-		REGRATE = localinfo("regrate", 3);
-		ARMORRATE = localinfo("armorrate", 5);
-		REGMAX = localinfo("regmax", 200);
-		ARMORMAX = localinfo("armormax", 250);
-	} else {
-		REGRATE = localinfo("regrate", 5);
-		ARMORRATE = localinfo("armorrate", REGRATE);
-		REGMAX = localinfo("regmax", 150);
-		ARMORMAX = localinfo("armormax", REGMAX);
-	}
+	REGRATE = localinfo("regrate", 5);
+	ARMORRATE = localinfo("armorrate", REGRATE);
+	REGMAX = localinfo("regmax", 150);
+	ARMORMAX = localinfo("armormax", REGMAX);
 
 	// *** Speeds ***
 	SV_MAXSPEED = cvar("sv_maxspeed");
 	SV_FRICTION = cvar("sv_friction");
 	FLAG_NOAUTOFRICTION = localinfo("noautofriction", 0);
-	if (!FLAG_NOAUTOFRICTION)
+	if (!FLAG_NOAUTOFRICTION) 
 		SetAutoFriction();
 
 	// *** Pure CTF Features ***
@@ -128,14 +121,12 @@ void() UpdateEveryMinute = {
 	COUNTDOWNTIME = localinfo("countdowntime", 15);
 	x = localinfo("autostats",0);		// *check*
 	FLAG_SHOWSTATS = !(x & 1 );
-	FLAG_SHOWALLSTATS = (x & 2);
+	FLAG_SHOWALLSTATS = (x & 2);		
 	x = localinfo("teamaudio", 0);
-	FLAG_NOEXPERTSOUNDS = (x & 1);
+	FLAG_NOEXPERTSOUNDS = (x & 1);		
 	FLAG_NOREPORT = (x & 2);
 	FLAG_NOPUREAUDIO = (x & 4);
 	FLAG_NOCUSTOMAUDIO = (x & 8);
-	FLAG_LOCKAUTODEMO = localinfo("lockautodemo", 0);
-	FLAG_LOCKAUTOSHOT = localinfo("lockautoshot", 0);
 	AUDIOLIMIT = localinfo("audiolimit", 1);
 	FLAG_ALLOWMODECHANGE = localinfo("modechange", 0);
 	VAR_PINGBAN = localinfo("pingban", 0);
@@ -162,15 +153,13 @@ void() UpdateEverySecond = {
 	HOOKPULL = localinfo("hookpull", HOOKSPEED);
 	PLAYER_MAXRATE = localinfo("playermaxrate", 0);
 	PLAYER_MINRATE = localinfo("playerminrate", 2000);
-	SPEC_MAXRATE = localinfo("specmaxrate", 10000);
+	SPEC_MAXRATE = localinfo("specmaxrate", 2500);
 
 	FLAG_AUTOSPECTALK = localinfo("autospectalk", 0);
 
 	if (serverflags) serverflags = (serverflags * 2) & 15;	// hehe
 	else serverflags = 1;
 
-	ArenaThink();
-	CLANARENAWINS = FRAGLIMIT;
 	UpdateClientChain();
 };
 
@@ -189,10 +178,7 @@ void() UpdateOnce = {
 	// Server modes
 	DUMMY_MODE = MODE = localinfo("mode", 0);
 	FLAG_COMPETITION = ((MODE & MODE_COMP) || (MODE & MODE_SHOWDOWN));
-	FLAG_ARENA = (MODE & MODE_ARENA);
-	FLAG_TW = (MODE & MODE_TW);
 	FLAG_SHOWDOWN = (MODE & MODE_SHOWDOWN);
- 	FLAG_RLJUMPCTF = (MODE & MODE_RLJUMPCTF);
 
 	// Showdown implies comp mode.
 	if (FLAG_SHOWDOWN && !(MODE & MODE_COMP)) {
@@ -201,18 +187,16 @@ void() UpdateOnce = {
 
 	// Mode flags
 	PRACTICE = localinfo("practice", 0);
-	FLAG_NOITEMS = (FLAG_ARENA && !(PRACTICE & PRACTICE_ITEMS));
+	FLAG_NOITEMS = (PRACTICE & PRACTICE_ITEMS);
 	DUMMY_ANKAMAPS = FLAG_ANKAMAPS = localinfo("ankamaps", 0);
 	DUMMY_CTF = FLAG_CTF = (cvar("teamplay") & TEAM_CAPTURE_FLAG);
 	FLAG_STANDBY = FLAG_COMPETITION;
 
 	// *** Extras  ***
 	DUMMY_EXTRAS = localinfo("extras", 0);
-	FLAG_RASOUNDS = (FLAG_ARENA || (DUMMY_EXTRAS & 33));	// *check* gamedir?
 	FLAG_MULTIWEAPON = DUMMY_EXTRAS & 2;
 	FLAG_HOOK = (FLAG_CTF || (DUMMY_EXTRAS & 4));
-	FLAG_RUNES = (FLAG_CTF || FLAG_TW || (DUMMY_EXTRAS & 8));
-	FLAG_AIRFIST = (FLAG_TW || (DUMMY_EXTRAS & 16));
+	FLAG_RUNES = (FLAG_CTF || (DUMMY_EXTRAS & 8));
 	FLAG_FUNSOUNDS = (DUMMY_EXTRAS & 32);
 
 	// Fix Maprestart
@@ -239,12 +223,10 @@ void() UpdateOnce = {
 	FLAG_GL_PLAYERS = tp & 1;
 	FLAG_GL_ITEMS  = tp & 2;
 	FLAG_GL_FLAGS  = tp & 4;
-	VAR_ANTICHEATS = localinfo("anticheats", 0);
+	VAR_ANTICHEATS = localinfo("anticheats", 0);	
 	SCRAMBLE = localinfo("scramble", 0);
 	if (FLAG_COMPETITION) SCRAMBLE = 0;
 	VAR_DISABLEPOWERUPS = localinfo("disablepowerups", 0);
-
-	VOTE_MAPT = "    ";
 };
 
 
@@ -274,8 +256,6 @@ void() CheckTeamplay = {
 			TEAMPLAY = TEAMPLAY | (12); 	// Mirror Damage + FragPen
 			FLAG_TP1 = 0;
 		}
-		if (FLAG_ARENA && FLAG_COMPETITION)
-			TEAMPLAY = TEAMPLAY | (96);	// Lock Colors & Static Teams
 	}
 };
 
@@ -290,7 +270,7 @@ void() CheckMapRestart = {
 		(DUMMY_MODE != MODE)) {
 		RestartSameMap();
 	} else {
-		NEXTCHECKMAPRESTART = 0;
+		NEXTCHECKMAPRESTART = 0;	
 	}
 };
 
@@ -298,7 +278,7 @@ void() CheckMapRestart = {
 // Schedule mapcheck
 //
 void() SetMapRestart = {
-	NEXTCHECKMAPRESTART = time + 3;
+	NEXTCHECKMAPRESTART = time + 3;	
 };
 
 //
@@ -312,7 +292,7 @@ void() UpdateVariables = {
 	if (!firstflag) {
 		firstflag = 1;
 		UpdateOnce();
-	}
+	} 
 	if (lastvariablecheck > time)
 		return;
 	lastvariablecheck = time + 1;
@@ -324,13 +304,13 @@ void() UpdateVariables = {
 	// *** Still Unsorted *** *check*
 	REVERTTOSTANDARD = localinfo("revert", 0);
 
-	// check settings variables
+	// check settings variables	
 	tp = localinfo("disablefreeze", 0);		// *check*
 	PAUSES_DISABLE = tp & 1;
 	PAUSES_AUTO = !(tp & 2);
 	PAUSES_BYVOTE = !(tp & 4);
 	if (localinfo("resetdefaults", 0))
-		SaveDefaults();
+		SaveDefaults();	
 
 	MAXCLIENTS = localinfo("maxclients", 1);
 
@@ -340,14 +320,14 @@ void() UpdateVariables = {
 	// *check*
 	FLAG_ERASE = localinfo("debugerase",0);		//*check*
 
-
+	
 
 
 	// *** Powerup Respawntimes ***
 	VAR_QUADRESPAWN = localinfo("quadrespawn", 60);
 	VAR_RINGRESPAWN = localinfo("ringrespawn", 5*60);
 	VAR_PENTARESPAWN = localinfo("pentarespawn", 5*60);
-
+	
 	AMMORESPAWN = localinfo("ammorespawn", 30);
 	WEAPONSRESPAWN = localinfo("weaponsrespawn", 30);
 	ARMORRESPAWN = localinfo("armorrespawn", 20);
@@ -359,7 +339,7 @@ void() UpdateVariables = {
 		RANDOMRESPAWN = RANDOMRESPAWN * 100;
 
 	RESPAWNFACTOR = localinfo("respawnfactor", 1);
-	FULLRESPAWNFACTOR = localinfo("fullrespawnfactor", RESPAWNFACTOR);
+	FULLRESPAWNFACTOR = localinfo("fullrespawnfactor", RESPAWNFACTOR);	
 
 
 

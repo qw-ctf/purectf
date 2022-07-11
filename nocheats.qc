@@ -143,8 +143,7 @@ void() AntiTimer = {
 	while (y) {
 		x = ceil(10 + random() * 10);
 		while (x) {
-			self = spawn();
-			self.AIRG_Flags = AIRG_EXCLUDEENTITY;		
+			self = spawn();	
 			v_x = 3900 + 50 * random() - 25;
 			v_y = 3900 + 50 * random() - 25;
 			v_z = 3900 + 50 * random() - 25;

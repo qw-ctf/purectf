@@ -20,15 +20,12 @@ void() AdminHelpCommands;
 void() EndMatch;
 void() StartAdminVote;
 void() AdminVoted;
-void() MapVoted;
-//void() StartVoteMap;
 void() SuperAdmin;
 void() PrintAdmin;
 void() CheckMapChange;
 void() CheckAdmin;
 void() TeamCapturePlayerUpdate;
 void() TeamCheckLock;
-float() SwapCenterprint;
 float(entity pl) UnsetObserver;
 float(entity pl) SetObserver;
 float(entity pl) IsObserver;
@@ -64,19 +61,12 @@ void() UnFreezeItems;
 void() FreezeItems;
 void() SetTeamParameters;
 void(entity inflictor, entity attacker, float damage, entity ignore) T_RadiusDamage;
-void() rittierodt;
+//void() rittierodt;
 void (entity rhook) Reset_Grapple;
 void() RuneTouch;
 void() RuneRespawn;
 void() PainSound;
 void() PlayerDie;
-void() basedefend;		//tw50 -->
-void() hayden;
-void() whatrune;
-void() menolike;		
-entity() SelectTeleSpot;	//tw50 <--
-void() Menu;
-void() MenuImpulses;
 void() CycleSpecTracking;
 float(entity pl) IsSuperAdmin;
 entity() FindFirstAdmin;
@@ -99,10 +89,8 @@ void() PreviousWeaponCommand;
 float() W_BestWeapon;
 void() W_SetCurrentAmmo;
 float() W_BestExWeapon;
-void(vector org, vector dir) launch_flare;
 void() SuperDamageSound;
 void() HasteSound;
-void() healthtoss;
 entity(entity spot) TelefragSelectSpawnPoint;
 void() TossBackpack;
 void() TossWeapon;
@@ -114,23 +102,14 @@ float(entity targ, entity attacker) TeamFragPenalty;
 void(entity targ, entity attacker) TeamDeathPenalty;
 	// client.qc
 void(entity pl) SetFreshItems;
-	// arena.qc
-entity() ArenaSpawn;
 	// purectf.qc;
 void(string tp, float x) bprintnum;
 	// match.qc
 void(entity pl) PrintCountDown;
-	// arena.qc
-float(entity pl) IsArenaPlayer;
-void(entity pl) RemoveFromArenaPlayers;
-void(entity pl) PutinQue;
-void() ArenaThink;
-float() ArenaHasPlayers;
 	// spawn.qc
 void(string clname, vector org, float spflags, float angl) SpawnItemComplete;
 void (vector org, float fteam, float angl) SpawnFlag;
 	// purectf.qc
-float(string tp) IsArenamap;
 float (string tp) IsCTFMap;
 	// admin.qc
 void(entity pl, string reason) KickClient;
@@ -162,10 +141,8 @@ void(entity pl, string s1) TeamUpdateStatusbar;
 entity(entity pl, float getme) PrintPlayerTeamList; 
 entity(entity pl, float getme) PrintClientTeamList;
 	// showdown.qc
-void() ShowDownArena;
 void() ShowDownCompetition;
 void() ShowDownCTF;
-void() ShowDownTW;
 	// vote.qc
 void() VoteBreak;
 	// log.qc
@@ -183,13 +160,10 @@ void(entity pl) LogFlagdrop;
 void(string clname, vector org) SpawnItem;
 void(vector org, float angl) spawn_dmstart;
 void(vector org, float angl, string targ) spawn_teleport_destination;
-entity(vector wallorg, float wallangle) SpawnVerticalWall;
 	// mapqueue.qc
 void() NextLevel;
 void() GotoNextMap;
 float() GameOver;
-	// menu.qc
-void() ToggleMenu;
 	// commands.qc
 void() ClientImpulses;
 void() SpectatorImpulses;
@@ -220,8 +194,6 @@ void() SpawnBot;
 float(entity pl) HaveDemoProxy;
 float (entity pl) ProxyType;
 	// ctfshow.qc
-void() ShowDownLockAutoShot;
-void() ShowDownLockAutoDemo;
 	// purectf.qc
 void(string tp) soundall;
 	// protos from client.qc
@@ -231,17 +203,6 @@ void() player_pain;
 void() player_stand1;
 void (vector org) spawn_tfog;
 void (vector org, entity death_owner) spawn_tdeath;
-void() StartMatch;
-	// TW: base.qc
-void() SetBaseZoneRadius;
-void() DoBaseMojo;
-	// TW: boom.qc
-void() StartBoom;
-void(float actiondelay, float bit2set) TWDelayedAction;
-void() RemoveDelayedActions;
-	// TW: twrunes.qc
-void() CheckCloak;
-void(entity targ) DecloakTarget;
 	// subs.qc
 void(vector tdest, float tspeed, void() func) SUB_CalcMove;
 void(entity ent, vector tdest, float tspeed, void() func) SUB_CalcMoveEnt;
@@ -274,3 +235,12 @@ void() CheckTimers;
 string(string shortname) FindMap;
 	// nocheats.qc
 void() JamWawTimer;
+
+	// newpcp.qc
+void() DoList;
+void() DoWhonot;
+void() DoRpickup;
+float() ReturnNumPlayers;
+void() PutAllOnBlue;
+void(float p) PutPlayerOnRed;
+float(float p) PlayerIsRed;

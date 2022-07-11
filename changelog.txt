@@ -1,3 +1,9 @@
+0.05:
+Remove Pure CTF 2.12 by Dalcon due to overflow problems
+Added list and whonot commands
+Added rpickup admin command
+
+
 0.04:
 Incorperated Pure CTF 2.12 by Dalcon
 Fixed Runedrop and Quaddrop bugs
@@ -27,22 +33,3 @@ Changed admin and ingame break commands for regged only
 Changed votes for regged only
 Added admin spectator countdown break
 Removed mvd version notice in spectator mode
-
-
-Todo:
-GPL the old Pure CTF code
-Add 'list' and 'whonot' commands
-f_version and f_modified server calls
-Clear unused code
-Create a good FFA mod
-Correct physics
-Spectalk
-Better MOTD
-CAM: first person
-CAM: track runes
-CAM: autotracking
-USERID: optional
-USERID: fancy userlist
-USERID: logging
-Capture based?
-
