@@ -1,7 +1,7 @@
 // *****************************************************************
-//  Pure CTF v1.52beta15 by Dan "Methabol" Zetterström 1998-07-??
+//  Pure CTF v1.99beta4 by Dan "Methabol" Zetterström 1998-08-??
 //  Pure CTF Homepage: http://purectf.solgames.com/
-//  Report bugs and ideas to: methabol@hem.passagen.se
+//  Report bugs and ideas to: methabol@bt.nu
 // *****************************************************************
 
 // =================
@@ -41,8 +41,14 @@ void() SpawnCTFMaps;
 
 void(string newmap) ChangeMap = {
 	local float x;
+	local string mname;
 	bprint(PRINT_HIGH, "Next map is: ");
 	bprint(PRINT_HIGH, newmap);
+	bprint(PRINT_HIGH, " - \"");
+	mname = FindMap(newmap);
+	bprint(PRINT_HIGH, mname);		
+	bprint(PRINT_HIGH, "\" ");
+
 	x = cvar("samelevel");
 	if (FLAG_VOTEEXIT && (x != 1) && !FLAG_COMPETITION) {
 		bprint(PRINT_HIGH, " Type ÖÏÔÅÅØÉÔ to skip this map.");
@@ -60,7 +66,18 @@ void() RestartSameMap = {
 
 
 void() tagline = {
-	sprint(self, PRINT_HIGH, " ÐÕÒÅ ÃÔÆ ö±®µ²âåôá±µ âù Íåôèáâïì\n http://purectf.solgames.com/\n");
+	sprint(self, PRINT_HIGH, " ÐÕÒÅ ÃÔÆ ö±®¹¹âåôá´ âù Íåôèáâïì\n http://purectf.solgames.com/\n");
+};
+
+
+void(entity pl) PrintAbout = {
+	sprint(pl, PRINT_HIGH, "\n-------------------------------------\n");
+	sprint(pl, PRINT_HIGH, "PURE CTF v1.99beta4 made 1998-08-??\n");
+	sprint(pl, PRINT_HIGH, "by Methabol aka Dan Zetterstrom\n");
+	sprint(pl, PRINT_HIGH, "Mail: methabol@bt.nu - ICQ: 355461\n");
+	sprint(pl, PRINT_HIGH, "WWW: http://purectf.solgames.com/\n");
+	sprint(pl, PRINT_HIGH, "IRC: #ctf.se at irc.quakenet.eu.org\n");
+	sprint(pl, PRINT_HIGH, "-------------------------------------\n");
 };
 
 void(entity pl, void() func) WithSelf = {
@@ -117,73 +134,6 @@ float (entity pl) IsClient = {
 };
 
 
-/*
-==========
-sPrintRight
-
-Prints numbers formatted with a character to a player.
-==========
-*/
-void(entity pl, float x, float digits, string ch) sPrintRight = {
-	local string tmp;
-	if ((digits > 6) && (x < 1000000)) sprint(pl, PRINT_HIGH, ch);
-	if ((digits > 5) && (x < 100000)) sprint(pl, PRINT_HIGH, ch);
-	if ((digits > 4) && (x < 10000)) sprint(pl, PRINT_HIGH, ch);
-	if ((digits > 3) && (x < 1000)) sprint(pl, PRINT_HIGH, ch);
-	if ((digits > 2) && (x < 100)) sprint(pl, PRINT_HIGH, ch);
-	if (x >= 0)
-		if ((digits > 1) && (x < 10)) sprint(pl, PRINT_HIGH, ch);
-	
-	tmp=ftos(x);
-	if (x) 
-		sprint(pl, PRINT_HIGH, tmp);
-	else
-		sprint(pl, PRINT_HIGH, "0");
-};
-
-
-
-void(float x, float digits, string ch) bPrintRight = {
-	local string tmp;
-	if ((digits > 6) && (x < 1000000)) bprint(PRINT_HIGH, ch);
-	if ((digits > 5) && (x < 100000)) bprint(PRINT_HIGH, ch);
-	if ((digits > 4) && (x < 10000)) bprint(PRINT_HIGH, ch);
-	if ((digits > 3) && (x < 1000)) bprint(PRINT_HIGH, ch);
-	if ((digits > 2) && (x < 100)) bprint(PRINT_HIGH, ch);
-	if (x >= 0)
-		if ((digits > 1) && (x < 10)) bprint(PRINT_HIGH, ch);
-	
-	tmp=ftos(x);
-	if (x) 
-		bprint(PRINT_HIGH, tmp);
-	else
-		bprint(PRINT_HIGH, "0");
-};
-
-
-void(entity pl, float x) PrintTime = {
-	local float min, sec;
-	local string tp;
-
-	min = floor(x / 60);
-	sec = floor(x - min * 60);
-	
-	sPrintRight(pl, min, 1, "0");
-	sprint(pl, PRINT_HIGH, ":");
-	sPrintRight(pl, sec, 2, "0");
-};
-
-void(float x) PrintTime2All = {
-	local float min, sec;
-	local string tp;
-
-	min = floor(x / 60);
-	sec = floor(x - min * 60);
-	
-	bPrintRight(min, 1, "0");
-	bprint(PRINT_HIGH, ":");
-	bPrintRight(sec, 2, "0");
-};
 
 
 
@@ -195,13 +145,84 @@ void(entity pl) StuffRandomnum = {
 	stuffcmd(pl, tp);
 };
 
-/*
-=========
-AutoDemo
+//
+// Check if the player should start/stop recording and return 1 for proxy 
+// recording and 2 for QW recording.
+//
+float (entity pl) CheckAutoDemo = {
+	local float demoflag;	
+	demoflag = pl.pure & SETINFO_AUTODEMO;
+	if ((demoflag == 0) && !FLAG_LOCKAUTODEMO)
+		return 0;
+	if (!FLAG_COMPETITION && (demoflag != SETINFO_AUTODEMO_ALWAYS)) 
+		return 0;
+	// Check for type
+	if (demoflag == SETINFO_AUTODEMO_PROXY)
+		if (HaveDemoProxy(pl))
+			return 1;
+	if (demoflag == SETINFO_AUTODEMO_QW)
+		if (QWVersion() >= 2.20)
+			return 2;
 
-Starts a demo at matchstart for the players who turned it on.
-=========
-*/
+	if (HaveDemoProxy(pl))
+		return 1;
+	if (QWVersion() >= 2.20)
+		return 2;
+	return 0;
+};
+
+//
+// Starts an demo for a Client if the Client has turned it on ===s
+//
+void(entity pl) StartPlayerDemo = {
+	local float typeflag;
+
+	typeflag = CheckAutoDemo();
+	// Start recording
+	if (!typeflag) {
+		return;
+ 	} else if (typeflag == 1) {
+		if (FLAG_DEBUG) sprint(self, PRINT_HIGH, "Recording by Proxy\n");
+		if (ProxyType(pl) == PROXY_FAQ)
+				stuffcmd(pl, "say proxy: record ");
+		if (ProxyType(pl) == PROXY_QIZMO)
+				stuffcmd(pl, "say .record ");
+	} else if (typeflag == 2) {
+		if (FLAG_DEBUG) sprint(self, PRINT_HIGH, "Recording by QW\n");
+		stuffcmd(pl, "record ");
+	}
+
+	stuffcmd(pl, "auto");
+	StuffRandomnum(pl);
+	StuffRandomnum(pl);
+	StuffRandomnum(pl);
+	StuffRandomnum(pl);
+	stuffcmd(pl, "\n");
+	
+};
+//
+// Stops recording for the client.
+//
+void(entity pl) StopPlayerDemo = {
+	local float typeflag;
+	typeflag = CheckAutoDemo();
+	// Stops recording
+	if (!typeflag) {
+		return;
+	} else if (typeflag == 1) {
+		if (ProxyType(pl) == PROXY_FAQ)
+				stuffcmd(pl, "say proxy: record stop\n");
+		if (ProxyType(pl) == PROXY_QIZMO)
+				stuffcmd(pl, "say .record stop\n");
+ 	} else if (typeflag == 2) {
+		stuffcmd(pl, "stop\n");
+	}
+};
+
+
+// 
+// Starts a demo at matchstart for the players who turned it on.
+//
 void() AutoDemo = {
 	local entity e;
 	local float no;
@@ -210,44 +231,32 @@ void() AutoDemo = {
 	e = CLIENT_CHAIN;
 
 	while (e) {
-                if ((e.pure & 64) || (e.pure & 32)){
-                        if ((e.pure & 32) && HaveProxy(e)) {
-				stuffcmd(e, "say proxy: record ");	
-			} else {
-				stuffcmd(e, "record ");
-			}
-			stuffcmd(e, "auto");
-			StuffRandomnum(e);
-			StuffRandomnum(e);
-			StuffRandomnum(e);
-			StuffRandomnum(e);
-			stuffcmd(e, "\n");
-		}
+        	StartPlayerDemo(e);
 		e = e.clientchain;
 	}
 };
 
-
+//
+// Stop demos for all players and take Autoshots;
+//
 void() StopDemos = {
 	local entity e;
 	local float no;
 	local string tp;
 
-	if (!FLAG_COMPETITION)
-		return;
-
 	e = CLIENT_CHAIN;
 	while (e) {
-		if ((e.pure & 64) || (e.pure & 32)) {
-			if ((e.pure & 32) && HaveProxy(e)) {
-				stuffcmd(e, "say proxy: record stop\n");	
-			} else {
-				stuffcmd(e, "stop\n");
-			}	
+		StopPlayerDemo(e);
+		// Autoshot
+		if (!FLAG_STANDBY && FLAG_COMPETITION) {
+			if ((e.pure & SETINFO_AUTOSHOT) || FLAG_LOCKAUTOSHOT)
+				stuffcmd(e, "+showteamscores;wait;screenshot;wait;-showteamscores\n");
 		}
-		if ((e.pure & 16) && !FLAG_STANDBY) 
-			stuffcmd(e, "+showteamscores;wait;screenshot;wait;-showteamscores\n");
 		e = e.clientchain;
+		if (FLAG_FUNSOUNDS)
+			soundall("fun/gameover");
+	
+		// *check* funsound
 	}
 };
 
@@ -258,13 +267,15 @@ void() StopDemosThink = {
 };
 
 
+
+
 void() SetAutoShot = {
-	if (self.pure & 16) {
+	if (self.pure & SETINFO_AUTOSHOT) {
 		sprint(self, PRINT_HIGH, "Autoshot disabled\n");	
-		self.pure = self.pure - 16;
+		self.pure = self.pure - SETINFO_AUTOSHOT;
 	} else {
 		sprint(self, PRINT_HIGH, "Autoshot enabled.\n");
-		self.pure = self.pure | 16;
+		self.pure = self.pure | SETINFO_AUTOSHOT;
 	}
 	SetPureFlags(self);
 	PrintNewPlayerSettings();
@@ -272,24 +283,32 @@ void() SetAutoShot = {
 
 void() SetAutoDemo = {
 	local string tp;
-
-	if (self.pure & 32) {
+	local float x;
+	x = (self.pure & SETINFO_AUTODEMO);
+	
+	if (x == SETINFO_AUTODEMO_PROXY) {
 		sprint(self, PRINT_HIGH, "Autodemo with QW:s recording.");	
-		if (stof(infokey(world, "*version")) < 2.20) {
+		if (QWVersion() < 2.20) {
 			sprint(self, PRINT_HIGH, " Note, this version of QW doesn't support this.");
 		}
 		sprint(self, PRINT_HIGH, "\n");	
-		self.pure = (self.pure | 64) - (self.pure & 32);
-	} else if (self.pure & 64) {
+		x = SETINFO_AUTODEMO_QW;
+	} else if (x == SETINFO_AUTODEMO_QW) {
+		sprint(self, PRINT_HIGH, "Autodemo always on. (Even on public)\n");	
+		x = SETINFO_AUTODEMO_ALWAYS;
+	} else if (x == SETINFO_AUTODEMO_ALWAYS) {
 		sprint(self, PRINT_HIGH, "Autodemo off\n");	
-		self.pure = self.pure - (self.pure & (64 | 32));
+		x = 0;
 	} else {
 		sprint(self, PRINT_HIGH, "Autodemo with Proxy. ");
-		if (!HaveProxy(self))
+		if (!HaveDemoProxy(self))
 			sprint(self, PRINT_HIGH, "(You don't have a demo proxy!)");
 		sprint(self, PRINT_HIGH, "\n");
-		self.pure = (self.pure | 32) - (self.pure & 64);
+		x = SETINFO_AUTODEMO_PROXY;
 	}
+
+	self.pure = self.pure - (self.pure & (SETINFO_AUTODEMO));
+	self.pure = self.pure | (x);
 
 	SetPureFlags(self);
 	PrintNewPlayerSettings();
@@ -413,50 +432,6 @@ void() PrintSettings = {
 
 // ***update*** <--
 
-/*
-===========
-TimeLeft
-
-Prints time left to a player.
-===========
-*/
-void(entity pl) TimeLeft = {
-	local float tmlim;
-	if (FLAG_STANDBY)
-		tmlim = 0;
-	else if (FREEZEFLAGS & 1)
-		tmlim = ceil(TIMELIMIT + MatchStartTime - FREEZETIME);
-	else
-		tmlim = ceil(TIMELIMIT + MatchStartTime - time);
-	PrintTime(pl, tmlim);
-};
-
-
-/*
-===========
-MatchTime
-
-Prints Match Time to a player.
-===========
-*/
-void(entity pl) MatchTime = {
-	local float tmlim;
-	if (FLAG_STANDBY)
-		tmlim = 0;
-	else 
-		tmlim = floor(time - MatchStartTime);
-	PrintTime(pl, tmlim);
-};
-
-void() MatchTime2All = {
-	local float tmlim;
-	if (FLAG_STANDBY)
-		tmlim = 0;
-	else 
-		tmlim = floor(time - MatchStartTime);
-	PrintTime2All(tmlim);
-};
-
 
 
 /*
@@ -471,7 +446,7 @@ void() MapqueueStatus = {
 	local string map1, map2;
 
 
-        if (!FLAG_COMPETITION) {
+        if (FLAG_COMPETITION) {
 		localcmd("serverinfo mapqueue \"\"\n");
 		return;
 	}
@@ -600,7 +575,7 @@ void() UpdateClientChain = {
 
 	e = PLAYER_CHAIN;
 	while(e) {
-		if ((TEAMPLAY & 32) && (self.classname != "observer")) {
+		if ((TEAMPLAY & TEAM_LOCK_COLORS) && (self.classname != "observer")) {
 			if ((e.steam == TEAM_COLOR1))		
 				TEAM1 = TEAM1 + 1;		
 			else if ((e.steam == TEAM_COLOR2))	
@@ -638,8 +613,8 @@ void() revertthink = {
 		bprint(PRINT_HIGH, "Reverting to standard mode.\n");
 		x = localinfo("mode", 0);
 		x = x - (x & (1));
-		SetVar(1, "mode", x);
-		ShowdownDefault();
+		SetVar(SERVERINFO, "mode", x);
+		SetShowdownDefault();
 	}
 	remove(self);
 };
@@ -683,8 +658,6 @@ float NEWFLAG;
 // debug <--
 
 
-float() CheckAdminInput;
-
 
 // ***commands*** <--
 
@@ -727,74 +700,28 @@ void(string tp) soundall = {
 	local entity e;
 	e = CLIENT_CHAIN;
 	while (e) {
-		sound(e, CHAN_AUTO, tp , 1, ATTN_IDLE); 
-		e = e.clientchain;
+// obsolete		sound(e, CHAN_AUTO, tp , 1, ATTN_IDLE); 
+		stuffcmd(e, "play ");
+		stuffcmd(e, tp);
+		stuffcmd(e, "\n");
+		e = e.clientchain;		
 	}
 };
+
+void(string tp, float channel) soundflags = {
+	local entity e;
+	e = find(world, classname, "item_flag_team1");
+	if (e)	sound(e, channel, tp, 1, ATTN_NONE);
+	e = find(world, classname, "item_flag_team2");
+	if (e)	sound(e, channel, tp, 1, ATTN_NONE);
+};
+
 
 // *check* inline?
 void(entity pl) RemoveCenterprint = {
 	centerprint(pl, " ");
 };
 
-// *check* move to printing?
-void(float tlimit) OutputTimer = {
-	local float timeleft, min, sec;
-	local entity e;
-	local string tmp;
-
-	if (!tlimit)
-		return;
-	if (time < nexttimercheck) 
-		return;
-
-	timeleft =  ceil(tlimit - time);
-	if (CountDown) {
-		TraversePlayers(PrintCountDown);
-	} else if (timeleft >= 60) {
-		min =  ceil(timeleft / 60);
-		tmp=ftos(min);
-		bprint(PRINT_MEDIUM, tmp);
-		if (min == 1)
-			bprint(PRINT_MEDIUM, " minute left\n");
-		else
-			bprint(PRINT_MEDIUM, " minutes left\n");
-	} else if (timeleft >= 10) {
-		sec = timeleft;
-		sec = ceil(sec);
-		tmp = ftos(sec);
-		bprint(PRINT_MEDIUM, tmp);
-		bprint(PRINT_MEDIUM, " seconds left\n");
-	} else {
-		sec = timeleft;
-		if (FLAG_RASOUNDS) {
-			if (sec == 1) soundall("ra/1.wav"); 
-			if (sec == 2) soundall("ra/2.wav"); 
-			if (sec == 3) soundall("ra/3.wav"); 
-		}
-		tmp=ftos(sec);
-		if (timeleft < 0) 
-			tmp = "0";
-		bprint(PRINT_MEDIUM, tmp);
-		bprint(PRINT_MEDIUM, "\n");
-	}
-	timeleft = timeleft - 0.1;
-	if (CountDown)
-		nexttimercheck = floor(time + 1);
-	else if (timeleft > 300)
-		nexttimercheck = tlimit - (floor(timeleft / 300) * 300);
-	else if (timeleft > 60)
-		nexttimercheck = tlimit - (floor(timeleft / 60) * 60);
-	else if (timeleft > 30)
-		nexttimercheck = tlimit - (floor(timeleft / 30) * 30);
-	else if (timeleft > 10)
-		nexttimercheck = tlimit - (floor(timeleft / 10) * 10);
-	else if (timeleft > 5)
-		nexttimercheck = tlimit - (floor(timeleft / 5) * 5);
-	else if (timeleft > 0)
-		nexttimercheck = tlimit - floor(timeleft);
-	
-};
 // ***timer*** <--
 
 
@@ -855,7 +782,6 @@ void() CheckRate = {
 
 
 
-void() CheckPing;
 
 void() PeriodicCheck = {
 	local float rp;
@@ -878,15 +804,16 @@ void() PeriodicCheck = {
 	CheckMapChange();
 	CheckAdmin();
 	CheckRate();
-	CheckStuffings();
+	if (CheckStuffflag(self))
+		DoStuffing();
 };
 
 
 
 void() StartAfterDelay = {
-	UnFreeze(31);
+	UnFreeze(FREEZE_ALL);
 	bprint(PRINT_HIGH, "Game has started!\n");
-	MatchStartTime = floor(time);
+	StartTimer();
 };
 
 void() PureInitMap = {
@@ -895,37 +822,38 @@ void() PureInitMap = {
 	UpdateRandomSeed();
 	SpawnCTFMaps();
 
-	ResetPingBans();
+	ResetPingBans();		// *obsolete* ?
 
 	// Restore maxclients value if needed
 	RestoreMaxClients();
 	
 	// Update Serverinfo
-	localcmd("serverinfo purectf \"v1.52beta15\"\n");
+	localcmd("serverinfo pure \"v1.99beta4\"\n");
 	MapqueueStatus();
 	SaveDefaults();
+	localcmd("localinfo superadmin 0\n");
+	SetTeamParameters();
 
+	// == Check if server is doing a "start of match" restart
 	RESTART = stof(infokey(world, "restart"));
 	localcmd("localinfo restart \"\"\n");
 	if (RESTART) {
-		Freeze(26);
+		Freeze(FREEZE_PLAYERS);
 		forceready = 1;
 	}
 
-	STARTDELAY = stof(infokey(world, "startdelay"));	
-	if (FLAG_COMPETITION)
+	// == Set startdelay if needed ==
+	STARTDELAY = localinfo("startdelay", 15);	
+	if (FLAG_COMPETITION || gamestart)
 		STARTDELAY = 0;
 	if (STARTDELAY) {
-		Freeze(26);
+		Freeze(FREEZE_PLAYERS);
 		StartCountDown(STARTDELAY, StartAfterDelay, "Ôèå çáíå ÷éìì óôáòô\n áæôåò ôèå ãïõîôäï÷î\n\n");
 	}
 
-	localcmd("localinfo superadmin 0\n");
 
-	SetTeamParameters();
-
-
-	if (!localinfo("force_sv_gamedir",0)) {
+	// Set sv_gamedir automatically
+	if (localinfo("auto_sv_gamedir",0)) {
 		if (IsCTFMap())
 			localcmd("sv_gamedir ctf\n");
 		else if (IsArenamap())
@@ -938,30 +866,50 @@ void() PureInitMap = {
 		localcmd("sv_gamedir qw\n");
 	}
 
+	// DebugMode notice
 	if (FLAG_DEBUG) {
 		bprint(PRINT_HIGH, "\n***********************************\n");
 		bprint(PRINT_HIGH, "SERVER IS RUNNING IN DEBUG MODE!   \n");
 		bprint(PRINT_HIGH, "\"serverinfo debug 0\" to turn off.\n");
 		bprint(PRINT_HIGH, "***********************************\n\n");
 	}
-	// Store current map.
-	local float mapqflag;
-	mapqflag = localinfo("mapqflag", 0);
-	if (mapqflag == 1) {
-		localcmd("localinfo mapq1 ");
-		localcmd(mapname);
-		localcmd("\n");
-	} else if (mapqflag == 2) {
-		localcmd("localinfo mapq2 ");
-		localcmd(mapname);
-		localcmd("\n");
+
+	// Spawn Dummy bots
+	if (stof(infokey(world, "bots"))) {
+		Spawn20Bots();
 	}
-	localcmd("localinfo mapqflag 0\n");
+
+/* *check*
+	tp = infokey(world, "mappak");
+	if ((tp != "") && (tp != "none")) {
+		bprint(PRINT_HIGH, "\n***********************************\n");
+		bprint(PRINT_HIGH, "This server is running custom maps!   \n");
+		bprint(PRINT_HIGH, "Get them at:\n");
+		bprint(PRINT_HIGH, tp);
+		bprint(PRINT_HIGH, "\n***********************************\n\n");
+	}
+*/
 
 	GSLogStart();					// GSLOG
+
+	LASTQUEUE = localinfo("lastqueue", 0);
+	SetVar(LOCALINFO, "lastqueue", 0);
+
+/* obsolete (debugging)
+	local float a,b;
+
+	a = 32768;
+	b = 30;
+
+	while (b) {
+		bprintnum("..:", a);
+		bprintnum("-1:", a - 1);
+		a = a * 2;
+		b = b - 1;
+	}
+*/
+	
 };
-
-
 
 
 // <-- check
