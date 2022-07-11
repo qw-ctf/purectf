@@ -76,7 +76,7 @@ void(entity pl) ShowScores = {
 
 	sprint(pl, PRINT_HIGH, "Teamping   ");
 	sPrintRight(pl, REDPING, 4, " ");
-	sPrintRight(pl, BLUEPING, 5, " ");§
+	sPrintRight(pl, BLUEPING, 5, " ");
 	sprint(pl, PRINT_HIGH, "\n");
 
 	sprint(pl, PRINT_HIGH, "---------- ---- ----\n");

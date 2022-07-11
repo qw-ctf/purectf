@@ -1552,17 +1552,17 @@ void() AnkaMaps = {
 
 void(float teamno, vector tpos1, vector tpos2, float newangle) ReplaceStartSpot = {
 	local float color;
-	local string class;
+	local string klass;
 	if (teamno == 1) {
-		class = "info_player_team1";
+		klass = "info_player_team1";
 		color = TEAM_COLOR1;
 	} else {
-		class = "info_player_team2";
+		klass = "info_player_team2";
 		color = TEAM_COLOR2;
 	}
 //	EntityDebug = 1;
-	RemoveByOrigin(class, tpos1);
-	if (!FindByOrigin(class, tpos2))
+	RemoveByOrigin(klass, tpos1);
+	if (!FindByOrigin(klass, tpos2))
 		SpawnTeamStart(tpos2, color, newangle);
 };
 
