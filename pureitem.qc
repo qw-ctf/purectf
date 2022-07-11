@@ -17,6 +17,16 @@ float RUNEARMORTIME;			// Time for next rune reg.
 // =================
 //       RUNES
 // =================
+
+// PCP *HrZ*
+void () RuneSetOwner =
+{
+	self.owner = self;
+	self.nextthink = time + 120; /* if no one touches it in two minutes, respawn it somewhere else, so inaccessible ones will come 'back' */
+        self.think = RuneRespawn;
+};
+// PCP //
+
 void (float flag) Do_TossRune = 
 {
 	local entity    item;
@@ -25,14 +35,23 @@ void (float flag) Do_TossRune =
  	item.classname = "item_rune";
         
 	item.runes = flag;
- 
-	setorigin(item, self.origin + '0 0 76');
+// PCP *HrZ* - Origin should be from self *exactly*
+//	setorigin(item, self.origin + '0 0 76');
+	setorigin(item, self.origin);
+// PCP //
 	item.velocity = aim(self, 1000);
-        item.velocity = item.velocity * 300;
+// PCP *HrZ* - Runes now get tossed a little differently, added this to make it feel little bit more
+// like the old style.
+//	item.velocity = item.velocity * 300;
+	item.velocity = v_forward*300 + v_up*200;
+// PCP //
          
         item.flags = FL_ITEM;
         item.solid = SOLID_TRIGGER;
-        item.movetype = MOVETYPE_TOSS;
+// PCP *HrZ* - Change movetype from toss to bounce (like grenades)
+//	item.movetype = MOVETYPE_TOSS;
+	item.movetype = MOVETYPE_BOUNCE;
+// PCP //
 	if (flag & ITEM_RUNE1_FLAG) {
 		setmodel (item, "progs/end1.mdl");
 		item.netname = "Resistance";
@@ -48,10 +67,17 @@ void (float flag) Do_TossRune =
 	}
          setsize (item, '-16 -16 0', '16 16 56');
          item.touch = RuneTouch;
-         
-         item.nextthink = time + 120; /* if no one touches it in two minutes,
-                 respawn it somewhere else, so inaccessible ones will come 'back' */
-         item.think = RuneRespawn;
+// PCP *HrZ* - Since runes now get dropped from origin exactly, self will pick them up
+// again right away unless we add a timer.         
+//	item.nextthink = time + 120; /* if no one touches it in two minutes,
+//					respawn it somewhere else, so inaccessible ones will come 'back' */
+//	item.think = RuneRespawn;
+//	The code above has been moved to function RuneSetOwner
+
+	item.owner = self;
+	item.nextthink = time + 0.5;
+	item.think = RuneSetOwner;
+// PCP //
 };
 
 
@@ -262,8 +288,10 @@ void(float timeleft) DropQuad =
 	local entity    item;
 
 	item = spawn();
-	item.origin = self.origin - '0 0 24';
-	
+// PCP *HrZ* - Origin exactly.
+//	item.origin = self.origin - '0 0 24';
+	item.origin = self.origin;
+// PCP //	
 	item.velocity_z = 300;
 	item.velocity_x = -100 + (random() * 200);
 	item.velocity_y = -100 + (random() * 200);
@@ -272,7 +300,10 @@ void(float timeleft) DropQuad =
 	item.items = IT_QUAD;
 	item.netname = "Quad Damage";
 	item.solid = SOLID_TRIGGER;
-	item.movetype = MOVETYPE_TOSS;
+// PCP *HrZ* - Bounce instead of toss.
+//	item.movetype = MOVETYPE_TOSS;
+	item.movetype = MOVETYPE_BOUNCE;
+// PCP //
 	item.noise = "items/damage.wav";
 	setmodel (item, "progs/quaddama.mdl");
 	setsize (item, '-16 -16 -24', '16 16 32');

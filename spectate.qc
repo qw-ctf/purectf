@@ -490,6 +490,9 @@ void() SpectatorConnect =
 	CheckInfokey();				// Check setinfo
 	UpdateClientChain();
 	setinfostring(self, "skin", "ctfr1");
+// PCP dyna - UserID
+//	sneek_CheckUserID(self);
+// PCP //
 };
 
 /*
@@ -631,7 +634,9 @@ void() SpectatorUpdate = {
 		Menu();
 		return;
 	} else if ((self.motd_endtime + 10) > time) {
-		centerprint(self, "пуре цтф Advanced Spectator tracking.\n\nTracking is OFF!\nPress ╠-╥ to start tracking.\n Press ╦ to stop tracking.\n\nType \"цоммандс\" to list all commands.\nType \"сеттингс\" to show all settings.\nType \"цпринт\" to remove this text.\nType \"цам\" to change camera style.");
+// PCP dyna - Version
+		centerprint(self, "пУРЕцтф пРО Advanced Spectator tracking.\n\nTracking is OFF!\nPress ╠-╥ to start tracking.\n Press ╦ to stop tracking.\n\nType \"цоммандс\" to list all commands.\nType \"сеттингс\" to show all settings.\nType \"цпринт\" to remove this text.\nType \"цам\" to change camera style.");
+// PCP //
 		return;
 	}
 
@@ -736,7 +741,7 @@ void() SpectatorPeriodic = {
 
 	CheckMapChange();
 	CheckAdmin();
-
+	
 	// rate check
 	if ((self.join_time + 10) < time)
 		CheckRate();

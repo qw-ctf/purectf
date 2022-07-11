@@ -209,6 +209,14 @@ string(string shortname) FindMap = {
 	else if (shortname == "xarena3") return "X-Arena";
 	else if (shortname == "yard1") return "The Backyard";
 
+	// PCP *HrZ* - At the constant nagging by yokozuna, i've added his mapnames :P
+	else if (shortname == "e2m1pro") return "The Prostallation";
+	else if (shortname == "e4m3pro") return "The Quad God Shrine";
+	// PCP dyna - More maps
+	else if (shortname == "capit") return "Cap it!";
+	// PCP //
+
+
 	// *check* The ctf3 maps
 
 	return mapname;		// AAAARGH, you've found ANOTHER stupid map????

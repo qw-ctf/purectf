@@ -197,6 +197,12 @@ void() UpdateRank = {
 
 };
 
+// PCP *HrZ* - MVD Recording 
+void() StopMVD = {
+	localcmd("stop\n");
+};
+// PCP //
+
 void() TeamEndScore = {
 	local string s;
 	local entity e;
@@ -255,4 +261,9 @@ void() TeamEndScore = {
 	}
 
 	UpdateRank();
+// PCP *HrZ* - MVD Recording
+	e = spawn();
+	e.think = StopMVD;
+	e.nextthink = time + 5;
+// PCP //
 };
