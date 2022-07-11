@@ -16,12 +16,16 @@ void() LockMaxClients = {
 	local float noofplayers;
 	local string maxclients, tmp;
 
+	
 	noofplayers = TOTALPLAYERS;
+
+	return; //deny access on server join instead.
+
 	maxclients = infokey(world, "maxclients");
 	tmp = ftos(noofplayers);
 
 	bprint (PRINT_HIGH, "MaxClients locked to ");
-	bprint (PRINT_HIGH, tmp); 
+	bprint (PRINT_HIGH, tmp);
 	bprint (PRINT_HIGH, "\n");
 	if (infokey(world, "saveplayers") == "") {
 		localcmd("localinfo saveplayers ");
@@ -38,6 +42,9 @@ void() LockMaxClients = {
 
 void() RestoreMaxClients = {
 	local string tmp;
+	
+	return; //deny access on server join instead.
+	
 	tmp=infokey(world, "saveplayers");
 	if (tmp != "") {
 		localcmd("maxclients ");
@@ -52,12 +59,11 @@ void() RestoreMaxClients = {
 };
 
 
-
 void() CompShowStatus = {
 	local entity e;
 
 	if (CountDown) {
-		sprint(self, PRINT_HIGH, "The Match will begin after the countdown.\n");	
+		sprint(self, PRINT_HIGH, "The Match will begin after the countdown.\n");
 	} else if (FLAG_STANDBY) {
 		sprint(self, PRINT_HIGH, "READY: ");
 		e = find(world, classname, "ready");
@@ -77,7 +83,7 @@ void() CompShowStatus = {
 		}
 		sprint(self, PRINT_HIGH, "\n");
 	} else {
-		sprint(self, PRINT_HIGH, "Match in progress.\n");	
+		sprint(self, PRINT_HIGH, "Match in progress.\n");
 	}
 	PrintAdmin();
 };
@@ -128,10 +134,10 @@ void(entity pl) PrintCountDown = {
 			s2 = "";
 		else if ((self.steam == TEAM_COLOR1))
 			s2 = "You are ред team.\n\n";
-		else 
+		else
 			s2 = "You are блуе team.\n\n";
 		if ((RedWins + BlueWins) == 0) {
-			s3 = "The game will start\nafter the countdown\n\n"; 
+			s3 = "The game will start\nafter the countdown\n\n";
 			centerprint3(pl, s2,s3,s1);
 			return;
 		}
@@ -230,7 +236,7 @@ void() CheckReady = {
 
 	READY = 0;
 	NOTREADY = 0;
-	
+
 	e = PLAYER_CHAIN;
 	while (e) {
 		if (e.classname == "ready")
@@ -259,7 +265,7 @@ void() CheckReady = {
 		tmp = ftos(COUNTDOWNTIME);
 		bprint(PRINT_HIGH, tmp);
 		bprint(PRINT_HIGH, " seconds!\n");
-		bprint(PRINT_HIGH, "\n"); 
+		bprint(PRINT_HIGH, "\n");
 
 // PCP *HrZ* - Make runes spawn @ countdown instead!
 		RespawnAllRunes();
@@ -308,7 +314,7 @@ void() CheckReady = {
 void() NotReady = {
 // PCP dyna - Enhanced ingame and spectator admin start/break
 	local entity e;
-// PCP //
+// PCP // 
 
 	if (!FLAG_COMPETITION) {
 		return;
@@ -322,7 +328,7 @@ void() NotReady = {
 		VoteBreak();
 	} else if (forceready) {
 		if (IsAdmin(self)) {
-			bprint(PRINT_HIGH, "The admin has forced the countdown to end.\n");
+			bprint(PRINT_HIGH, "The admin has forced the game to end.\n");
 // PCP dyna - Enhanced ingame and spectator admin start/break
 //			self.classname = "notready";
 			e = PLAYER_CHAIN;
@@ -334,8 +340,8 @@ void() NotReady = {
 			CheckReady();
 		} else {
 			sprint(self, PRINT_HIGH, "Only the admin kan break this countdown.\n");
-		}			
-	} else { 
+		}
+	} else {
 		if (self.classname == "ready") {
 			bprint(PRINT_HIGH, self.netname);
 			bprint(PRINT_HIGH, " is NOT READY for the match.\n");
@@ -352,10 +358,10 @@ void() NotReady = {
 		} 
 		else {
 // PCP //
-			self.classname = "notready";
+		self.classname = "notready";
 // PCP dyna - Enhanced ingame and spectator admin start/break
 		}
-// PCP //
+// PCP // 
 		CheckReady();
 	}
 };
@@ -384,7 +390,7 @@ void () SayReady = {
 
 	if (!FLAG_STANDBY)
 		return;
-	
+
 	e = find(world, classname, "notready");
 	if (!e) return;
 	while (e) {
@@ -425,13 +431,12 @@ void() StartMatch = {
 	local entity e;
 	local string tmp;
 
-	FLAG_STANDBY = FALSE;
-
 	bprint(PRINT_HIGH, "Match Started!\n");
 	GSGameStart();
 
 // *check*	if (FLAG_FUNSOUNDS) soundflags("weapons/tink1.wav", CHAN_WEAPON);
 
+	FLAG_STANDBY = FALSE;
 
 	if (FLAG_AUTOSPECTALK)
 		SetVar(CVARINFO, "sv_spectalk", 0);
@@ -455,7 +460,7 @@ void() StartMatch = {
 		} else if (e.classname != "observer") {
 			KickClient(e, "You were not ready.");
 		}
-		if (ProxyType(e) == PROXY_QIZMO) 
+		if (ProxyType(e) == PROXY_QIZMO)
 			stuffcmd(e, "say proxy: time\n");
 		e = e.clientchain;
 	}

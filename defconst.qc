@@ -8,7 +8,7 @@
 //     CONSTANTS
 // =================
 
-	// teamplay.qc 
+	// teamplay.qc
 float TEAM_DEFAULT_PENALTY =    1;      // Default frag penalty
 float TEAM_STRICT_COOP =	0;	// Strict Coop
 	// Teamplay bitfield entries
@@ -19,7 +19,7 @@ float TEAM_FRAG_PENALTY = 8;      // One frag penalty for killing teammate
 float TEAM_DEATH_PENALTY = 16;     // Die when you kill a teammate.
 float TEAM_LOCK_COLORS = 32;     // Allow only team colors
 float TEAM_STATIC_TEAMS = 64;     // Don't allow players to switch teams
-float TEAM_DROP_ITEMS = 128;	// Allow players to drop packs and 
+float TEAM_DROP_ITEMS = 128;	// Allow players to drop packs and
 float TEAM_CAPTURE_FLAG = 256;	// Play capture the flag
 float TW_FLOUNDERVISION_FLAG = 512;	// FlounderVision!		// tw50
 // float TEAM_DISABLE_GRAPPLE = 2048; // team selection
@@ -74,6 +74,9 @@ float INPUT_TYPE_KICK = 2;
 float INPUT_TYPE_BAN = 3;
 float INPUT_TYPE_IPBAN = 4;
 float INPUT_TYPE_GIVEADMIN = 5;
+float INPUT_TYPE_SCMD = 6;
+float INPUT_TYPE_PUTIN = 7;
+float INPUT_TYPE_PUTOUT = 8;
 
 float INPUT_IMPULSE_CLIENT = 10;
 float INPUT_IMPULSE_ADMIN = 11;
@@ -83,10 +86,11 @@ float INPUT_IMPULSE_DEBUG = 14;
 float INPUT_IMPULSE_CAM = 15;
 float INPUT_IMPULSE_PUREAUDIO = 16;
 float INPUT_IMPULSE_MAP = 17;
+float INPUT_IMPULSE_VOTEMAP = 18;
 
 
 float PRACTICE_ITEMS = 1;
- 
+
 
 	//  player.pure
 float SETINFO_AUTOSHOT = 16;
@@ -102,7 +106,7 @@ float SETINFO_CPRINT = 128;
 float SETINFO_TRACKING = 768;		// 256&512
 float SETINFO_TRACKING_CHASE = 0;
 float SETINFO_TRACKING_STATIC = 256;
-float SETINFO_TRACKING_EYECAM = 512;	
+float SETINFO_TRACKING_EYECAM = 512;
 float SETINFO_TRACKING_OFF = 768;
 //
 float SETINFO_SBAR_HUD = 1024;
@@ -125,15 +129,16 @@ float SETINFO_STUFF3 = 393216;
 float PROXY_FAQ = 1;
 float PROXY_QIZMO = 2;
 float PROXY_CHEAPO = 3;
-
-
+float PROXY_ZQ = 4;
+float PROXY_NF = 5;
+float PROXY_NITRO = 6;
 
 	// Bits for .clientflags
 float CLIENT_PLAYER = 1;		// Connected as player
 float CLIENT_SPECTATOR = 2;		// Connected as Spectator
 float CLIENT_OBSERVER = 4;		// Connected as Observer
 float CLIENT_BOT = 8;			// Fake Client used for testing.
-	
+
 	// Bits for .twflags
 float TW_TIMES = 7;			// Counter to next allowed boom.
 float TW_BOOMFLAG = 8; 			// Boom me!

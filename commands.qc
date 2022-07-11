@@ -6,6 +6,9 @@
 
 // check -->
 
+void () DeclineSpec;
+void () AcceptSpec;
+void () JoinGame;
 void() ToggleFreeze;
 void() PrintModels;
 void() MoreClientImpulses;
@@ -38,7 +41,7 @@ void() PrintCommands = {
 		sprint(self, PRINT_HIGH, "αυτοσθοτ   : αυτο σγςεεξσθοτ\n");
 		sprint(self, PRINT_HIGH, "αυτοδενο   : αυτο δενοσ\n");
 	}
-	
+
 	if (FLAG_VOTEEXIT)
 		sprint(self, PRINT_HIGH, "φοτεεψιτ   : Φοτε το εψιτ τθε ναπ\n");
 	if (FLAG_ADMINVOTE)
@@ -62,7 +65,7 @@ void() PrintCommands = {
 
 	if (IsAdmin(self)) {
 		AdminHelpCommands();
-	}	
+	}
 
 	if (self.classname == "spectator")
 		SpectatorCommands();
@@ -402,13 +405,15 @@ void() MapImpulses = {
 
 
 void() YesCommand = {
-	if (time > self.delay)
+	if (time > self.delay){
 		self.input_type = 0;
+		if (self.scmd_flag){unsetinfo(self, "scmd");self.scmd_flag = 0;}
+	}
 	if (self.input_type)
 		DoAdminCommand();
 	else if (self.classname != "spectator")
 		VoteYes();
-	
+
 };
 
 
@@ -416,11 +421,12 @@ void() NoCommand = {
 	if (self.input_type) {
 		self.input_type = 0;
 		sprint(self, PRINT_HIGH, "Command aborted\n");
+		if (self.scmd_flag){unsetinfo(self, "scmd");self.scmd_flag = 0;}
+
 	} else if (self.classname != "spectator") {
 		VoteNo();
 	}
 };
-
 
 
 void(float sbit, string infostring) StatbarChange = {
@@ -461,7 +467,7 @@ void(string actiontype) ConfirmAction = {
 	e = GetClientFromTeamList(self.impulse);
 	PrintClientTeamList(self, 0);
 	if (e) {
-		sprint(self, PRINT_HIGH, "Are you sure You want to"); 	
+		sprint(self, PRINT_HIGH, "Are you sure You want to");
 		sprint(self, PRINT_HIGH, actiontype);
 		sprint(self, PRINT_HIGH, e.netname);
 		sprint(self, PRINT_HIGH, " (yes/no)?\n");
@@ -470,14 +476,15 @@ void(string actiontype) ConfirmAction = {
 		self.input_type = self.input_type | 256;
 	} else {
 		self.input_type = 0;
+		if (self.scmd_flag){unsetinfo(self, "scmd");self.scmd_flag = 0;}
 		if (FLAG_DEBUG) sprint(self, PRINT_HIGH, "blipp");
 	}
 };
 
 
-// 
+//
 // Triggered for "double impulse" and impulses that requires a argument.
-// 
+//
 void() CheckInput = {
 
 	if (!self.input_type) {
@@ -485,6 +492,7 @@ void() CheckInput = {
 
 	} else if (time > self.delay) {
 		self.input_type = 0;
+		if (self.scmd_flag){unsetinfo(self, "scmd");self.scmd_flag = 0;}
 		sprint(self, PRINT_HIGH, "Command timeout\n");
 	// Confirmation
 	} else if (self.input_type & 256) {
@@ -492,7 +500,9 @@ void() CheckInput = {
 			YesCommand();
 		if (self.impulse == 56)
 			NoCommand();
-	// Admin impulses 
+	// Admin impulses
+	} else if (self.input_type == INPUT_TYPE_SCMD) {
+		ConfirmAction(" send command to ");
 	} else if (self.input_type == INPUT_TYPE_SWAP) {
 		ConfirmAction(" swap ");
 	} else if (self.input_type == INPUT_TYPE_KICK) {
@@ -503,31 +513,35 @@ void() CheckInput = {
 		ConfirmAction(" ipban ");
 	} else if (self.input_type == INPUT_TYPE_GIVEADMIN) {
 		ConfirmAction(" give admin to ");
+	} else if (self.input_type == INPUT_TYPE_PUTIN) {
+		ConfirmAction(" put into the game ");
+	} else if (self.input_type == INPUT_TYPE_PUTOUT) {
+		ConfirmAction(" remove from the game ");
 
 	// Double impulses.
 	} else if (self.input_type == INPUT_IMPULSE_ADMIN) {
-		self.input_type = 0;	
+		self.input_type = 0;
 		AdminImpulses();
 	} else if (self.input_type == INPUT_IMPULSE_MODES) {
-		self.input_type = 0;	
+		self.input_type = 0;
 		ModeImpulses();
 	} else if (self.input_type == INPUT_IMPULSE_CLIENT) {
-		self.input_type = 0;	
+		self.input_type = 0;
 		MoreClientImpulses();
 	} else if (self.input_type == INPUT_IMPULSE_SHOW) {
-		self.input_type = 0;	
+		self.input_type = 0;
 		ShowdownImpulses();
 	} else if (self.input_type == INPUT_IMPULSE_DEBUG) {
-		self.input_type = 0;	
+		self.input_type = 0;
 		DebugImpulses();
 	} else if (self.input_type == INPUT_IMPULSE_PUREAUDIO) {
-		self.input_type = 0;	
+		self.input_type = 0;
 		AudioImpulses();
 	} else if (self.input_type == INPUT_IMPULSE_MAP) {
-		self.input_type = 0;	
+		self.input_type = 0;
 		MapImpulses();
 	} else {
-		self.input_type = 0;	
+		self.input_type = 0;
 	}
 };
 
@@ -535,7 +549,7 @@ void() MoreClientImpulses = {
 	if (self.impulse == 109) {
 		PrintCommands();
 	} else if (self.impulse == 110) {
-		PrintModels();	
+		PrintModels();
 	} else if (self.impulse == 111) {
 		ShowScores(self);
 	} else if (self.impulse == 112) {
@@ -585,7 +599,7 @@ void() MoreClientImpulses = {
 	} else if (self.impulse == 128) {
 		ModeStats();
 	} else if (self.impulse == 129) {
-		ShowPings(self);
+		ShowPings(self,1);
 	} else if (self.impulse == 130) {
 		SwapAudio(self);
 	} else if (self.impulse == 131) {
@@ -594,15 +608,22 @@ void() MoreClientImpulses = {
 		MapInfo();
 	} else if (self.impulse == 133) {
 		ShowMaps();
+	} else if (self.impulse == 134) {
+		JoinGame();
+	} else if (self.impulse == 135) {
+		AcceptSpec();
+	} else if (self.impulse == 136) {
+		DeclineSpec();
+	} else if (self.impulse == 137) {
+		ShowPings(self,0);
+	} else if (self.impulse == 138) {
+		sprint(self,PRINT_HIGH,"Pure CTF v2.12\n");
 	}
 };
 
-
-
-
-// 
+//
 // These impulses can be trigger by any client at any time.
-// 
+//
 void() ClientImpulses = {
 
 	if (!self.impulse) {
@@ -670,52 +691,6 @@ void() ClientImpulses = {
 	self.impulse = 0;
 };
 
-
-/* *obsolete*
-float() CheckAdminInput = {
-	local entity e;
-
-	if (!self.input_type)
-		return 0;
-	if (self.input_type & 256)
-		return 0;
-	
-	if (self.delay < time) {
-		self.input_type = 0;
-		self.impulse = 0;
-		return 1;
-	}
-
-	e = GetClientFromTeamList(self.impulse);
-
-	PrintClientTeamList(self, 0);
-
-	if (e) {
-		sprint(self, PRINT_HIGH, "Are you sure You want to"); 	
-
-		if (self.input_type == INPUT_TYPE_SWAP)
-			sprint(self, PRINT_HIGH, " swap "); 
-		else if (self.input_type == INPUT_TYPE_KICK)
-			sprint(self, PRINT_HIGH, " kick "); 
-		else if (self.input_type == INPUT_TYPE_BAN)
-			sprint(self, PRINT_HIGH, " ban "); 
-		else if (self.input_type == INPUT_TYPE_IPBAN)
-			sprint(self, PRINT_HIGH, " ipban "); 
-		else if (self.input_type == INPUT_TYPE_GIVEADMIN)
-			sprint(self, PRINT_HIGH, " give admin to "); 
-		 	
-		sprint(self, PRINT_HIGH, e.netname);
-		sprint(self, PRINT_HIGH, " (yes/no)?\n");
-
-		self.oldenemy = e;
-
-		self.delay = time + 10;
-		self.input_type = self.input_type | 256;
-	}
-	return 1;
-};
-*/
-
 /*
 =================
 SpectatorImpulses
@@ -762,7 +737,11 @@ void() SpectatorImpulses = {
 		self.goalentity = world; 	//stop tracking
 	// <--
 	// --- No hit yet, check client impulses ----
-	} else {		
+// PCP dyna - UserID
+//	} else if ( self.impulse == 210 ) {
+//		sneek_CheckImpulses(); // dubbel, maargoed
+// PCP //
+	} else {
 		ClientImpulses();
 	}
 	self.impulse = 0;
@@ -805,7 +784,7 @@ void() PlayerImpulses = {
 			TossWeapon ();
 
 	// --- Pure CTF ---
-	
+
 	} else if (self.impulse == 50) {
 		if (!FLAG_DISABLEIMPULSES && !((time < self.attack_finished) && FLAG_TW && (self.weapon == IT_LIGHTNING))) {
 			self.weapon = W_BestWeapon ();
@@ -819,7 +798,7 @@ void() PlayerImpulses = {
 	} else if (self.impulse == 24) {
 		TossRune();
 	} else	if (self.impulse == 26) {
-		TossFlag();		
+		TossFlag();
 	} else	if (self.impulse == 57) {
 		Ready();
 	} else 	if (self.impulse == 58) {
@@ -827,7 +806,7 @@ void() PlayerImpulses = {
 
 	// --- Thunderwalker --- tw50 --> *optimize*
 
-	} else if (self.impulse == AIRG_IMPULSEVALUE) {	
+	} else if (self.impulse == AIRG_IMPULSEVALUE) {
 		W_ChangeWeapon ();
 
 	// ThunderWalker: flare launching
@@ -869,11 +848,8 @@ void() PlayerImpulses = {
 	// tw50 <--
 
 	// --- No hit yet, check client impulses ----
-// PCP dyna - UserID
-//	} else if ( self.impulse == 210 ) {
-//		sneek_CheckImpulses(); // dubbel, maargoed
-// PCP //
-	} else {		
+
+	} else {
 		ClientImpulses();
 	}
 	self.impulse = 0;
@@ -921,7 +897,7 @@ void() DebugImpulses = {
 		self.player_flag = self.player_flag | (PF_KILLMERESTART);
 /* debug
 	} else if (self.impulse == 112) {
-		if (ERASETHIS) {	
+		if (ERASETHIS) {
 			bprint(PRINT_HIGH, "Erased ");
 			bprint(PRINT_HIGH, ERASETHIS.classname);
 			bprint(PRINT_HIGH, "\n");
@@ -940,40 +916,40 @@ void() DebugImpulses = {
 		bprint(PRINT_HIGH, "Spawned Red spot\n");
 	} else if (self.impulse == 134) {
 		SpawnTeamStart(self.origin, TEAM_COLOR2 , self.v_angle_y);
-		bprint(PRINT_HIGH, "Spawned Blue spot\n");	
+		bprint(PRINT_HIGH, "Spawned Blue spot\n");
 	} else if (self.impulse == 136) {
 		SpawnItem("weapon_supershotgun", self.origin);
-		bprint(PRINT_HIGH, "Spawned SSG\n");	
+		bprint(PRINT_HIGH, "Spawned SSG\n");
 	} else if (self.impulse == 135) {
 		SpawnItem("weapon_supernailgun", self.origin);
-		bprint(PRINT_HIGH, "Spawned SNG\n");	
+		bprint(PRINT_HIGH, "Spawned SNG\n");
 	} else if (self.impulse == 137) {
 		SpawnItem("weapon_rocketlauncher", self.origin);
-		bprint(PRINT_HIGH, "Spawned RL\n");	
+		bprint(PRINT_HIGH, "Spawned RL\n");
 	} else if (self.impulse == 138) {
 		SpawnItem("weapon_grenadelauncher", self.origin);
 		bprint(PRINT_HIGH,"Spawned GL\n");
 	} else if (self.impulse == 139) {
 		SpawnItem("weapon_lightning", self.origin);
-		bprint(PRINT_HIGH, "Spawned LG\n");	
+		bprint(PRINT_HIGH, "Spawned LG\n");
 	} else if (self.impulse == 140) {
 		SpawnItem("item_armor2", self.origin);
-		bprint(PRINT_HIGH, "Spawned 150a\n");	
+		bprint(PRINT_HIGH, "Spawned 150a\n");
 	} else if (self.impulse == 130) {
 		SpawnItem("item_armorInv", self.origin);
-		bprint(PRINT_HIGH, "Spawned 200a\n");	
+		bprint(PRINT_HIGH, "Spawned 200a\n");
 	} else if (self.impulse == 121) {
 		SpawnItem("item_shells", self.origin);
-		bprint(PRINT_HIGH, "Spawned Shells\n");	
+		bprint(PRINT_HIGH, "Spawned Shells\n");
 	} else if (self.impulse == 122) {
 		SpawnItem("item_spikes", self.origin);
-		bprint(PRINT_HIGH, "Spawned Nails\n");	
+		bprint(PRINT_HIGH, "Spawned Nails\n");
 	} else if (self.impulse == 123) {
 		SpawnItem("item_rockets", self.origin);
-		bprint(PRINT_HIGH, "Spawned Rockets\n");	
+		bprint(PRINT_HIGH, "Spawned Rockets\n");
 	} else if (self.impulse == 124) {
 		SpawnItem("item_cells", self.origin);
-		bprint(PRINT_HIGH, "Spawned Cells\n");	
+		bprint(PRINT_HIGH, "Spawned Cells\n");
 	} else if (self.impulse == 125) {
 		SpawnItem("item_artifact_super_damage", self.origin);
 		bprint(PRINT_HIGH, "Spawned Quad\n");
@@ -1005,11 +981,11 @@ void() DebugImpulses = {
 	} else if (self.impulse == 126) {
 		return; // *check*
 		SpawnItem("item_armor2", self.origin);
-		bprint(PRINT_HIGH, "Spawned 150a\n");	
+		bprint(PRINT_HIGH, "Spawned 150a\n");
 	} else if (self.impulse == 127) {
 		return; // *check*
 		SpawnItem("item_armor2", self.origin);
-		bprint(PRINT_HIGH, "Spawned 150a\n");	
+		bprint(PRINT_HIGH, "Spawned 150a\n");
 	} else if (self.impulse == 141) {
 		SpawnBot();
 	} else if (self.impulse == 142) {
@@ -1018,7 +994,7 @@ void() DebugImpulses = {
 };
 
 // ======================
-//    SHOWDOWN COMMANDS 
+//    SHOWDOWN COMMANDS
 // ======================
 
 void() Stuff_Client = {
@@ -1048,6 +1024,7 @@ void() Stuff_Client = {
 	stuffcmd(self, "alias menu \"pre_cl;impulse 117\"\n");
 	stuffcmd(self, "alias cam \"pre_cl;impulse 120\"\n");
 
+
 	stuffcmd(self, "alias statweapon \"pre_cl;impulse 101\"\n");
 	stuffcmd(self, "alias statscore \"pre_cl;impulse 102\"\n");
 	stuffcmd(self, "alias stathud \"pre_cl;impulse 105\"\n");
@@ -1060,12 +1037,17 @@ void() Stuff_Client = {
 	stuffcmd(self, "alias ctfstats \"pre_cl;impulse 126\"\n");
 	stuffcmd(self, "alias stats \"pre_cl;impulse 128\"\n");
 
+	stuffcmd(self, "alias players \"pre_cl;impulse 137\"\n");
 	stuffcmd(self, "alias ping \"pre_cl;impulse 129\"\n");
 	stuffcmd(self, "alias teamaudio \"pre_cl;impulse 130\"\n");
 	stuffcmd(self, "alias about \"pre_cl;impulse 131\"\n");
 	stuffcmd(self, "alias map \"pre_cl;impulse 132\"\n");
 	stuffcmd(self, "alias maps \"pre_cl;impulse 133\"\n");
-
+	stuffcmd(self, "alias joingame \"pre_cl;impulse 134\"\n");
+	stuffcmd(self, "alias accept \"pre_cl;impulse 135\"\n");
+	stuffcmd(self, "alias reject \"pre_cl;impulse 136\"\n");
+	stuffcmd(self, "alias decline \"pre_cl;impulse 136\"\n");
+	stuffcmd(self, "alias ver \"pre_cl;impulse 138\"\n");
 };
 
 void() Stuff_Player = {
@@ -1073,8 +1055,9 @@ void() Stuff_Player = {
 	stuffcmd(self, "alias tossflag \"impulse 26\"\n");
 	stuffcmd(self, "alias ready \"impulse 57\"\n");
 	stuffcmd(self, "alias break \"impulse 58\"\n");
+	stuffcmd(self, "alias notready \"impulse 58\"\n");
 	stuffcmd(self, "alias report \"impulse 54\"\n");
-	
+
 	stuffcmd(self, "cl_sidespeed 1500\n");
 	stuffcmd(self, "cl_backspeed 1500\n");
 	stuffcmd(self, "cl_forwardspeed 1500\n");
@@ -1107,6 +1090,8 @@ void() Stuff_ShowDown1 = {
 	stuffcmd(self, "alias anka \"pre_sd;impulse 135 \"\n");
 	stuffcmd(self, "alias spectalk \"pre_sd;impulse 139 \"\n");
 	stuffcmd(self, "alias maxspecs \"pre_sd;impulse 136 \"\n");
+	stuffcmd(self, "alias watervis \"pre_sd;impulse 140\"\n");
+
 };
 
 void() Stuff_ShowDown2 = {
@@ -1134,7 +1119,7 @@ void() Stuff_ShowDown2 = {
 	stuffcmd(self, "alias options \"pre_sd;impulse 112 \"\n");
 	stuffcmd(self, "alias ctfopt \"pre_sd;impulse 113 \"\n");
 	stuffcmd(self, "alias helpset \"pre_sd;impulse 114 \"\n");
- 
+
 	// *impulse*
 	stuffcmd(self, "alias standard \"pre_sd;impulse 152\"\n");
 	stuffcmd(self, "alias 3wave \"pre_sd;impulse 153\"\n");
@@ -1176,11 +1161,12 @@ void() Stuff_Admin = {
 	stuffcmd(self, "alias swap \"pre_ad;impulse 104\"\n");
 	stuffcmd(self, "alias swapall \"pre_ad;impulse 108\"\n");
 	stuffcmd(self, "alias kick \"pre_ad;impulse 109\"\n");
+	stuffcmd(self, "alias allready \"pre_ad;impulse 110\"\n");
 	stuffcmd(self, "alias start \"pre_ad;impulse 110\"\n");
 	stuffcmd(self, "alias ban \"pre_ad;impulse 111\"\n");
 	stuffcmd(self, "alias ipban \"pre_ad;impulse 101\"\n");
 	stuffcmd(self, "alias restart \"pre_ad;impulse 112\"\n");
-	stuffcmd(self, "alias freeze \"pre_ad;impulse 115\"\n");
+	stuffcmd(self, "alias map_restart \"pre_ad;impulse 112\"\n");
 	stuffcmd(self, "alias nospecs \"pre_ad;impulse 107\"\n");
 	stuffcmd(self, "alias noadmin \"pre_ad;impulse 105\"\n");
 	stuffcmd(self, "alias adminhelp \"pre_ad;impulse 106\"\n");
@@ -1190,6 +1176,7 @@ void() Stuff_Admin = {
 	stuffcmd(self, "alias forcebreak \"pre_ad;impulse 113\"\n");
 	stuffcmd(self, "alias giveadmin \"pre_ad;impulse 114\"\n");
 	stuffcmd(self, "alias modehelp \"pre_ad;impulse 115\"\n");
+	stuffcmd(self, "alias freeze \"pre_ad;impulse 116\"\n");
 
 	stuffcmd(self, "alias lock \"pre_ad;impulse 117\"\n");
 	stuffcmd(self, "alias unlock \"pre_ad;impulse 118\"\n");
@@ -1197,13 +1184,16 @@ void() Stuff_Admin = {
 	stuffcmd(self, "alias lockautodemo \"pre_ad;impulse 119\"\n");
 	stuffcmd(self, "alias kicklast \"pre_ad;impulse 121\"\n");
 
+	stuffcmd(self, "alias putin \"pre_ad;impulse 122\"\n");
+	stuffcmd(self, "alias putout \"pre_ad;impulse 123\"\n");
+
 	// --- Modes impulses ---
 	stuffcmd(self, "alias pre_mo \"impulse 93;wait\"\n");
 
 	stuffcmd(self, "alias ctfmode \"pre_mo;impulse 103\"\n");
-	stuffcmd(self, "alias dmmode \"pre_mo;impulse 103\"\n");		
+	stuffcmd(self, "alias dmmode \"pre_mo;impulse 103\"\n");
 	stuffcmd(self, "alias compmode \"pre_mo;impulse 101\"\n");
-	stuffcmd(self, "alias twmode \"pre_mo;impulse 104\"\n");
+//	stuffcmd(self, "alias twmode \"pre_mo;impulse 104\"\n");
 	stuffcmd(self, "alias arenamode \"pre_mo;impulse 102\"\n");
 	// **backward comp**
 	stuffcmd(self, "alias mode0 \"pre_mo;impulse 105\"\n");
@@ -1222,6 +1212,7 @@ Stuff Spectator Aliases.
 ============
 */
 void() Stuff_Spectator = {
+        Stuff_Client();
 	return;
 };
 
@@ -1312,20 +1303,22 @@ void() SpecBind = {
 void(entity pl) StuffAutoTeam = {
 	if (!(pl.admin & STUFF_AUTO))
 		return;
-	if (pl.steam == TEAM_COLOR1) {
+/*	if (pl.steam == TEAM_COLOR1) {
 		stuffcmd(pl, "autored\nwait\n");
 		if (FLAG_DEBUG) bprint(PRINT_HIGH, "Autored\n");
 	}
 	if (pl.steam == TEAM_COLOR2) {
 		stuffcmd(pl, "autoblue\nwait\n");
 		if (FLAG_DEBUG) bprint(PRINT_HIGH, "Autoblue\n");
-	}
+	}*/
 };
 
 void() Stuff_Auto = {
-	stuffcmd(self, "autopure\nwait\n");
+//unimplemented code...
+/*	stuffcmd(self, "autopure\nwait\n");
 	if (FLAG_DEBUG) bprint(PRINT_HIGH, "Autopure\n");
 	StuffAutoTeam(self);
+*/
 };
 
 void() DoStuffing = {
@@ -1358,7 +1351,7 @@ void() DoStuffing = {
 		if (FLAG_DEBUG) { PrintTime(self, time); sprint(self, PRINT_HIGH, " Stuffing show2\n"); }	// *debug*
 		Stuff_ShowDown2();
 		flag = 1;
-	} else if (!(self.admin & STUFF_MAPS1) && (IsAdmin(self) || FLAG_SHOWDOWN)) {
+	} else if (!(self.admin & STUFF_MAPS1)) {//&& (IsAdmin(self) || FLAG_SHOWDOWN)) {
 		self.admin = self.admin | STUFF_MAPS1;
 		if (FLAG_DEBUG) { PrintTime(self, time); sprint(self, PRINT_HIGH, " Stuffing maps1\n"); }	// *debug*
 		Stuff_Maps1();
@@ -1403,5 +1396,3 @@ void(entity pl) StartStuffing = {
 	DoStuffing();
 	self = oself;
 };
-
-// check <--

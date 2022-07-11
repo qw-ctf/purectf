@@ -497,7 +497,6 @@ void() TeamCheckLock = {
 	local	float	pteam;
 	local string tp;
 
-
         if ( TEAMPLAY < 0 )
                 return;
 	if (!(TEAMPLAY & TEAM_LOCK_COLORS))

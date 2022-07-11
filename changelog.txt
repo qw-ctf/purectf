@@ -1,3 +1,10 @@
+0.04:
+Incorperated Pure CTF 2.12 by Dalcon
+Fixed Runedrop and Quaddrop bugs
+Added teamnames to mvd autorecording
+Added mapaliasses
+
+
 0.03:
 Added mvd autorecording
 MOTD configurable from config

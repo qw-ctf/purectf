@@ -15,13 +15,16 @@ string(float Team) GetShortTeamColor;
 
 // *inline*
 void() CheckDeveloper = {
-	if (cvar("developer"))
+//whats this spose to do besides be annoying!??
+/*	if (cvar("developer"))
 		return;
 	bprint(PRINT_HIGH, "\n****************************\n");
 	bprint(PRINT_HIGH, "The server's config must set \n");
 	bprint(PRINT_HIGH, "\"developer 1\" to use logging\n");
 	bprint(PRINT_HIGH, "****************************\n");
 	cvar_set("developer", "1");
+*/
+
 };
 
 // Log Ctfrank message.

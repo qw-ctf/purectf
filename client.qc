@@ -1,3 +1,4 @@
+//why doesn't unsetinfo work??
 
 float() GameOver = {		// *inline*
 	return (gameover || pregameover);
@@ -16,6 +17,95 @@ float EF_MASKRED =  127;
 float EF_MASKREDBLUE = 63;
 float EF_MASKALL =  55;
 
+
+void () JoinGame = {
+	local entity e;
+	local string st;
+
+/*	st = ftos (SPEC_JOINING_FLAG);
+	bprint(PRINT_HIGH, "Flag:");
+	bprint(PRINT_HIGH, st);
+	bprint(PRINT_HIGH, "\n");
+	if (!SPEC_JOINING_FLAG) {bprint(PRINT_HIGH, "Flag NOT SET\n");}
+	if (SPEC_JOINING_FLAG) {bprint(PRINT_HIGH, "Flag Set\n");}
+*/
+	if (self.classname != "spectator") return 0;
+	if (SPEC_JOINING_FLAG == 1) {
+	  sprint(self, PRINT_HIGH, SPEC_JOINING.netname);
+	  sprint(self, PRINT_HIGH, " attempting to join, please wait ");
+	  st = ftos(SPEC_JOINING.delay - time);
+	  sprint(self, PRINT_HIGH, st);
+	  sprint(self, PRINT_HIGH, " seconds.\n");
+	  return 0;
+	}
+
+	SPEC_JOINING_FLAG = 1;
+	SPEC_JOINING = self;
+	SPEC_JOINING.delay = time + 8;
+	bprint(PRINT_CHAT, self.netname);
+	bprint(PRINT_CHAT, " has requested to join the game.\n");
+	bprint(PRINT_CHAT, "Type /ACCEPT in Console to let them in, /REJECT to reject.\n");
+
+/* //changed mind, no point making it team specific unless restrict players ability to change sides...
+	e = CLIENT_CHAIN;
+	while(e) {
+		if ((e.classname != "spectator") && (e.team? == TEAMCOLOR2)){
+		  sprint(e, PRINT_CHAT, self.netname);
+		  sprint(e, PRINT_CHAT, " wants to JOIN your team. Type /ACCEPT to accept.\n");
+		}
+		e = e.clientchain;
+	}
+*/
+};
+
+void () AcceptSpec = {
+	local float maxc;
+
+	if (!(IsAdmin(self)) && (self.classname == "spectator")) return 0;
+
+	if (SPEC_JOINING_FLAG == 0) return 0;
+
+//	if (!SPEC_JOINING) {SPEC_JOINING_FLAG = 0;return 0;} //in case requester drops then someone accepts the invite...
+
+/*	if (FLAG_COMPETITION && !FLAG_STANDBY && !GameOver()) { //if in comp mode and game in progress
+	  maxc = cvar("maxclients");
+	  maxc = maxc + 1;
+	  SetVar(CVARINFO, "maxclients", maxc);
+	}
+*/
+	bprint(PRINT_HIGH, self.netname);
+	bprint(PRINT_HIGH, " has accepted ");
+	bprint(PRINT_HIGH, SPEC_JOINING.netname);
+	bprint(PRINT_HIGH, " into the game.\n");
+
+	setinfo(SPEC_JOINING,"spectator",0);
+ 	if (self.classname == "spectator")
+ 	  setinfo(SPEC_JOINING,"zi",TEAM_COLOR1);
+ 	else
+ 	  setinfo(SPEC_JOINING,"zi",self.steam);
+ 	  
+	if (ProxyType(SPEC_JOINING))
+	  stuffcmd(SPEC_JOINING, "say .reconnect");
+	else
+  	  stuffcmd(SPEC_JOINING, "disconnect;wait;reconnect");
+
+	stuffcmd(SPEC_JOINING, "\n");
+
+	SPEC_JOINING_FLAG = 0;
+};
+
+void () DeclineSpec = {
+	if (!(IsAdmin(self)) && (self.classname == "spectator")) return 0;
+	if (!SPEC_JOINING_FLAG) return 0;
+	if (!SPEC_JOINING) {SPEC_JOINING_FLAG = 0;return 0;} //in case requester drops then someone accepts the invite...
+
+	bprint(PRINT_HIGH, self.netname);
+	bprint(PRINT_HIGH, " has declined ");
+	bprint(PRINT_HIGH, SPEC_JOINING.netname);
+	bprint(PRINT_HIGH, "'s request to join the game.\n");
+
+	SPEC_JOINING_FLAG = 0;
+};
 
 //
 // Set player glow.
@@ -44,7 +134,7 @@ void () CheckDimLight = {
 			self.effects = self.effects | EF_DIMLIGHT ;
 		else if (self.invincible_finished > time)
 			self.effects = self.effects | EF_DIMLIGHT ;
-		else if (self.super_damage_finished > time) 						
+		else if (self.super_damage_finished > time)
 			self.effects = self.effects | EF_DIMLIGHT ;
 		else
 			self.effects = self.effects & EF_MASKALL;
@@ -70,7 +160,7 @@ float	intermission_exittime;
 // Use mangle instead of angle, so you can set pitch or roll as well as yaw.  'pitch roll yaw'
 //
 void() info_intermission =
-{	
+{
 };
 
 //
@@ -79,7 +169,7 @@ void() info_intermission =
 void() SetChangeParms = {
 	if (gamestart)
 		parm10 = -1;
-	else 
+	else
 		parm10 = self.steam;
 	parm12 = self.admin;
 	GetRank(self);
@@ -122,7 +212,7 @@ void() DecodeLevelParms = {
 			sprint(self, PRINT_HIGH, "Restored from team ");
 			tp =ftos(self.lastteam);
 			sprint(self, PRINT_HIGH, tp);
-			sprint(self, PRINT_HIGH, "\n"); 
+			sprint(self, PRINT_HIGH, "\n");
 		}
 	} else {
 		if (TeamColorIsLegal(parm10))
@@ -167,7 +257,7 @@ void(float i, float w, float h, float a, float v) SetItems = {
 		self.armorvalue = a;
 		self.armortype = v;
 		self.weapon = w;
-}; 
+};
 
 //
 // Initialize items according to servermod.
@@ -191,10 +281,10 @@ void(entity pl) SetFreshItems = {
 		SetItems(IT_AXE, IT_AXE, 100, 0, 0);
 		SetAmmo(0, 0, 0, 0);
 	} else if (FLAG_ARENA && IsArenaPlayer(self)) {
-		SetItems(255 | IT_AXE | IT_ARMOR2, IT_ROCKET_LAUNCHER, 100, 150, 0.60);	
+		SetItems(255 | IT_AXE | IT_ARMOR2, IT_ROCKET_LAUNCHER, 100, 150, 0.60);
 		SetAmmo(50,50,20,25);
 	} else if (FLAG_ARENA && FLAG_COMPETITION) {
-		SetItems(255 | IT_AXE | IT_ARMOR2, IT_ROCKET_LAUNCHER, 100, 150, 0.60);	
+		SetItems(255 | IT_AXE | IT_ARMOR2, IT_ROCKET_LAUNCHER, 100, 150, 0.60);
 		SetAmmo(50,50,20,25);
 	} else if (FLAG_ARENA) {
 		SetItems(IT_AXE, IT_AXE, 100, 0, 0);
@@ -203,13 +293,13 @@ void(entity pl) SetFreshItems = {
 		SetItems(255 | IT_AXE | IT_ARMOR3, IT_ROCKET_LAUNCHER, 250, 200, 0.80);
 		SetAmmo(255, 255, 255, 255);
 	} else if (DEATHMATCH == 4) {
-		SetItems(255 | IT_AXE | IT_ARMOR3, IT_ROCKET_LAUNCHER, 250, 200, 0.80);	
+		SetItems(255 | IT_AXE | IT_ARMOR3, IT_ROCKET_LAUNCHER, 250, 200, 0.80);
 		SetAmmo(255, 255, 255, 255);
 		self.items = self.items | IT_INVULNERABILITY;
 		self.invincible_time = 1;
 		self.invincible_finished = time + 3;
 	} else if (DEATHMATCH == 5) {
-		SetItems(255 | IT_AXE | IT_ARMOR3, IT_ROCKET_LAUNCHER, 250, 200, 0.80);	
+		SetItems(255 | IT_AXE | IT_ARMOR3, IT_ROCKET_LAUNCHER, 250, 200, 0.80);
 		SetAmmo(30,80,10,30);
 		self.items = self.items | IT_INVULNERABILITY;
 		self.invincible_time = 1;
@@ -224,7 +314,7 @@ void(entity pl) SetFreshItems = {
 	if ((SET_HOOK == IS_OFF) || !FLAG_HOOK) {
 		self.items = self.items - (self.items & IT_GRAPPLE);
 	}
-	if (FLAG_AIRFIST) 
+	if (FLAG_AIRFIST)
 		self.items = self.items | IT_AIRGUN;		// tw50
 	self = oself;
 };
@@ -257,7 +347,7 @@ entity() FindIntermission =
 	spot = find (world, classname, "info_player_start");
 	if (spot)
 		return spot;
-	
+
 	objerror ("FindIntermission: no spot");
 };
 
@@ -277,7 +367,7 @@ void() IntermissionThink = {
 
 	if (!self.button0 && !self.button1 && !self.button2)
 		return;
-	
+
 	GotoNextMap ();
 };
 
@@ -304,7 +394,7 @@ void() execute_changelevel =
 {
 	local entity	pos,e;
 	intermission_running = 1;
-	
+
 	// enforce a wait time before allowing changelevel
 	intermission_exittime = time + 8;
 	pos = FindIntermission ();
@@ -331,12 +421,12 @@ void() execute_changelevel =
 		other.movetype = MOVETYPE_NONE;
 		other.modelindex = 0;
 		other = find (other, classname, "player");
-	}	
+	}
 };
 
 
 // *obsolete* ??? (kanske "changelevel" också?)
-void() changelevel_touch = 
+void() changelevel_touch =
 {
 	local entity	pos;
 
@@ -352,7 +442,7 @@ void() changelevel_touch =
 
 	bprint (PRINT_HIGH, other.netname);
 	bprint (PRINT_HIGH," exited the level\n");
-	
+
 	nextmap = self.map;
 
 	SUB_UseTargets ();
@@ -411,7 +501,7 @@ void() respawn =
 {
 	// make a copy of the dead body for appearances sake
 	CopyToBodyQue (self);
-	// respawn		
+	// respawn
 	PutClientInServer ();
 };
 
@@ -432,8 +522,8 @@ void() ClientKill =
 	} else if (!IsObserver(self) && FLAG_ARENA) {
 		sprint(self, PRINT_HIGH, "Can't suicide in arena mode.\n");
 	} else if (FREEZEFLAGS & (FREEZE_MOVEMENT | FREEZE_GRAVITY)) {
-		return;	
-	} else if (self.suicide_count > 3 && !FLAG_DEBUG) {
+		return;
+	} else if (self.suicide_count > 30 && !FLAG_DEBUG) {
 		sprint(self, PRINT_HIGH, "You have suicided too much already.\n");
 	} else {
 		bprint (PRINT_MEDIUM, self.netname);
@@ -465,11 +555,11 @@ entity() SelectSpawnPoint =
 	spot = find (world, classname, "testplayerstart");
 	if (spot)
 		return spot;
-		
+
 	//CTF spawns
 	if (!self.killed) {
 		spot = TeamCaptureSpawn();
- 		if (spot != world) 
+ 		if (spot != world)
  			return spot;
 	} else if (gamestart && self.killed) {
 		lastvotespawn = find(lastvotespawn, classname, "info_vote_destination");
@@ -484,11 +574,11 @@ entity() SelectSpawnPoint =
 		lastspawn = find (lastspawn, classname, "info_player_deathmatch");
 	if (lastspawn != world)
 		return lastspawn;
-	
+
 	spot = find (world, classname, "info_player_start");
 	if (!spot)
 		error ("PutClientInServer: no info_player_start on level");
-	
+
 	return spot;
 };
 
@@ -509,7 +599,7 @@ void() PutClientInServer =
 
 
 	serverflags = 0; // make sure
-	
+
 	// --- Set Correct player mode ---
 	if (FLAG_STANDBY) {
 		if (forceready || CountDown)				// *check*
@@ -519,9 +609,9 @@ void() PutClientInServer =
 				self.classname = "notready";
 		}
 	} else {
-		if (IsObserver(self)) 
+		if (IsObserver(self))
 			self.classname = "observer";
-		else 
+		else
 			self.classname = "player";
 	}
 	if (FLAG_ARENA && !FLAG_COMPETITION && (!ArenaHasPlayers || !IsArenaPlayer(self))) {
@@ -535,10 +625,10 @@ void() PutClientInServer =
 
 
 	// --- *pure* fix for respawing telefrags ---
-	if (FLAG_DISABLE_NOSOLID_RESPAWN) 
+	if (FLAG_DISABLE_NOSOLID_RESPAWN)
 		self.solid = SOLID_SLIDEBOX;
-	else 
-		self.solid = SOLID_NOT; 
+	else
+		self.solid = SOLID_NOT;
 
 	// --- Standard parameters ---
 	self.health = 100;
@@ -576,7 +666,7 @@ void() PutClientInServer =
 			x = (self.twflags & TW_TIMES);
 			self.twflags = self.twflags - x;
 			x = x - 1;
-			self.twflags = self.twflags | (x);			
+			self.twflags = self.twflags | (x);
 		}
 	}
 // tw50 <--
@@ -588,7 +678,7 @@ void() PutClientInServer =
 	self.th_pain = player_pain;
 	self.th_die = PlayerDie;
 	self.deadflag = DEAD_NO;
-	SetPlayerSpeed(self);		
+	SetPlayerSpeed(self);
 
 	// --- Setup for player models ----
 	setmodel (self, "progs/eyes.mdl");
@@ -615,7 +705,7 @@ void() PutClientInServer =
 	}
 	if (IsObserver(self)) {
 		SetObserver(self);
-		if (self.killed && FLAG_ARENA) 
+		if (self.killed && FLAG_ARENA)
 			spot = self;		// respawn where you last died in clanarena *check*
 	} else {
 		makevectors(spot.angles);
@@ -626,13 +716,13 @@ void() PutClientInServer =
 	self.origin = spot.origin + '0 0 1';
 	self.angles = spot.angles;
 	self.fixangle = TRUE;		// turn this way immediately
-	
+
 	// ---  grapple stuff ---
 	self.on_hook = FALSE;
 	self.hook_out = FALSE;
 
 	// Check for ready
-	if (FLAG_STANDBY || (CountDown && FLAG_COMPETITION)) 
+	if (FLAG_STANDBY || (CountDown && FLAG_COMPETITION))
 		CheckReady();
 
 /* *check* autopause disabled for now
@@ -726,7 +816,7 @@ void() CheckRules =
 		return;
 
 	if (FREEZEFLAGS & FREEZE_WORLD)			// ***pure*** Paused (v1.51)
-		return;		
+		return;
 
 	if (gamestart) {
 		if ((vote_leader != world) && voteexit_time && (time > voteexit_time)) {
@@ -743,13 +833,14 @@ void() CheckRules =
 	}
 
 	// *optimize*
-	o = PLAYER_CHAIN;
-	while(o) {
-		if (FRAGLIMIT && (o.frags >= FRAGLIMIT))
-			EndMatch();
-		o = o.clientchain;
+	if (!FLAG_STANDBY) { //Ignore fraglimit during standby in comp mode.
+		o = PLAYER_CHAIN;
+		while(o) {
+			if (FRAGLIMIT && (o.frags >= FRAGLIMIT))
+				EndMatch();
+			o = o.clientchain;
+		}
 	}
-
 
 // ***pure*** --> New Timelimitcheck
 
@@ -757,7 +848,7 @@ void() CheckRules =
 		if (time >= CountDown) {
 			CountDown = 0;
 			COUNTDOWN_FUNC();
-			if (FLAG_RASOUNDS) 
+			if (FLAG_RASOUNDS)
 				soundall("ra/fight.wav");
 			TraversePlayers(RemoveCenterprint);
 		}
@@ -783,7 +874,7 @@ void() PlayerDeathThink =
 		forward = forward - 20;
 		if (forward <= 0)
 			self.velocity = '0 0 0';
-		else	
+		else
 			self.velocity = forward * normalize(self.velocity);
 	}
 
@@ -813,7 +904,7 @@ void() PlayerJump =
 
 	if (self.flags & FL_WATERJUMP)
 		return;
-	
+
 	if (self.waterlevel >= 2)
 	{
 // play swiming sound
@@ -835,7 +926,7 @@ void() PlayerJump =
 	if ( !(self.flags & FL_JUMPRELEASED) )
 		return;		// don't pogo stick
 
-	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);	
+	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 	self.button2 = 0;
 
 // player jumping sound
@@ -861,7 +952,7 @@ void() WaterMove =
 
 
 	if (!self.waterlevel) {
-		if (self.flags & FL_INWATER) {	
+		if (self.flags & FL_INWATER) {
 			// play leave water sound
 			sound (self, CHAN_BODY, "misc/outwater.wav", 1, ATTN_NORM);
 			self.flags = self.flags - FL_INWATER;
@@ -921,11 +1012,11 @@ void() WaterMove =
 			self.pain_finished = time + 1;
 		}
 	}
-	
+
 	if (!self.waterlevel)
 	{
 		if (self.flags & FL_INWATER)
-		{	
+		{
 			// play leave water sound
 			sound (self, CHAN_BODY, "misc/outwater.wav", 1, ATTN_NORM);
 			self.flags = self.flags - FL_INWATER;
@@ -942,7 +1033,7 @@ void() WaterMove =
 				if (self.radsuit_finished > time)
 					self.dmgtime = time + 1;
 				else
-					self.dmgtime = time + 0.2;		
+					self.dmgtime = time + 0.2;
 				T_Damage (self, world, world, 10*self.waterlevel);
 			}
 		}
@@ -956,7 +1047,7 @@ void() WaterMove =
 		}
 	}
 	if ( !(self.flags & FL_INWATER) )
-	{	
+	{
 
 // player enter water sound
 
@@ -969,7 +1060,7 @@ void() WaterMove =
 
 		self.flags = self.flags + FL_INWATER;
 		self.dmgtime = 0;
-	}	
+	}
 };
 
 void() CheckWaterJump =
@@ -979,7 +1070,7 @@ void() CheckWaterJump =
 // check for a jump-out-of-water
 	makevectors (self.angles);
 	start = self.origin;
-	start_z = start_z + 8; 
+	start_z = start_z + 8;
 	v_forward_z = 0;
 	normalize(v_forward);
 	end = start + v_forward*24;
@@ -1025,7 +1116,7 @@ void() PlayerPreThink =
 				ScoreAddDisconnect(self);
 				self.frags = 0;
 			}
-			if ((self.steam == TEAM_COLOR1))			
+			if ((self.steam == TEAM_COLOR1))
 				self.steam = TEAM_COLOR2;
 			else
 				self.steam = TEAM_COLOR1;
@@ -1042,17 +1133,17 @@ void() PlayerPreThink =
 	}
 
 	// Pure: Stuff that you don't need every frame. (Done about every 1-2 sec)
-	PeriodicCheck();	
+	PeriodicCheck();
 
 	// Check intermission buttons
 	if (intermission_running > 0) {
 		IntermissionThink ();
-		return;			
+		return;
 	}
 
 	// intermission or finale
 	if (self.view_ofs == '0 0 0')
-		return;		
+		return;
 
 	makevectors (self.v_angle);		// This IS still used. :)
 
@@ -1078,16 +1169,16 @@ void() PlayerPreThink =
 	// Check for drowning, lava and slime.
 	WaterMove ();
 
-	// Pure: Respawntelefrag / standbytelefrag fix: Don't make player solid 
+	// Pure: Respawntelefrag / standbytelefrag fix: Don't make player solid
 	//       until there is no one near, or you could get stuck.
-	if (self.solid == SOLID_NOT) {	
+	if (self.solid == SOLID_NOT) {
 		flag = 0;
 		maxv = (vlen(VEC_HULL_MAX) * 1.2);	// player bounding box + 20% margin // *opt*
-		e = findradius(self.origin, maxv); 
+		e = findradius(self.origin, maxv);
 		while (e) {
 			if (((e.classname == "player") || (e.classname == "ready") || (e.classname == "notready")) && (e != self)) { // *opt*
 				e.solid = SOLID_NOT;		// *check* nonsolids?
-				flag = 1; 
+				flag = 1;
 			}
 			e = e.chain;
 		}
@@ -1116,7 +1207,7 @@ void() PlayerPreThink =
 				if (self.armorvalue > ARMORMAX)
 					self.armorvalue = ARMORMAX;
 				RegenerationSound();
-				
+
 			}
 			RUNEREGENTIME = time + 0.5;
 		}
@@ -1153,8 +1244,8 @@ void() PlayerPreThink =
 		}
 
 		// Check for self destruct
-		if (!(self.twflags & TW_TIMES)) {		
-			if (self.twflags & TW_BOOMFLAG) 
+		if (!(self.twflags & TW_TIMES)) {
+			if (self.twflags & TW_BOOMFLAG)
 // *obsolete*	(old boom check)	if (self.boom < time && self.boom != 0)
 				hayden();
 		}
@@ -1173,7 +1264,7 @@ void() PlayerPreThink =
         if (self.on_hook)
                 Service_Grapple ();
 };
-	
+
 /*
 ================
 CheckPowerups
@@ -1205,7 +1296,7 @@ void() CheckPowerups =
 				sound (self, CHAN_AUTO, "items/inv2.wav", 1, ATTN_NORM);
 				self.invisible_time = time + 1;
 			}
-			
+
 			if (self.invisible_time < time)
 			{
 				self.invisible_time = time + 1;
@@ -1219,7 +1310,7 @@ void() CheckPowerups =
 			self.invisible_finished = 0;
 			self.invisible_time = 0;
 		}
-		
+
 		// use the eyes
 		if (self.modelindex != modelindex_eyes) {
 			self.frame = 0;
@@ -1228,7 +1319,7 @@ void() CheckPowerups =
 	}
 	else {
 		// Check for Multiweapon
-		if (FLAG_MULTIWEAPON) 
+		if (FLAG_MULTIWEAPON)
 			set_player_weapon();
 		else
 			if (self.modelindex != modelindex_player) {
@@ -1249,14 +1340,14 @@ void() CheckPowerups =
 				sound (self, CHAN_AUTO, "items/protect2.wav", 1, ATTN_NORM);
 				self.invincible_time = time + 1;
 			}
-			
+
 			if (self.invincible_time < time)
 			{
 				self.invincible_time = time + 1;
 				stuffcmd(self, "bf\n");
 			}
 		}
-		
+
 		if (self.invincible_finished < time)
 		{	// just stopped
 			self.items = self.items - IT_INVULNERABILITY;
@@ -1288,8 +1379,8 @@ void() CheckPowerups =
 				stuffcmd(self, "bf\n");
 				sound (self, CHAN_AUTO, "items/damage2.wav", 1, ATTN_NORM);
 				self.super_time = time + 1;
-			}	  
-			
+			}
+
 			if (self.super_time < time)
 			{
 				self.super_time = time + 1;
@@ -1316,9 +1407,9 @@ void() CheckPowerups =
 //			self.effects = self.effects | EF_DIMLIGHT;
 //		else
 //			self.effects = self.effects - (self.effects & EF_DIMLIGHT);
-	}	
+	}
 
-// suit	
+// suit
 	if (self.radsuit_finished)
 	{
 		self.air_finished = time + 12;		// don't drown
@@ -1333,7 +1424,7 @@ void() CheckPowerups =
 				sound (self, CHAN_AUTO, "items/suit2.wav", 1, ATTN_NORM);
 				self.rad_time = time + 1;
 			}
-			
+
 			if (self.rad_time < time)
 			{
 				self.rad_time = time + 1;
@@ -1347,7 +1438,7 @@ void() CheckPowerups =
 			self.rad_time = 0;
 			self.radsuit_finished = 0;
 		}
-	}	
+	}
 
 	// Check to see about DIMLIGHT effects
 	CheckDimLight();
@@ -1386,13 +1477,13 @@ void() PlayerPostThink =
 	}
 
 
-	// check to see if player landed and play landing sound	
+	// check to see if player landed and play landing sound
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) )
 	{
 		if (self.watertype == CONTENT_WATER) {
 			sound (self, CHAN_BODY, "player/h2ojump.wav", 1, ATTN_NORM);
 		} else if (self.jump_flag < -650) {
-			T_Damage (self, world, world, 5); 
+			T_Damage (self, world, world, 5);
 			sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
 			self.deathtype = "falling";
 		} else {
@@ -1417,7 +1508,7 @@ void() PlayerPostThink =
 			ERASETHIS.effects = ERASETHIS.effects - (ERASETHIS.effects & (EF_DIMLIGHT | EF_BLUE));
 		dir = aim (self, 100000);
 		local	vector	src;
-	
+
 		makevectors(self.v_angle);
 		src = self.origin + v_forward*10;
 		src_z = self.absmin_z + self.size_z * 0.7;
@@ -1439,11 +1530,11 @@ void() PlayerPostThink =
 //
 
 void() connectthink = {
+	unsetinfo (self,"zi");
 	local entity e;
 	e = self;
 	self = self.owner;
-	remove(e);	
-
+	remove(e);
 	if (!FLAG_COMPETITION)
 		StartPlayerDemo(self);
 	StartStuffing(self);
@@ -1460,6 +1551,34 @@ void() ClientConnect =
 {
 	local string tp;
 	local entity e;
+	local float p;
+	local string ks;
+
+ 	ks = infokey(self,"zi");
+	if ((ks != "4") && (ks != "13")) {
+	if (FLAG_COMPETITION && !FLAG_STANDBY && !GameOver())  { //if in comp mode and game in progress
+		sprint(self, PRINT_HIGH, "\nMatch in progress.\n");
+		sprint(self, PRINT_HIGH, "\nEnter /reconnect to join as a spectator.\n\n");
+		sprint(self, PRINT_HIGH, "\nWhen spectating enter /joingame to ask to play.\n\n");
+		stuffcmd(self, "play doors/drclos4\n");
+		stuffcmd(self, "spectator 1");
+		stuffcmd(self, "\n");
+		
+		if (ProxyType(self))
+	  	  stuffcmd(self, "say .reconnect");
+		else
+  	  	  stuffcmd(self, "disconnect");
+		stuffcmd(self, "\n");
+		self.player_flag = PF_DENIED;//indicates they were denied before joining server
+		
+	        return;
+	}
+	}
+	
+	if (FLAG_DEBUG){
+	bprint (PRINT_HIGH, self.netname);
+	bprint (PRINT_HIGH, " is about to enter the game\n");
+	}
 	UpdateVariables();
 	DecodeLevelParms();
 
@@ -1468,8 +1587,9 @@ void() ClientConnect =
 	e.nextthink = time + 3;
 	e.think = connectthink;
 	e.owner = self;
-	
+
 	// Broadcast connect.
+	if (infokey(self, "xport") == "x") p = 1;
 	bprint (PRINT_HIGH, self.netname);
 	bprint (PRINT_HIGH, " entered the game");
 // PCP dyna - UserID
@@ -1494,12 +1614,13 @@ void() ClientConnect =
 	}
 	sprint(self, PRINT_HIGH, "\n");
 // PCP dyna - Version
-	sprint(self, PRINT_HIGH, "PureCTF Pro 0.03\n(Type áâïõô for more info.)\n");
+	sprint(self, PRINT_HIGH, "PureCTF Pro 0.04\n(Type áâïõô for more info.)\n");
 // PCP //
 	sprint(self, PRINT_HIGH, "Type ÃÏÍÍÁÎÄÓ or Íåîõ for commands.\n\n");
 
-	// Connect setup	
+	// Connect setup
 	CheckInfokey();				// Check Setinfo
+ 	if (p == 1) self.admin = 32;
 	self.join_time = time;			// GSLOG
 	self.motd_endtime = time + 5;
 	if (FLAG_DEBUG)
@@ -1511,6 +1632,19 @@ void() ClientConnect =
 	// *check* *obsolete*	self.frags = 0;
 
 	// Check if we need to set teams
+ 	ks = infokey(self,"zi");
+ 	if ((ks == "13") || (ks == "4")) {
+    	  if (ks == "13") {
+    	    self.steam = 13;
+	    self.lastteam = 13;
+	  } else {
+    	    self.steam = 4;
+	    self.lastteam = 4;
+	  }
+	  
+	  self.player_flag = self.player_flag | (PF_STUFFCOLOR);
+	  UpdateClientChain();
+ 	} else {
  	if (parm10 < 0 || self.steam < 0) {
 		GSPlayerConnect(self);			// GSLOG
 	        if (TEAMPLAY & TEAM_LOCK_COLORS) { // force a stuff cmd in think
@@ -1523,7 +1657,8 @@ void() ClientConnect =
 	} else {
 		GSPlayer(self);				// GSLOG
 	}
-
+	}
+	
 	// Arena
 	if (FLAG_ARENA)
 		PutinQue(self);
@@ -1539,7 +1674,6 @@ void() ClientConnect =
 	LAST_CONNECTED = self;
 };
 
-
 /*
 ===========
 ClientDisconnect
@@ -1553,19 +1687,27 @@ void() ClientDisconnect =
 	local entity e;
 	local string tp;
 	local float x;
+	local float maxc;
 
-	// let everyone else know
-	tp = ftos(self.frags);
-	bprint (PRINT_HIGH, self.netname);
-	bprint (PRINT_HIGH, " left the game with ");
-	bprint (PRINT_HIGH, tp);
-	bprint (PRINT_HIGH, " frags");
-	if (!FLAG_STANDBY) {
-		bprint(PRINT_HIGH, " at ");
-		PrintCurrentTime2All();
+/*	if (FLAG_COMPETITION && !FLAG_STANDBY && !GameOver()) {
+	  maxc = cvar("maxclients");
+	  maxc = maxc - 1;
+	  SetVar(CVARINFO, "maxclients", maxc);
 	}
-	bprint(PRINT_HIGH, "\n");
-
+*/
+	// let everyone else know
+	if (self.player_flag != PF_DENIED) {
+		tp = ftos(self.frags);
+		bprint (PRINT_HIGH, self.netname);
+		bprint (PRINT_HIGH, " left the game with ");
+		bprint (PRINT_HIGH, tp);
+		bprint (PRINT_HIGH, " frags");
+		if (!FLAG_STANDBY) {
+			bprint(PRINT_HIGH, " at ");
+			PrintCurrentTime2All();
+		}
+		bprint(PRINT_HIGH, "\n");
+	
 	// Recover his Teamscore
 	ScoreAddDisconnect(self);
 
@@ -1576,6 +1718,7 @@ void() ClientDisconnect =
 	DropRune();
 	TeamCaptureDropFlagOfPlayer(self);
 	set_suicide_frame ();
+	}//end of stuff to do if wasn't denied access b4 joining game
 
 	self.player_flag = self.player_flag | PF_GHOST;
 	self.steam = -1;
@@ -1595,7 +1738,7 @@ void() ClientDisconnect =
 	}
 	if (TOTALPLAYERS == 0) {
 		EmptyServer();
-	} 	
+	}
 
 // ***competition***
 
@@ -1621,7 +1764,7 @@ void(entity targ, string logmess, string deathmess) PrintSuicide = {
 
 void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 
-	// *XXX* EXPERT CTF variable for 
+	// *XXX* EXPERT CTF variable for
 	// flag/flag carrier defense bonus determination
 	local	entity head;
 	local float flag_radius;
@@ -1633,18 +1776,18 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 
 	rnum = random();
 
-	if (targ.classname != "player")	
+	if (targ.classname != "player")
 		return;				// players only please
 
 
-	// *XXX* EXPERT CTF: 
+	// *XXX* EXPERT CTF:
 	// When the flag carrier dies, reset the last_hurt_carrier field in
 	// all players on the opposite team from the flag carrier.  The carrier
 	// has been killed, so there is no longer a reason to award points for
 	// killing off his assailants
 	if (targ.player_flag & PF_GOTFLAG) {
 		head = find(world, classname, "player");
-		while (head != world) {	
+		while (head != world) {
 			if (!SameTeam(head, targ, world))
 			head.last_hurt_carrier = -10;
 			head = find(head, classname, "player");
@@ -1689,7 +1832,7 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 
 		targ.frags = targ.frags - 1;
 		logfrag (targ, targ);
-		LogPlayerSuicide(targ, "telefrag");	//GSLog	
+		LogPlayerSuicide(targ, "telefrag");	//GSLog
 		return;
 	}
 
@@ -1704,7 +1847,7 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 		return;
 		// *check* add logging
 	}
-	
+
 	// Ok, now comes the general "frag" tests
 	if (attacker.classname == "player") {
 
@@ -1727,7 +1870,7 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 				LogPlayerSuicide(targ, "discharge");		//GSLog
 			} else if (targ.weapon == IT_GRENADE_LAUNCHER) {
 				bprint (PRINT_MEDIUM," tries to put the pin back in\n");
-				LogPlayerSuicide(targ, "grenade");		//GSLog	
+				LogPlayerSuicide(targ, "grenade");		//GSLog
 			} else if (rnum) {
 				bprint (PRINT_MEDIUM," becomes bored with life\n");
 				LogPlayerSuicide(targ, "rocket");			//GSLog
@@ -1744,17 +1887,17 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 
 			if (!TeamFragPenalty(targ, attacker)) {
 
- 				// the attacker is award the normal one frag.. now we 
+ 				// the attacker is award the normal one frag.. now we
  				// determine if he gets any bonuses
 				logfrag (attacker, targ);
    				attacker.frags = attacker.frags + 1;
-   
+
 				// Maybe we killed a carrier and get a bonus?
  				if ((targ.player_flag & PF_GOTFLAG) && (!SameTeam(targ, attacker, world))) {
 
-					// Save this to get assists 
+					// Save this to get assists
 					attacker.last_fragged_carrier = time;
- 
+
 					// *XXX* EXPERT CTF: give player only the normal amount of frags
 					// if the carrier has only had the flag for a few seconds, to
 					// prevent ppl intentionally allowing enemies to grab the flag,
@@ -1785,21 +1928,21 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 					}
 //***logbug <--
 				} // end carrier kill
-			
+
  				// *XXX* EXPERT CTF
  				// This code checks for all game-critical kills OTHER THAN fragging the enemy
  				// flag carrier, like killing players who are trying to kill your flag carrier
  				// or trying to grab your flag, and hands out bonus frags.
- 	
+
  				// The two variables below track whether special bonus frags have already
- 				// been awarded for the attacker or target being near the flag or flag carrier.  
- 
+ 				// been awarded for the attacker or target being near the flag or flag carrier.
+
  				flag_radius = 0;
  				flag_carrier_radius = 0;
- 
+
  				// get a string for the attacker's team now, for later announcements
  				s = GetCTFTeam(attacker.steam);
- 
+
  				if ((targ.last_hurt_carrier + TEAM_CAPTURE_CARRIER_DANGER_PROTECT_TIMEOUT > time) &&
  				    !(attacker.player_flag & PF_GOTFLAG) ) {
 					// Cool, we get a carrierdefend bonus.
@@ -1813,7 +1956,7 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 					bprint(PRINT_MEDIUM, "'s flag carrier against an agressive enemy\n");
 					LogDefendCarrier(attacker, TEAM_CAPTURE_CARRIER_DANGER_PROTECT_BONUS);
 				}
- 
+
  				// *XXX* EXPERT CTF
  				// Bonusus for defending the flag carrier or the flag itself.
  				// Extra frags are awarded if either the attacker or the target are
@@ -1822,16 +1965,16 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
  				// These bonuses are cumulative with respect to defending both the
  				// flag and the flag carrier at the same time, but not cumulative with
  				// respect to both the target and attacker being near the object being defended
- 
+
  				// find flags or flag carriers within a radius of the attacker
- 
+
 				head = findradius(attacker.origin, TEAM_CAPTURE_ATTACKER_PROTECT_RADIUS);
   				while (head) {
  					if (head.classname == "player") {
  						if ( (SameTeam(head,attacker, world)) &&
  						     (head.player_flag & PF_GOTFLAG) &&
  						     (head != attacker) && // self defense
- 						     (!flag_carrier_radius) ) { 
+ 						     (!flag_carrier_radius) ) {
 							// attacker was near his own flag carrier
  							flag_carrier_radius = 1;
  							bprint(PRINT_MEDIUM, attacker.netname);
@@ -1846,10 +1989,10 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
  						if (((attacker.steam == TEAM_COLOR1) &&
 							(head.classname == "item_flag_team1")) ||
  							((attacker.steam == TEAM_COLOR2) &&
- 							(head.classname == "item_flag_team2"))) { 
+ 							(head.classname == "item_flag_team2"))) {
 						// attacker was near his own flag
- 							flag_radius = 1; 
-							
+ 							flag_radius = 1;
+
  							bprint(PRINT_MEDIUM, attacker.netname);
  							bprint(PRINT_MEDIUM, " defends the ");
  							bprint(PRINT_MEDIUM, s);
@@ -1859,7 +2002,7 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
  					}
  					head = head.chain;
  				}
- 
+
 				// find flags or flag carriers within a radius from the target
 				head = findradius(targ.origin, TEAM_CAPTURE_TARGET_PROTECT_RADIUS);
 				while (head) {
@@ -1869,7 +2012,7 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 						     (head != attacker) &&
 						     (!flag_carrier_radius)) { // prevents redundant points awarded
 							// target was near attacker's flag carrier
-						//* obsolete*	attacker.frags = attacker.frags + 
+						//* obsolete*	attacker.frags = attacker.frags +
 						//		TEAM_CAPTURE_CARRIER_PROTECT_BONUS;
 							flag_carrier_radius = 1;
 							bprint(PRINT_MEDIUM, attacker.netname);
@@ -1885,7 +2028,7 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 						 (head.classname == "item_flag_team2"))
 						&& (!flag_radius)) { // prevents redundant points awarded
 						// target was near attacker's flag
-					//* obsolete*	attacker.frags = attacker.frags + 
+					//* obsolete*	attacker.frags = attacker.frags +
 					//		TEAM_CAPTURE_FLAG_DEFENSE_BONUS;
 							flag_radius = 1;
 						bprint(PRINT_MEDIUM, attacker.netname);
@@ -1898,18 +2041,18 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 				} // end find carriers or flags near target
  			}
 			// <-- The player got his frag and any bonuses
- 			 
- 		
-			// Oups, killing teammates is not good.	
+
+
+			// Oups, killing teammates is not good.
 			TeamDeathPenalty(targ, attacker);
 
 
 			// Now we're going to find the correct deathmessage for the
 			// weapon we got killed with.
-			rnum = attacker.weapon;	
+			rnum = attacker.weapon;
 
 
-			// Pure: if we got killed by a missile, perhaps we got the wrong mess.	
+			// Pure: if we got killed by a missile, perhaps we got the wrong mess.
 			if (!FLAG_DISABLEMISSILEFIX) {
 				if (inflictor.classname == "missile")
 					rnum = IT_ROCKET_LAUNCHER;
@@ -1921,10 +2064,10 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 			// OK, lets get that deathmessage.
 			// Note for you who like to make your own messages, they
 			// Are moved to custom.qc
-			// Pure optimize: Added elses, should improve things a bit.			
+			// Pure optimize: Added elses, should improve things a bit.
 
 			if (rnum == IT_ROCKET_LAUNCHER) {
-				if (attacker.items & IT_QUAD) { 
+				if (attacker.items & IT_QUAD) {
 					deathstring = dmrl1c; deathstring2 = dmrl2c;
 				} else if (targ.health < -40) {
 					deathstring = dmrl1b; deathstring2 = dmrl2b;
@@ -2002,7 +2145,7 @@ void(entity targ, entity attacker, entity inflictor) ClientObituary = {
 				PrintSuicide(targ, "melted", " burst into flames\n");
 			else if (random() < 0.5)
 				PrintSuicide(targ, "melted", " turned into hot slag\n");
-			else 
+			else
 				PrintSuicide(targ, "melted", " visits the Volcano God\n");
 		} else if (attacker.classname == "explo_box") {
 			PrintSuicide(targ, "explosion", " blew up\n");

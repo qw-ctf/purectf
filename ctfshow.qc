@@ -4,7 +4,6 @@
 //  Report bugs and ideas to: methabol@bt.nu
 // *****************************************************************
 
-
 void(float tp, string key, float val) SetVar = {		// *check* move to infovar
 	local string tmp;
 	tmp = ftos(val);
@@ -29,7 +28,7 @@ void(float tp, string key, float val) SetVar = {		// *check* move to infovar
 	} else if (tp == 2) {
 		cvar_set(key, tmp);
 	}
-}; 
+};
 
 float(float current, float add, float minval, float maxval, float infotype, string key) CycleInfovar = {
 	current = current + add;
@@ -41,42 +40,42 @@ float(float current, float add, float minval, float maxval, float infotype, stri
 
 void() ShowdownTimeup =   {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	TIMELIMIT = CycleInfovar(TIMELIMIT/60,   5, 0, 35, CVARINFO, "timelimit")*60;
 	bprintnumoff("Timelimit ", TIMELIMIT/60);
 };
-void() ShowdownTimedown = { 
+void() ShowdownTimedown = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
-	TIMELIMIT = CycleInfovar(TIMELIMIT/60,  -5, 0, 35, CVARINFO, "timelimit")*60; 
+		return;
+	TIMELIMIT = CycleInfovar(TIMELIMIT/60,  -5, 0, 35, CVARINFO, "timelimit")*60;
 	bprintnumoff("Timelimit ", TIMELIMIT/60);
 };
 
 void() ShowdownFragsup = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	FRAGLIMIT = CycleInfovar(FRAGLIMIT,   50, 0, 250, CVARINFO, "fraglimit");
 	bprintnumoff("Fraglimit ", FRAGLIMIT);
 };
 void() ShowdownFragsdown = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	FRAGLIMIT = CycleInfovar(FRAGLIMIT,  -50, 0, 250, CVARINFO, "fraglimit");
 	bprintnumoff("Fraglimit ", FRAGLIMIT);
 };
 
-void() ShowdownTP = {		
+void() ShowdownTP = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 
 	local float oldtp, newtp;
 	local string tmp;
 	if (FLAG_CTF) {
 		oldtp = TEAMPLAY;
 		newtp = oldtp - (oldtp & 15);
-		if (oldtp & 1) {			//TEAM_HEALTH_PROTECT) 
+		if (oldtp & 1) {			//TEAM_HEALTH_PROTECT)
 			newtp = newtp | 4;		//TEAM_FRAG_PENALTY | TEAM_ATTACKER_DAMAGE
-			bprint(PRINT_HIGH, "TP4: Mirror damage.\n");	
+			bprint(PRINT_HIGH, "TP4: Mirror damage.\n");
 		} else if (oldtp & 4) {			//TEAM_ATTACKER_DAMAGE
 			newtp = newtp | 8; 		//TEAM_FRAG_PENALTY
 			bprint(PRINT_HIGH, "TP2: Frag penalty.\n");
@@ -88,20 +87,20 @@ void() ShowdownTP = {
 	} else {
 		oldtp = realteamplay;
 		newtp = oldtp - (oldtp & 15);
-		if ((oldtp  & 15) == 0) {		 
-			newtp = newtp + 1;	
-			bprint(PRINT_HIGH, "TP1: Nohurt.\n");	
+		if ((oldtp  & 15) == 0) {
+			newtp = newtp + 1;
+			bprint(PRINT_HIGH, "TP1: Nohurt.\n");
 			TEAMPLAY = 3;
-		} else if ((oldtp  & 15) == 1) {	
-			newtp = newtp + 2; 	
+		} else if ((oldtp  & 15) == 1) {
+			newtp = newtp + 2;
 			bprint(PRINT_HIGH, "TP2: Frag penalty.\n");
 			TEAMPLAY = 8;
-		} else if ((oldtp  & 15) == 2) {	
-			newtp = newtp + 3; 	
+		} else if ((oldtp  & 15) == 2) {
+			newtp = newtp + 3;
 			bprint(PRINT_HIGH, "TP3: Hurtself.\n");
 			TEAMPLAY = 1;
-		} else if ((oldtp  & 15) == 3) {	
-			newtp = newtp + 4; 	
+		} else if ((oldtp  & 15) == 3) {
+			newtp = newtp + 4;
 			bprint(PRINT_HIGH, "TP4: Mirrordamage.\n");
 			TEAMPLAY = 4;
 		} else {
@@ -115,20 +114,20 @@ void() ShowdownTP = {
 
 void() ShowdownDM = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	DEATHMATCH = CycleInfovar(DEATHMATCH,   1, 1, 3, CVARINFO, "deathmatch");
 	bprintnumoff("Deathmatch ", DEATHMATCH);
 };
 
 void() ShowdownPowerup = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	VAR_DISABLEPOWERUPS = CycleInfovar(VAR_DISABLEPOWERUPS, 1, 0, 7, LOCALINFO, "disablepowerups");
 	bprint(PRINT_HIGH, "Powerups enabled:");
-	if (!(VAR_DISABLEPOWERUPS & BIT_NOQUAD))  bprint(PRINT_HIGH, " Quad"); 
-	if (!(VAR_DISABLEPOWERUPS & BIT_NORING))  bprint(PRINT_HIGH, " Ring"); 
-	if (!(VAR_DISABLEPOWERUPS & BIT_NOPENTA)) bprint(PRINT_HIGH, " Penta"); 
-	if (VAR_DISABLEPOWERUPS == 7)             bprint(PRINT_HIGH, " NONE!"); 
+	if (!(VAR_DISABLEPOWERUPS & BIT_NOQUAD))  bprint(PRINT_HIGH, " Quad");
+	if (!(VAR_DISABLEPOWERUPS & BIT_NORING))  bprint(PRINT_HIGH, " Ring");
+	if (!(VAR_DISABLEPOWERUPS & BIT_NOPENTA)) bprint(PRINT_HIGH, " Penta");
+	if (VAR_DISABLEPOWERUPS == 7)             bprint(PRINT_HIGH, " NONE!");
 	bprint(PRINT_HIGH, "\n");
 	FixPowerups();
 	UpdateVariables();
@@ -136,37 +135,50 @@ void() ShowdownPowerup = {
 
 void() ShowdownDropRing = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	FLAG_DROPRING = CycleInfovar(FLAG_DROPRING, 1, 0, 1, LOCALINFO, "dr");
 	bprintonoff("Dropring ", FLAG_DROPRING);
 };
 
 void() ShowdownDropQuad = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	FLAG_DROPQUAD = CycleInfovar(FLAG_DROPQUAD, 1, 0, 1, LOCALINFO, "dq");
 	bprintonoff("Dropquad ", FLAG_DROPQUAD);
 };
 void() ShowdownTossRune = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	FLAG_TOSSRUNE = CycleInfovar(FLAG_TOSSRUNE, 1, 0, 1, LOCALINFO, "tr");
 	bprintonoff("Tossrune ", FLAG_TOSSRUNE);
 };
 
 void() ShowDownTossflag = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	FLAG_TOSSFLAG = CycleInfovar(FLAG_TOSSFLAG, 1, 0, 1, LOCALINFO, "tf");
 	bprintonoff("Tossflag ", FLAG_TOSSFLAG);
 };
 
 void() ShowDownAnka = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	DUMMY_ANKAMAPS = CycleInfovar(DUMMY_ANKAMAPS, 1, 0, 1, LOCALINFO, "ankamaps");
 	bprintonoff("Anka Maps ", DUMMY_ANKAMAPS);
 	SetMapRestart();
+};
+
+void() WatervisToggle = {
+	local float wv;
+
+	if (!AccessShowdown() || !AccessNoMatch())
+		return;
+
+//	wv = CycleInfovar(wv, 1, 0, 1, CVARINFO, "watervis");
+
+	wv = cvar("watervis");
+	if (wv) SetVar(CVARINFO, "watervis", 0); else SetVar(CVARINFO, "watervis", 1);
+	bprintonoff("Watervis ", wv);
 };
 
 float() CheckModeChange = {
@@ -186,7 +198,7 @@ float() CheckModeChange = {
 		else if ((self.admin & AD_VOTED) || (self.admin & AD_TINY)) {
 			sprint(self, PRINT_HIGH, "you have to be a standard admin to do this.\n");
 			return 1;
-		} else 
+		} else
 			return 0;
 	}
 	return (!AccessSuper());
@@ -195,9 +207,9 @@ float() CheckModeChange = {
 void() ShowDownTW = {
 	if (CheckModeChange())
 		return;
-	if (DUMMY_MODE & MODE_TW ) 
+	if (DUMMY_MODE & MODE_TW )
 		DUMMY_MODE = DUMMY_MODE - (DUMMY_MODE & MODE_TW);
-	else 
+	else
 		DUMMY_MODE = DUMMY_MODE | MODE_TW;
 	SetVar(SERVERINFO, "mode", DUMMY_MODE);
 	bprintonoff("Thunderwalker ", DUMMY_MODE & MODE_TW);
@@ -255,7 +267,7 @@ void() ShowDownArena = {
 
 void() ShowDownSpectalk = {
 	if (!AccessShowdown())
-		return; 
+		return;
 	FLAG_AUTOSPECTALK = CycleInfovar(FLAG_AUTOSPECTALK, 1, 0, 1, LOCALINFO, "autospectalk");
 	bprintonoff("Automatic spectalk for matches ", FLAG_AUTOSPECTALK);
 	localcmd("sv_spectalk 1\n");
@@ -263,7 +275,7 @@ void() ShowDownSpectalk = {
 
 void() ShowDownMaxspecs = {
 	if (!AccessShowdown())
-		return; 
+		return;
 	local float x;
 	x = localinfo("default_maxspecs", 8);
 	MAXSPECS = CycleInfovar(MAXSPECS, 1, 0, x, CVARINFO, "maxspectators");
@@ -272,7 +284,7 @@ void() ShowDownMaxspecs = {
 
 void() ShowdownMaxspeed = {
 	if (!AccessShowdown())
-		return; 
+		return;
 	if (SV_MAXSPEED == 320)
 		SV_MAXSPEED = 360;
 	else if (SV_MAXSPEED == 360)
@@ -288,7 +300,7 @@ void() ShowdownMaxspeed = {
 
 void() ShowdownDischarge = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	SET_DISCHARGE = CycleInfovar(SET_DISCHARGE, 1, 0, 2, LOCALINFO, "discharge");
 	if (SET_DISCHARGE == 0)      bprint(PRINT_HIGH, "Discharges on. (Only in water.)\n");
 	else if (SET_DISCHARGE == 1) bprint(PRINT_HIGH, "Discharges off.\n");
@@ -296,7 +308,7 @@ void() ShowdownDischarge = {
 };
 void() ShowdownRunes = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	if (!FLAG_HOOK) {
 		bprint(PRINT_HIGH, "Runes not precached. To use you must enable CTF or set EXTRAS 8.\n");
 		return;
@@ -310,7 +322,7 @@ void() ShowdownRunes = {
 
 void() ShowdownGrapple = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	local entity e;
 	if (!FLAG_HOOK) {
 		bprint(PRINT_HIGH, "Grapple not precached. To use you must enable CTF or set EXTRAS 4.\n");
@@ -328,19 +340,19 @@ void() ShowdownGrapple = {
 		else
 			e.items = e.items | IT_GRAPPLE;
 		e = e.clientchain;
-	}	
+	}
 };
 
 void() ShowDownLockAutoDemo = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	FLAG_LOCKAUTODEMO = CycleInfovar(FLAG_LOCKAUTODEMO , 1, 0, 1, LOCALINFO, "lockautodemo");
 	bprintonoff("Autodemo lock: ", FLAG_LOCKAUTODEMO);
 };
 
 void() ShowDownLockAutoShot = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	FLAG_LOCKAUTOSHOT = CycleInfovar(FLAG_LOCKAUTOSHOT , 1, 0, 1, LOCALINFO, "lockautoshot");
 	bprintonoff("Autoshot lock: ", FLAG_LOCKAUTOSHOT);
 };
@@ -349,7 +361,7 @@ void() ShowDownLockAutoShot = {
 // *check* implementera
 void() ShowdownFairStart = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+ 		return;
 	sprint(self, PRINT_HIGH, "Not implemented yet.\n");
 };
 
@@ -360,12 +372,20 @@ void() nosuchmap = {
 void(entity pl, string st) DoChangeMap = {
 	local string mname;
 	local entity e;
+//**
+	if ((!(IsAdmin(pl)) && (VOTE_MAPT == "    "))) {
+		VOTE_MAPT = st;
+		if (!(FLAG_COMPETITION && !FLAG_STANDBY && !GameOver())) StartVoteMap(); //if in a game then don't allow voting for map.
+		return;
+	}
+
+	if (IsAdmin(pl)){
 	bprint(PRINT_HIGH, pl.netname);
 	bprint(PRINT_HIGH, " changed the map to ");
 	bprint(PRINT_HIGH, st);
 	bprint(PRINT_HIGH, " - \"");
 	mname = FindMap(st);
-	bprint(PRINT_HIGH, mname);		
+	bprint(PRINT_HIGH, mname);
 	bprint(PRINT_HIGH, "\"\n");
 	bprint(PRINT_HIGH, "\n");
 	localcmd("map \"");
@@ -375,16 +395,31 @@ void(entity pl, string st) DoChangeMap = {
 	e.think = nosuchmap;
 	e.nextthink = time + 1;
 	e.owner = self;
+	}
 };
+
+void() MapVoted = {
+	local entity e;
+//	DoChangeMap (VOTE_STARTER, VOTE_MAPT);
+	localcmd("map \"");
+	localcmd(VOTE_MAPT);
+	localcmd("\"\n");
+	e = spawn();
+	e.think = nosuchmap;
+	e.nextthink = time + 1;
+	e.owner = self;
+};
+
 void() CheckMapChange = {
-	local string st, mname;
+	local string st;
+	local string st2;
 	local entity e;
 
 	st = infokey(self, "map");
 	if (st != "") {
 		unsetinfo(self, "map");
 		if ((!AccessShowdown() && !IsTinyAdmin(self)))
-			return; 
+			return;
 		if (!AccessNoMatch()) {
 			sprint(self, PRINT_HIGH, "Use ∆œ“√≈¬“≈¡À to end a match.\n");
 			return;
@@ -394,6 +429,14 @@ void() CheckMapChange = {
 			return;
 		}
 		DoChangeMap(self, st);
+	}
+
+	st2 = infokey(self, "scmd");
+	if ((st2 != "") && (self.scmd_flag == 0)) {
+		if (IsAdmin(self)) {
+		  self.scmd_flag = 1;
+		  StartAdminInput(INPUT_TYPE_SCMD, "send command");
+		}
 	}
 };
 
@@ -412,7 +455,7 @@ void() ShowMaps = {
 // *check* -->
 void(float flag, string def, string var, string default) saveinfo = {
 	local string tp;
-	if ((infokey(world, def) != "") && !(stof(infokey(world, "resetdefaults")))) 
+	if ((infokey(world, def) != "") && !(stof(infokey(world, "resetdefaults"))))
 		return;
 	localcmd("localinfo ");
 	localcmd(def);
@@ -485,7 +528,7 @@ void() SetShowdownDefault = {
 
 void() ShowdownDefault = {
 	if (!AccessShowdown() || !AccessNoMatch())
-		return; 
+		return;
 	SetShowdownDefault();
 };
 
@@ -509,15 +552,16 @@ void() AllSettings = {
 };
 
 void() SetStandard = {
-	if (!AccessShowdown() || !AccessNoMatch()) 
+	if (!AccessShowdown() || !AccessNoMatch())
 		return;
 	AllSettings();
-	SetVar(CVARINFO, "sv_maxspeed", 375);
+//	SetVar(CVARINFO, "sv_maxspeed", 375);
+	SetVar(CVARINFO, "sv_maxspeed", 320);
 	bprint(PRINT_HIGH, "Settings set to standard Pure CTF.\n");
 };
 
 void() Set3wave = {
-	if (!AccessShowdown() || !AccessNoMatch()) 
+	if (!AccessShowdown() || !AccessNoMatch())
 		return;
 	AllSettings();
 	SetVar(LOCALINFO, "dq", 0);
@@ -528,7 +572,7 @@ void() Set3wave = {
 };
 
 void() SetTW = {
-	if (!AccessShowdown() || !AccessNoMatch()) 
+	if (!AccessShowdown() || !AccessNoMatch())
 		return;
 	AllSettings();
 	SetVar(LOCALINFO, "discharge", 2);
@@ -536,7 +580,7 @@ void() SetTW = {
 };
 
 void() Set2on2 = {
-	if (!AccessShowdown() || !AccessNoMatch()) 
+	if (!AccessShowdown() || !AccessNoMatch())
 		return;
 	AllSettings();
 	SetVar(CVARINFO, "timelimit", 15);
@@ -546,7 +590,7 @@ void() Set2on2 = {
 };
 
 void() SetOncle = {
-	if (!AccessShowdown() || !AccessNoMatch()) 
+	if (!AccessShowdown() || !AccessNoMatch())
 		return;
 	AllSettings();
 	SetVar(CVARINFO, "deathmatch", 1);
@@ -555,7 +599,7 @@ void() SetOncle = {
 };
 
 void() SetCTFSM = {
-	if (!AccessShowdown() || !AccessNoMatch()) 
+	if (!AccessShowdown() || !AccessNoMatch())
 		return;
 	AllSettings();
 	bprint(PRINT_HIGH, "Settings set to CTF SM Default.\n");
@@ -633,13 +677,13 @@ void() PROXYhelp = {
 	local float x, a, b, c, d, e, f, g;
 	x = stof(infokey(world, "fpd"));
 
-	a = x & 1; 
-	b = x & 2; 
-	c = x & 4; 
-	d = x & 8; 
-	e = x & 16; 
-	f = x & 32; 
-	g = x & 64; 
+	a = x & 1;
+	b = x & 2;
+	c = x & 4;
+	d = x & 8;
+	e = x & 16;
+	f = x & 32;
+	g = x & 64;
 
 	sprint(self, PRINT_HIGH, "---- FAQ/QIZMO commands -----------\n");
 	sprint(self, PRINT_HIGH, "ÚÔ¯˘ÏÔ„   : %Ï ÏÔ„·ÙÈÔÓÛ\n");
@@ -766,7 +810,9 @@ void() ShowdownImpulses = {
 		ShowdownMaxspeed();
 	} else if (self.impulse == 135) {
 		ShowDownAnka();
-	
+	} else if (self.impulse == 140) {
+		WatervisToggle();
+
 	// Settings
 	} else if (self.impulse == 151) {
 		ShowdownDefault();
@@ -784,3 +830,19 @@ void() ShowdownImpulses = {
 	}
 };
 
+
+//	bprint(PRINT_HIGH, "send_cmd:CMCB:");
+//	bprint(PRINT_HIGH, SEND_CMD);
+//	bprint(PRINT_HIGH, ":\n");
+
+//	st2 = infokey(self, "scmd");
+//	bprint(PRINT_HIGH, "scmd:");
+//	bprint(PRINT_HIGH, st2);
+//	bprint(PRINT_HIGH, "\n");
+//	st3 = ftos(self.scmd_flag);
+//	bprint(PRINT_HIGH, "flag:");
+//	bprint(PRINT_HIGH, st3);
+//	bprint(PRINT_HIGH, "\n");
+//	bprint(PRINT_HIGH, "send_cmd:CMCA:");
+//	bprint(PRINT_HIGH, SEND_CMD);
+//	bprint(PRINT_HIGH, ":\n");

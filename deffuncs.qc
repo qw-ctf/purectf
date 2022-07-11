@@ -20,6 +20,8 @@ void() AdminHelpCommands;
 void() EndMatch;
 void() StartAdminVote;
 void() AdminVoted;
+void() MapVoted;
+//void() StartVoteMap;
 void() SuperAdmin;
 void() PrintAdmin;
 void() CheckMapChange;
