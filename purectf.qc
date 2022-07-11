@@ -25,7 +25,9 @@ float RED_PICKUP, BLUE_PICKUP; 		// Timing captures
 float lastred, lastblue;		// **debug ->> obsolete?
 float teamscr1;				// team 1's teamscr score
 float teamscr2;				// team 2's teamscr score
-string motd1, motd2, motd3, motd4, motd5, motd6, motdred, motdblue, motdexit;
+// PCP dyna - MOTD
+string motdbegin, motd1, motd2, motd3, motd4, motd5, motdend, motdred, motdblue, motdexit;
+// PCP //
 // obsolete? entity SpawnChain;			
 
 // =================
@@ -70,15 +72,16 @@ void() tagline = {
 };
 
 
+// PCP dyna - Version
 void(entity pl) PrintAbout = {
 	sprint(pl, PRINT_HIGH, "\n-------------------------------------\n");
-	sprint(pl, PRINT_HIGH, "PURE CTF v1.99beta4 made 1998-08-??\n");
-	sprint(pl, PRINT_HIGH, "by Methabol aka Dan Zetterstrom\n");
-	sprint(pl, PRINT_HIGH, "Mail: methabol@bt.nu - ICQ: 355461\n");
-	sprint(pl, PRINT_HIGH, "WWW: http://purectf.solgames.com/\n");
-	sprint(pl, PRINT_HIGH, "IRC: #ctf.se at irc.quakenet.eu.org\n");
+	sprint(pl, PRINT_HIGH, "PureCTF Pro 0.03 build 20040614\n");
+	sprint(pl, PRINT_HIGH, "by фљюс & Шђк\n");
+	sprint(pl, PRINT_HIGH, "http://purectfpro.quakeworld.nl/\n");
+	sprint(pl, PRINT_HIGH, "Based on Pure CTF by Methabol\n");
 	sprint(pl, PRINT_HIGH, "-------------------------------------\n");
 };
+// PCP //
 
 void(entity pl, void() func) WithSelf = {
         local entity e;
@@ -775,9 +778,13 @@ void() CheckRate = {
 	if (PLAYER_MINRATE && (rate < PLAYER_MINRATE))
 		if (IsClassPlayer(self))
 			setinfo(self, "rate", PLAYER_MINRATE);
+// PCP *HrZ* - Remove specrate for now.
+/*
 	if (SPEC_MAXRATE && (rate > SPEC_MAXRATE))
 		if (self.classname == "spectator")
 			setinfo(self, "rate", PLAYER_MINRATE);
+*/	
+// PCP //
 };
 
 
@@ -828,7 +835,9 @@ void() PureInitMap = {
 	RestoreMaxClients();
 	
 	// Update Serverinfo
-	localcmd("serverinfo pure \"v1.99beta4\"\n");
+// PCP dyna - version
+	localcmd("serverinfo pure \"0.03pro\"\n");
+// PCP //
 	MapqueueStatus();
 	SaveDefaults();
 	localcmd("localinfo superadmin 0\n");

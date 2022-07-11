@@ -10,17 +10,20 @@ float PLAYERSTATTIME = 1.75;
 void() MOTD =
 {
 // ***MOTD*** --> Changed motd a bit to make it easier to change. 
+// PCP dyna - MOTD
 	setmotd();
-	if (self.classname == "spectator" )
-		centerprint6(self, motd1, motd2, motd3, motd4, motd5, motd6);
-	else if (gamestart)
-		centerprint7(self, motd1, motd2, motd3, motd4, motd5, motd6,  motdexit); //choose exit
-	else if (!FLAG_CTF)
-		centerprint6(self, motd1, motd2, motd3, motd4, motd5, motd6);
-	else if ((self.steam == TEAM_COLOR1))
-		centerprint7(self, motd1, motd2, motd3, motd4, motd5, motd6,  motdred); //red
-	else
-		centerprint7(self, motd1, motd2, motd3, motd4, motd5, motd6,  motdblue); //blue
+//	if (self.classname == "spectator" )
+//		centerprint6(self, motdbegin, motd1, motd2, motd3, motd4, motd5, motdend);
+//	else if (gamestart)
+//		centerprint7(self, motdbegin, motd1, motd2, motd3, motd4, motd5, motdend,  motdexit); //choose exit
+//	else if (!FLAG_CTF)
+//		centerprint6(self, motdbegin, motd1, motd2, motd3, motd4, motd5, motdend);
+//	else if ((self.steam == TEAM_COLOR1))
+//		centerprint7(self, motdbegin, motd1, motd2, motd3, motd4, motd5, motdend,  motdred); //red
+//	else
+//		centerprint7(self, motdbegin, motd1, motd2, motd3, motd4, motd5, motdend,  motdblue); //blue
+centerprint7(self, motdbegin, motd1, "\n", motd2, "\n\n", motd3, motdend);
+// PCP //
 //****MOTD*** <--
 };
 
@@ -149,8 +152,12 @@ void() TeamCapturePlayerUpdate = {
 	if (self.state) { 
 		Menu();
 		return;
+// PCP dyna - VoteCenterprint
+/*
 	} else if (VoteCenterprint()) {
 		return;
+*/		
+// PCP //
 	} else if (CountDown) {
 		return;
  	} else if (self.motd_endtime > time) {
@@ -576,30 +583,32 @@ void(entity pl, string s1) TeamUpdateStatusbar = {
 			else s2 = "\nPURE COMPETITION…Ò…Â…";} }
  	} else {
 		
+// PCP dyna - Version
 	if (pl.pure & SETINFO_SBAR_HUD) { 
 		if (e.cnt == FLAG_AT_BASE) { 
-			if (f.cnt == FLAG_AT_BASE) s2 = "\nPURE CTF        … … …\n"; 
-			else if (f.cnt == FLAG_CARRIED) s2 = "\nPURE CTF        … …B…\n"; 
-			else s2 = "\nPURE CTF        … …Â…\n"; } 
+			if (f.cnt == FLAG_AT_BASE) s2 = "\nPureCTF Pro        … … …\n"; 
+			else if (f.cnt == FLAG_CARRIED) s2 = "\nPureCTF Pro        … …B…\n"; 
+			else s2 = "\nPureCTF Pro        … …Â…\n"; } 
 		else if (e.cnt == FLAG_CARRIED) { 
-			if (f.cnt == FLAG_AT_BASE) s2 = "\nPURE CTF        …R… …\n"; 
-			else if (f.cnt == FLAG_CARRIED) s2 = "\nPURE CTF        …R…B…\n"; 
-			else s2 = "\nPURE CTF        …R…Â…\n"; } 
-		else { if (f.cnt == FLAG_AT_BASE) s2 = "\nPURE CTF        …Ò… …\n"; 
-			else if (f.cnt == FLAG_CARRIED) s2 = "\nPURE CTF        …Ò…B…\n"; 
-			else s2 = "\nPURE CTF        …Ò…Â…\n";} } 
+			if (f.cnt == FLAG_AT_BASE) s2 = "\nPureCTF Pro        …R… …\n"; 
+			else if (f.cnt == FLAG_CARRIED) s2 = "\nPureCTF Pro        …R…B…\n"; 
+			else s2 = "\nPureCTF Pro        …R…Â…\n"; } 
+		else { if (f.cnt == FLAG_AT_BASE) s2 = "\nPureCTF Pro        …Ò… …\n"; 
+			else if (f.cnt == FLAG_CARRIED) s2 = "\nPureCTF Pro        …Ò…B…\n"; 
+			else s2 = "\nPureCTF Pro        …Ò…Â…\n";} } 
 	else { if (e.cnt == FLAG_AT_BASE) { 
-			if (f.cnt == FLAG_AT_BASE) s2 = "\nPURE CTF        … … …"; 
-			else if (f.cnt == FLAG_CARRIED) s2 = "\nPURE CTF        … …B…"; 
-			else s2 = "\nPURE CTF        … …Â…"; } 
+			if (f.cnt == FLAG_AT_BASE) s2 = "\nPureCTF Pro        … … …"; 
+			else if (f.cnt == FLAG_CARRIED) s2 = "\nPureCTF Pro        … …B…"; 
+			else s2 = "\nPureCTF Pro        … …Â…"; } 
 		else if (e.cnt == FLAG_CARRIED) { 
-			if (f.cnt == FLAG_AT_BASE) s2 = "\nPURE CTF        …R… …"; 
-			else if (f.cnt == FLAG_CARRIED) s2 = "\nPURE CTF        …R…B…"; 
-			else s2 = "\nPURE CTF        …R…Â…"; } 
-		else { if (f.cnt == FLAG_AT_BASE) s2 = "\nPURE CTF        …Ò… …"; 
-			else if (f.cnt == FLAG_CARRIED) s2 = "\nPURE CTF        …Ò…B…"; 
-			else s2 = "\nPURE CTF        …Ò…Â…";} }
+			if (f.cnt == FLAG_AT_BASE) s2 = "\nPureCTF Pro        …R… …"; 
+			else if (f.cnt == FLAG_CARRIED) s2 = "\nPureCTF Pro        …R…B…"; 
+			else s2 = "\nPureCTF Pro        …R…Â…"; } 
+		else { if (f.cnt == FLAG_AT_BASE) s2 = "\nPureCTF Pro        …Ò… …"; 
+			else if (f.cnt == FLAG_CARRIED) s2 = "\nPureCTF Pro        …Ò…B…"; 
+			else s2 = "\nPureCTF Pro        …Ò…Â…";} }
 	}
+// PCP //
 	// tw50 
 
 
@@ -705,7 +714,13 @@ void(entity pl, string s1) TeamUpdateStatusbar = {
 			s1 = e.netname;
 	}
 
-	centerprint7(pl, res, s1, s2, st1, st2, s5, s6);
+// PCP dyna - changed centerprint
+// PCP *HrZ* - Modified
+	if (self.classname == "spectator" )
+		centerprint6(pl, res, s2, st1, st2, s5, s6);
+	else
+		centerprint7(pl, res, s1, s2, st1, st2, s5, s6);
+// PCP //
 
 };
 

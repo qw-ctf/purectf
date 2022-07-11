@@ -9,9 +9,7 @@ defconst.qc		// Constant defines
 deffield.qc		// Entity field defines
 defvars.qc		// Variable defines
 deffuncs.qc		// Function prototypes
-// PCP dyna - UserID
-sneekUID.qc		// extensies QCC: userid's
-// PCP //
+
 infovars.qc		// Serverinfo & localinfo settings
 custom.qc
 purectf.qc

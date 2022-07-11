@@ -1876,6 +1876,10 @@ void() RuneTouch =
 	local	float	best;
 	local		entity	stemp;
 	
+// PCP HrZ - Don't pick up the rune if we just dropped it.
+	if (other == self.owner)
+		return;
+// PCP //
 	if (other.health <= 0)
 		return;
 	if (other.classname != "player")

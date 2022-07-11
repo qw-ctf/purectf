@@ -41,6 +41,9 @@ void() ClearVote = {
 
 void() CheckVotes = {
 	local entity e;
+// PCP dyna - UserID
+//	local entity p;
+// PCP //
 	local float x;
 	local string tp;
 	VOTED_YES = 0;
@@ -48,34 +51,80 @@ void() CheckVotes = {
 	VOTED_NOTHING = 0;
 	e = PLAYER_CHAIN;
 	while (e) {
-		if (e.voted & VOTE_YES)
-			VOTED_YES = VOTED_YES + 1;		
-		else if (e.voted & VOTE_NO)
-			VOTED_NO = VOTED_NO + 1;	
-		else 
-			VOTED_NOTHING = VOTED_NOTHING + 1;		
+// PCP dyna - UserID
+//		if( isRegular(e) ) {
+// PCP //
+			if (e.voted & VOTE_YES)
+				VOTED_YES = VOTED_YES + 1;		
+			else if (e.voted & VOTE_NO)
+				VOTED_NO = VOTED_NO + 1;	
+			else 
+				VOTED_NOTHING = VOTED_NOTHING + 1;		
+// PCP dyna - UserID
+//		}
+// PCP //
 		e = e.clientchain;
 	}
 	if (VOTED_YES > (VOTED_NO + VOTED_NOTHING)) {
-		bprint(PRINT_HIGH, " Vote passed!\n");	
+// PCP dyna - UserID
+	bprint(PRINT_HIGH, "Vote passed!\n");
+//	p = PLAYER_CHAIN;
+//	while (p) {
+//		if( isRegular(p) ) {
+//			sprint(p, PRINT_HIGH, "Vote passed!\n");	
+//		}
+//		p = p.clientchain;
+//	}
+// PCP //
 		VOTE_FUNCTION();
 		ClearVote();
 	} else	if (VOTED_NO > (VOTED_YES + VOTED_NOTHING)) {
-		bprint(PRINT_HIGH, " Vote Failed.\n");	
+// PCP dyna - UserID
+	bprint(PRINT_HIGH, " Vote Failed.\n");
+//	p = PLAYER_CHAIN;
+//	while (p) {
+//		if( isRegular(p) ) {
+//			sprint(p, PRINT_HIGH, " Vote Failed.\n");	
+//		}
+//		p = p.clientchain;
+//	}
+// PCP //
 		ClearVote();
 	} else {
 		x = ceil((1+ VOTED_NO + VOTED_NOTHING - VOTED_YES) / 2);
 		tp = ftos(x);
+// PCP dyna - UserID
 		bprint(PRINT_HIGH, " ");
 		bprint(PRINT_HIGH, tp);
 		bprint(PRINT_HIGH, " more vote");
 		if (x > 1) bprint(PRINT_HIGH, "s");
 		bprint(PRINT_HIGH, " are needed.\n");
+//		p = PLAYER_CHAIN;
+//		while (p) {
+//			if( isRegular(p) ) {
+//				sprint(p, PRINT_HIGH, " ");
+//				sprint(p, PRINT_HIGH, tp);
+//				sprint(p, PRINT_HIGH, " more vote");
+//				if (x > 1)
+//					sprint(p, PRINT_HIGH, "s are");
+//				else
+//					sprint(p, PRINT_HIGH, " is");
+//				sprint(p, PRINT_HIGH, " needed.\n");
+//			}
+//			p = p.clientchain;
+//		}
+// PCP //
 	}
 };
 
 void(string votetext, void() votefunction) StartVote = {
 	local entity e;
+// PCP dyna - UserID
+//	if (isGuest(self)) {
+//		sprint(self, PRINT_HIGH, "Only regulars are electable.\nContact the admin to acquire a personal UserID and instructions.\n" );
+//		return;
+//	}
+// PCP //
 	if (VOTE_TIMEOUT) {
 		sprint(self, PRINT_HIGH,  "Vote already in progress.\n");
 		return;
@@ -90,11 +139,24 @@ void(string votetext, void() votefunction) StartVote = {
 	VOTE_TIMEOUT = time + 45;
 	VOTE_FUNCTION = votefunction;
 
+// PCP dyna - UserID
 	bprint(PRINT_HIGH, VOTE_STARTER.netname);
 	bprint(PRINT_HIGH, " wants to ");
 	bprint(PRINT_HIGH, VOTE_TEXT);
 	bprint(PRINT_HIGH, " Type Ÿ≈” or Œœ to Vote. ");
 	self.voted = VOTE_START | VOTE_YES;
+//	e = PLAYER_CHAIN;
+//	while (e) {
+//		if( isRegular(e) ) {
+//			sprint(e, PRINT_HIGH, VOTE_STARTER.netname);
+//			sprint(e, PRINT_HIGH, " wants to ");
+//			sprint(e, PRINT_HIGH, VOTE_TEXT);
+//			sprint(e, PRINT_HIGH, " Type Ÿ≈” or Œœ to Vote.\n");
+//			self.voted = VOTE_START | VOTE_YES;
+//		}
+//		e = e.clientchain;
+//	}
+// PCP //
 	CheckVotes();
 	sprint(self, PRINT_HIGH, "Vote started. Stop it with 'ÛÙÔˆÔÙÂ'\n");
 };
@@ -169,6 +231,8 @@ void() StartAdminVote = {
 
 
 
+// PCP dyna - VoteCenterprint
+/*
 float () VoteCenterprint = {
 	local string s1,s2,s3,s4,ss;
 	if (!VOTE_TIMEOUT)
@@ -183,6 +247,8 @@ float () VoteCenterprint = {
 	centerprint6(self, ss, s1,s2,s3,s4, ss);
 	return 1;
 };
+*/
+// PCP //
 
 
 void()	CheckVoteTimeout = {

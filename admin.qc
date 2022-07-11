@@ -558,7 +558,11 @@ void() AdminImpulses = {
 
 	// === Commands for "Tiny Admin" and above. ===
 
-	} else 	if (self.impulse == 104) {
+// PCP dyna - Enhanced ingame and spectator admin start/break
+	} else if (self.impulse == 58) {
+		NotReady();
+// PCP //
+	} else if (self.impulse == 104) {
 		if (FLAG_COMPETITION && !FLAG_STANDBY)
 			return;
 		StartAdminInput(INPUT_TYPE_SWAP, "swap");

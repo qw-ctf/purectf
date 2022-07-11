@@ -8,12 +8,15 @@ void() setmotd = {
 // Strings for Message of the Day 
 // Change these strings to reflect your server. note: use \n for linebreak
 
-	motd1 = "Welcome to this Server! \n\n";
-	motd2 = "Running пУРЕ цтф by Methabol\n ";
-	motd3 = "methabol@hem.passagen.se\n\n";
-	motd4 = "";
-	motd5 = "";
-	motd6 = "\nType \"цоммандс\" to list all commands.\nType \"сеттингс\" to show all settings.\n";
+// PCP dyna - MOTD
+	motdbegin = "Welcome to\n\n";
+	motd1 = infokey(world, "motd1");
+	motd2 = infokey(world, "motd2");
+	motd3 = infokey(world, "motd3");
+	motd4 = infokey(world, "motd4");
+	motd5 = infokey(world, "motd5");
+	motdend = "\n\nType \"цоммандс\" to list all commands.\nType \"сеттингс\" to show all settings.\n";
+// PCP //
 
 // You probably don't have to change these strings.
 

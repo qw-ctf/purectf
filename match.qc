@@ -252,11 +252,18 @@ void() CheckReady = {
 		RESTART = 0;
 		LockMaxClients();
 		AutoDemo();
+// PCP *HrZ* - MVD Recording *NEW* Changed it so names are nice now.
+		localcmd("easyrecord\n");
+// PCP //
 		bprint(PRINT_HIGH, "\nGame Starts in ");
 		tmp = ftos(COUNTDOWNTIME);
 		bprint(PRINT_HIGH, tmp);
 		bprint(PRINT_HIGH, " seconds!\n");
 		bprint(PRINT_HIGH, "\n"); 
+
+// PCP *HrZ* - Make runes spawn @ countdown instead!
+		RespawnAllRunes();
+// PCP //
 
 		StartCountDown(COUNTDOWNTIME, StartMatch, "Τθε Νατγθ χιμμ σταςτ\n αζτες τθε γουξτδοχξ\n\n");
 
@@ -291,21 +298,39 @@ void() CheckReady = {
 			TraversePlayers(SetFreshItems);
 		}
 		StopDemos();
+// PCP *HrZ* - MVD Recording 
+		localcmd("cancel\n");
+// PCP //
 	}
 
 };
 
 void() NotReady = {
+// PCP dyna - Enhanced ingame and spectator admin start/break
+	local entity e;
+// PCP //
+
 	if (!FLAG_COMPETITION) {
 		return;
+// PCP dyna - Enhanced ingame and spectator admin start/break
+/*
 	} else if (self.classname == "spectator") {
 		return;
+*/
+// PCP //
 	} else if (!FLAG_STANDBY) {
 		VoteBreak();
 	} else if (forceready) {
 		if (IsAdmin(self)) {
-			bprint(PRINT_HIGH, "The admin has forced the game to end.\n");
-			self.classname = "notready";
+			bprint(PRINT_HIGH, "The admin has forced the countdown to end.\n");
+// PCP dyna - Enhanced ingame and spectator admin start/break
+//			self.classname = "notready";
+			e = PLAYER_CHAIN;
+			while(e) {
+				e.classname = "notready";
+				e = e.clientchain;
+			}
+// PCP //
 			CheckReady();
 		} else {
 			sprint(self, PRINT_HIGH, "Only the admin kan break this countdown.\n");
@@ -315,7 +340,22 @@ void() NotReady = {
 			bprint(PRINT_HIGH, self.netname);
 			bprint(PRINT_HIGH, " is NOT READY for the match.\n");
 		}
-		self.classname = "notready";
+// PCP dyna - Enhanced ingame and spectator admin start/break
+		if (IsAdmin(self)) {
+			bprint(PRINT_HIGH, "The admin has set everyone to notready.\n");
+			e = PLAYER_CHAIN;
+			while(e) {
+				e.classname = "notready";
+				e = e.clientchain;
+			}
+			CheckReady();
+		} 
+		else {
+// PCP //
+			self.classname = "notready";
+// PCP dyna - Enhanced ingame and spectator admin start/break
+		}
+// PCP //
 		CheckReady();
 	}
 };
@@ -422,7 +462,9 @@ void() StartMatch = {
 
 	nexttimercheck = 0;
 	ClearScores();
-	RespawnAllRunes();
+// PCP *HrZ* -  Make runes spawn @ countdown instead!
+//	RespawnAllRunes();
+// PCP //
 	LastStatusUpdate = 0;
 };
 

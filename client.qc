@@ -509,7 +509,7 @@ void() PutClientInServer =
 
 
 	serverflags = 0; // make sure
-
+	
 	// --- Set Correct player mode ---
 	if (FLAG_STANDBY) {
 		if (forceready || CountDown)				// *check*
@@ -1472,6 +1472,9 @@ void() ClientConnect =
 	// Broadcast connect.
 	bprint (PRINT_HIGH, self.netname);
 	bprint (PRINT_HIGH, " entered the game");
+// PCP dyna - UserID
+//	sneek_CheckUserID(self);
+// PCP //
 	if (!FLAG_STANDBY) {
 		bprint(PRINT_HIGH, " at ");
 		PrintCurrentTime2All();
@@ -1490,7 +1493,9 @@ void() ClientConnect =
 		sprint(self, PRINT_HIGH, "\n");
 	}
 	sprint(self, PRINT_HIGH, "\n");
-	sprint(self, PRINT_HIGH, "Pure CTF v1.99beta4 by Methabol\n(Type αβουτ for more info.)\n");
+// PCP dyna - Version
+	sprint(self, PRINT_HIGH, "PureCTF Pro 0.03\n(Type αβουτ for more info.)\n");
+// PCP //
 	sprint(self, PRINT_HIGH, "Type ΓΟΝΝΑΞΔΣ or Νεξυ for commands.\n\n");
 
 	// Connect setup	

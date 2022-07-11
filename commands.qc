@@ -209,6 +209,43 @@ void() Stuff_Maps2 = {
 	stuffcmd(self, "alias xeno6 \"pre_mp;impulse 205\"\n");
 	stuffcmd(self, "alias xeno7 \"pre_mp;impulse 206\"\n");
 	stuffcmd(self, "alias xeno8 \"pre_mp;impulse 207\"\n");
+	// PCP *HrZ* - At the constant nagging by yokozuna, i've added his mapnames :P
+	// Pro Versions
+	stuffcmd(self, "alias e1m1pro \"pre_mp;impulse 210\"\n");
+	stuffcmd(self, "alias e1m2pro \"pre_mp;impulse 211\"\n");
+	stuffcmd(self, "alias e1m3pro \"pre_mp;impulse 212\"\n");
+	stuffcmd(self, "alias e1m4pro \"pre_mp;impulse 213\"\n");
+	stuffcmd(self, "alias e1m5pro \"pre_mp;impulse 214\"\n");
+	stuffcmd(self, "alias e1m6pro \"pre_mp;impulse 215\"\n");
+	stuffcmd(self, "alias e1m7pro \"pre_mp;impulse 216\"\n");
+	stuffcmd(self, "alias e1m8pro \"pre_mp;impulse 217\"\n");
+	stuffcmd(self, "alias e2m1pro \"pre_mp;impulse 218\"\n");
+	stuffcmd(self, "alias e2m2pro \"pre_mp;impulse 219\"\n");
+	stuffcmd(self, "alias e2m3pro \"pre_mp;impulse 220\"\n");
+	stuffcmd(self, "alias e2m4pro \"pre_mp;impulse 221\"\n");
+	stuffcmd(self, "alias e2m5pro \"pre_mp;impulse 222\"\n");
+	stuffcmd(self, "alias e2m6pro \"pre_mp;impulse 223\"\n");
+	stuffcmd(self, "alias e2m7pro \"pre_mp;impulse 224\"\n");
+	stuffcmd(self, "alias e3m1pro \"pre_mp;impulse 225\"\n");
+	stuffcmd(self, "alias e3m2pro \"pre_mp;impulse 226\"\n");
+	stuffcmd(self, "alias e3m3pro \"pre_mp;impulse 227\"\n");
+	stuffcmd(self, "alias e3m4pro \"pre_mp;impulse 228\"\n");
+	stuffcmd(self, "alias e3m5pro \"pre_mp;impulse 229\"\n");
+	stuffcmd(self, "alias e3m6pro \"pre_mp;impulse 230\"\n");
+	stuffcmd(self, "alias e3m7pro \"pre_mp;impulse 231\"\n");
+	stuffcmd(self, "alias e4m1pro \"pre_mp;impulse 232\"\n");
+	stuffcmd(self, "alias e4m2pro \"pre_mp;impulse 233\"\n");
+	stuffcmd(self, "alias e4m3pro \"pre_mp;impulse 234\"\n");
+	stuffcmd(self, "alias e4m4pro \"pre_mp;impulse 235\"\n");
+	stuffcmd(self, "alias e4m5pro \"pre_mp;impulse 236\"\n");
+	stuffcmd(self, "alias e4m6pro \"pre_mp;impulse 237\"\n");
+	stuffcmd(self, "alias e4m7pro \"pre_mp;impulse 238\"\n");
+	stuffcmd(self, "alias e4m8pro \"pre_mp;impulse 239\"\n");
+	// PCP dyna - More maps
+	stuffcmd(self, "alias capit \"pre_mp;impulse 240\"\n");
+	stuffcmd(self, "alias expctf1 \"pre_mp;impulse 241\"\n");
+	stuffcmd(self, "alias expctf2 \"pre_mp;impulse 242\"\n");
+	// PCP //
 
 	//*check* add arenamaps, death32, expert ctf?
 
@@ -323,6 +360,43 @@ void() MapImpulses = {
 	else if (self.impulse == 205) DoChangeMap(self, "xeno6");
 	else if (self.impulse == 206) DoChangeMap(self, "xeno7");
 	else if (self.impulse == 207) DoChangeMap(self, "xeno8");
+	// PCP *HrZ* - At the constant nagging by yokozuna, i've added his mapnames :P
+	// Pro Versions
+	else if (self.impulse == 210) DoChangeMap(self, "e1m1pro");
+	else if (self.impulse == 211) DoChangeMap(self, "e1m2pro");
+	else if (self.impulse == 212) DoChangeMap(self, "e1m3pro");
+	else if (self.impulse == 213) DoChangeMap(self, "e1m4pro");
+	else if (self.impulse == 214) DoChangeMap(self, "e1m5pro");
+	else if (self.impulse == 215) DoChangeMap(self, "e1m6pro");
+	else if (self.impulse == 216) DoChangeMap(self, "e1m7pro");
+	else if (self.impulse == 217) DoChangeMap(self, "e1m8pro");
+	else if (self.impulse == 218) DoChangeMap(self, "e2m1pro");
+	else if (self.impulse == 219) DoChangeMap(self, "e2m2pro");
+	else if (self.impulse == 220) DoChangeMap(self, "e2m3pro");
+	else if (self.impulse == 221) DoChangeMap(self, "e2m4pro");
+	else if (self.impulse == 222) DoChangeMap(self, "e2m5pro");
+	else if (self.impulse == 223) DoChangeMap(self, "e2m6pro");
+	else if (self.impulse == 224) DoChangeMap(self, "e2m7pro");
+	else if (self.impulse == 225) DoChangeMap(self, "e3m1pro");
+	else if (self.impulse == 226) DoChangeMap(self, "e3m2pro");
+	else if (self.impulse == 227) DoChangeMap(self, "e3m3pro");
+	else if (self.impulse == 228) DoChangeMap(self, "e3m4pro");
+	else if (self.impulse == 229) DoChangeMap(self, "e3m5pro");
+	else if (self.impulse == 230) DoChangeMap(self, "e3m6pro");
+	else if (self.impulse == 231) DoChangeMap(self, "e3m7pro");
+	else if (self.impulse == 232) DoChangeMap(self, "e4m1pro");
+	else if (self.impulse == 233) DoChangeMap(self, "e4m2pro");
+	else if (self.impulse == 234) DoChangeMap(self, "e4m3pro");
+	else if (self.impulse == 235) DoChangeMap(self, "e4m4pro");
+	else if (self.impulse == 236) DoChangeMap(self, "e4m5pro");
+	else if (self.impulse == 237) DoChangeMap(self, "e4m6pro");
+	else if (self.impulse == 238) DoChangeMap(self, "e4m7pro");
+	else if (self.impulse == 239) DoChangeMap(self, "e4m8pro");
+	// PCP dyna - More maps
+	else if (self.impulse == 240) DoChangeMap(self, "capit");
+	else if (self.impulse == 241) DoChangeMap(self, "expctf1");
+	else if (self.impulse == 242) DoChangeMap(self, "expctf2");
+	// PCP //
 };
 
 
@@ -588,6 +662,10 @@ void() ClientImpulses = {
 	} else if (self.impulse == 97) {
 		self.input_type = INPUT_IMPULSE_MAP;
 		self.delay = time + 5;
+// PCP dyna - UserID
+//	} else if (self.impulse == 210) {
+//		sneek_ShowAllUsers(self);
+// PCP //
 	}
 	self.impulse = 0;
 };
@@ -791,7 +869,10 @@ void() PlayerImpulses = {
 	// tw50 <--
 
 	// --- No hit yet, check client impulses ----
-
+// PCP dyna - UserID
+//	} else if ( self.impulse == 210 ) {
+//		sneek_CheckImpulses(); // dubbel, maargoed
+// PCP //
 	} else {		
 		ClientImpulses();
 	}
@@ -993,7 +1074,7 @@ void() Stuff_Player = {
 	stuffcmd(self, "alias ready \"impulse 57\"\n");
 	stuffcmd(self, "alias break \"impulse 58\"\n");
 	stuffcmd(self, "alias report \"impulse 54\"\n");
-
+	
 	stuffcmd(self, "cl_sidespeed 1500\n");
 	stuffcmd(self, "cl_backspeed 1500\n");
 	stuffcmd(self, "cl_forwardspeed 1500\n");
@@ -1103,6 +1184,9 @@ void() Stuff_Admin = {
 	stuffcmd(self, "alias nospecs \"pre_ad;impulse 107\"\n");
 	stuffcmd(self, "alias noadmin \"pre_ad;impulse 105\"\n");
 	stuffcmd(self, "alias adminhelp \"pre_ad;impulse 106\"\n");
+// PCP dyna - Enhanced ingame and spectator admin start/break
+	stuffcmd(self, "alias break \"pre_ad;impulse 58\"\n");
+// PCP //
 	stuffcmd(self, "alias forcebreak \"pre_ad;impulse 113\"\n");
 	stuffcmd(self, "alias giveadmin \"pre_ad;impulse 114\"\n");
 	stuffcmd(self, "alias modehelp \"pre_ad;impulse 115\"\n");
