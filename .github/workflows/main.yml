@@ -1,0 +1,24 @@
+name: ezquake
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Fetch fteqcc
+        run: |
+          curl -Ofteqcc.zip https://www.fteqcc.org/dl/fteqcc_linux64.zip
+          unzip fteqcc_linux64.zip fteqcc64
+
+      - name: Compile PureCTF Pro
+        run: ./fteqcc64
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: purectfpro
+          path: |
+            qwprogs.dat
