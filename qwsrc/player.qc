@@ -1,6 +1,8 @@
 void() bubble_bob;
-void() player_chain5;
-void() player_chain4;
+void() player_hook5;
+void() player_hook4;
+void() player_harpoon5;
+void() player_harpoon4;
 /*
 ==============================================================================
 
@@ -98,7 +100,7 @@ void()	player_stand1 =[	$axstnd1,	player_stand1	]
 		return;
 	}
 
-	if (self.weapon == IT_AXE)
+	if (self.weapon == IT_AXE || self.weapon == IT_GRAPPLE)
 	{
 		if (self.walkframe >= 12)
 			self.walkframe = 0;
@@ -123,15 +125,15 @@ void()	player_run =[	$rockrun1,	player_run	]
 		return;
 	}
 
-	if (self.weapon == IT_AXE)
+	if (self.weapon == IT_AXE || self.weapon == IT_GRAPPLE)
 	{
-		if (self.walkframe == 6)
+		if (self.walkframe >= 6)
 			self.walkframe = 0;
 		self.frame = $axrun1 + self.walkframe;
 	}
 	else
 	{
-		if (self.walkframe == 6)
+		if (self.walkframe >= 6)
 			self.walkframe = 0;
 		self.frame = self.frame + self.walkframe;
 	}
@@ -145,6 +147,16 @@ void()muzzleflash =
 	multicast (self.origin, MULTICAST_PVS);
 };
 
+// tw50 -->
+// ThunderWalker: Got a wild hair and decided to use shotgun animation but make it
+// a different function.  No real reason for this
+void()	player_snipe1 =	[$shotatt1, player_snipe2	] {self.weaponframe=1;muzzleflash();};
+void()	player_snipe2 =	[$shotatt2, player_snipe3	] {self.weaponframe=2;};
+void()	player_snipe3 =	[$shotatt3, player_snipe4	] {self.weaponframe=3;};
+void()	player_snipe4 =	[$shotatt4, player_snipe5	] {self.weaponframe=4;};
+void()	player_snipe5 =	[$shotatt5, player_snipe6	] {self.weaponframe=5;};
+void()	player_snipe6 =	[$shotatt6, player_run	] {self.weaponframe=6;};
+// tw50 <--
 
 void()	player_shot1 =	[$shotatt1, player_shot2	] {self.weaponframe=1;muzzleflash();};
 void()	player_shot2 =	[$shotatt2, player_shot3	] {self.weaponframe=2;};
@@ -170,45 +182,50 @@ void()	player_axec4 =	[$axattc4, player_run	] {self.weaponframe=4;};
 
 void()	player_axed1 =	[$axattd1, player_axed2	] {self.weaponframe=5;};
 void()	player_axed2 =	[$axattd2, player_axed3	] {self.weaponframe=6;};
-void()	player_axed3 =	[$axattd3, player_axed4	] {self.weaponframe=7;W_FireAxe();};
+void()	player_axed3 =	[$axatt3, player_axed4	] {self.weaponframe=7;W_FireAxe();};
 void()	player_axed4 =	[$axattd4, player_run	] {self.weaponframe=8;};
 
 //============================================================================
-void()  player_chain1=  [$axattd1, player_chain2 ] {self.weaponframe=2;Throw_Grapple();};
-void()  player_chain2=  [$axattd2, player_chain3 ] {self.weaponframe=3;};
-void()  player_chain3=  [$axattd3, player_chain3 ]
-{
-
-
+void()  player_hook1=  [$axattd1, player_hook2 ] {self.weaponframe=2;Throw_Grapple();};
+void()  player_hook2=  [$axattd2, player_hook3 ] {self.weaponframe=3;};
+void()  player_hook3=  [$axattd3, player_hook3 ] {
         self.weaponframe=3;
         if (!self.hook_out)
-        {
-                player_chain5();
-                return;
-        }
-        if (vlen(self.velocity) >= 750)
-        {
-                player_chain4();
-                return;
-        }
+                player_hook5();
+        else if (vlen(self.velocity) >= 750)
+                player_hook4();
 };
-
-void() player_chain4=  [$deathc4, player_chain4 ]
-{
+void() player_hook4=  [$deathc4, player_hook4 ] {
         self.weaponframe=4;
         if (!self.hook_out)
-        {
-                player_chain5();
-                return;
-        }
-        if (vlen(self.velocity) < 750)
-        {
-                player_chain3();
-                return;
-        }
+                player_hook5();
+        else if (vlen(self.velocity) < 750)
+                player_hook3();
 };
 
-void()  player_chain5=  [$axattd4, player_run    ] {self.weaponframe=5;};
+void()  player_hook5=  [$axattd4, player_run    ] {self.weaponframe=5;};
+
+// tw50 -->
+// ThunderWalker:  Change player animation for grapple to match shooting a harpoon
+void()  player_harpoon1=  [$shotatt2, player_harpoon2 ] {self.weaponframe=2;Throw_Grapple();};
+void()  player_harpoon2=  [$shotatt4, player_harpoon3 ] {self.weaponframe=3;};
+void()  player_harpoon3=  [$shotatt6, player_harpoon3 ] {
+        self.weaponframe=3;
+        if (!self.hook_out)
+                player_harpoon5();
+        else if (vlen(self.velocity) >= 750)
+                player_harpoon4();
+};
+void() player_harpoon4=  [$deathc4, player_harpoon4 ] {
+        self.weaponframe=4;
+        if (!self.hook_out) 
+                player_harpoon5();
+ 	else if (vlen(self.velocity) < 750)
+                player_harpoon3();
+};
+void()  player_harpoon5=  [$deathd2, player_run    ] {self.weaponframe=5;};
+// tw50 <--
+
 
 //============================================================================
 
@@ -216,6 +233,8 @@ void()  player_chain5=  [$axattd4, player_run    ] {self.weaponframe=5;};
 
 void() player_nail1   =[$nailatt1, player_nail2  ] 
 {
+	if (FREEZEFLAGS & FREEZE_WEAPONS) 
+		return;
 	muzzleflash();
 
 	if (!self.button0 || intermission_running)
@@ -229,6 +248,8 @@ void() player_nail1   =[$nailatt1, player_nail2  ]
 };
 void() player_nail2   =[$nailatt2, player_nail1  ]
 {
+	if (FREEZEFLAGS & FREEZE_WEAPONS) 
+		return;
 	muzzleflash();
 
 	if (!self.button0 || intermission_running)
@@ -245,6 +266,8 @@ void() player_nail2   =[$nailatt2, player_nail1  ]
 
 void() player_light1   =[$light1, player_light2  ] 
 {
+	if (FREEZEFLAGS & FREEZE_WEAPONS) 
+		return;
 	muzzleflash();
 
 	if (!self.button0 || intermission_running)
@@ -258,6 +281,8 @@ void() player_light1   =[$light1, player_light2  ]
 };
 void() player_light2   =[$light2, player_light1  ]
 {
+	if (FREEZEFLAGS & FREEZE_WEAPONS) 
+		return;
 	muzzleflash();
 
 	if (!self.button0 || intermission_running)
@@ -333,7 +358,7 @@ local float		rs;
 	}
 	self.pain_finished = time + 0.5;
 
-// don't make multiple pain sounds right after each other
+// dont make multiple pain sounds right after each other
 
 // ax pain sound
 	if (self.axhitme == 1)
@@ -448,21 +473,23 @@ local float		rs;
 	if (self.waterlevel == 3)
 	{
 		DeathBubbles(20);
-		sound (self, CHAN_VOICE, "player/h2odeath.wav", 1, ATTN_NONE);
+		sound (self, CHAN_VOICE, SOUND_H2ODEATH, 1, ATTN_NONE);
 		return;
 	}
-	
-	rs = rint ((random() * 4) + 1);
-	if (rs == 1)
-		self.noise = "player/death1.wav";
-	if (rs == 2)
-		self.noise = "player/death2.wav";
-	if (rs == 3)
-		self.noise = "player/death3.wav";
-	if (rs == 4)
-		self.noise = "player/death4.wav";
-	if (rs == 5)
-		self.noise = "player/death5.wav";
+	if (FLAG_TW)
+		rs = rint ((random() * (NUMBER_OF_DEATHS - 1)) + 1);
+	else 
+		rs = rint ((random() * (NUMBER_OF_DEATHS - 1)) + 1);
+	if (rs == 1) self.noise = SOUND_DEATH1;
+	else if (rs == 2) self.noise = SOUND_DEATH2;
+	else if (rs == 3) self.noise = SOUND_DEATH3;
+	else if (rs == 4) self.noise = SOUND_DEATH4;
+	else if (rs == 5) self.noise = SOUND_DEATH5;
+	else if (rs == 6) self.noise = SOUND_DEATH6;
+	else if (rs == 7) self.noise = SOUND_DEATH7;
+	else if (rs == 8) self.noise = SOUND_DEATH8;
+	else if (rs == 9) self.noise = SOUND_DEATH9;
+	else if (rs == 10) self.noise = SOUND_DEATH10;
 
 	sound (self, CHAN_VOICE, self.noise, 1, ATTN_NONE);
 	return;
@@ -537,40 +564,188 @@ void(string gibname, float dm) ThrowHead =
 	self.avelocity = crandom() * '0 600 0';
 };
 
+// tw50 -->
 
-void() GibPlayer =
+void(string gibname, float dm) headit =
 {
-	ThrowHead ("progs/h_player.mdl", self.health);
-	ThrowGib ("progs/gib1.mdl", self.health);
-	ThrowGib ("progs/gib2.mdl", self.health);
-	ThrowGib ("progs/gib3.mdl", self.health);
+	local	entity new;
+
+	new = spawn();
+	new.origin = self.origin + '0 0 40';
+	setmodel (new, gibname);
+	setsize (new, '0 0 0', '0 0 0');
+	new.velocity = VelocityForDamage (dm);
+	new.movetype = MOVETYPE_BOUNCE;
+	new.solid = SOLID_NOT;
+	new.avelocity_x = random()*600;
+	new.avelocity_y = random()*600;
+	new.avelocity_z = random()*600;
+	new.think = SUB_Remove;
+	new.ltime = time;
+	new.nextthink = time + 10 + random()*10;
+	new.frame = 0;
+	new.flags = 0;
+};
+
+void() headexplode =
+{
+local float twrs;
+
+	headit ("progs/gib1.mdl", self.health);
+	headit ("progs/gib2.mdl", self.health);
+	headit ("progs/gib3.mdl", self.health);
 
 	self.deadflag = DEAD_DEAD;
 
 	if (damage_attacker.classname == "teledeath")
 	{
-		self.staydeadtime = time + 2 + (random() * 3);
+// pure - obsolete		self.staydeadtime = time + 2 + (random() * 3);
 		sound (self, CHAN_VOICE, "player/teledth1.wav", 1, ATTN_NONE);
 		return;
 	}
 
 	if (damage_attacker.classname == "teledeath2")
 	{
-		self.staydeadtime = time + 3 + (random() * 6);
+// pure - obsolete		self.staydeadtime = time + 3 + (random() * 6);
 		sound (self, CHAN_VOICE, "player/teledth1.wav", 1, ATTN_NONE);
 		return;
 	}
 		
-	if (random() < 0.5)
+//
+//	ThunderWalker
+// 	Set up to play twgib1.wav only 1 time in 16, as it gets annoying fast.
+//
+	twrs = rint ((random()*15)+1);
+	
+	if (twrs == 1)
 		sound (self, CHAN_VOICE, "player/gib.wav", 1, ATTN_NONE);
-	else
+	else if (twrs == 2)
+	        sound (self, CHAN_VOICE, "tw/twargh.wav", 1, ATTN_NONE);
+	else if (twrs == 3)
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NONE);
+	else if (twrs == 4)
+		sound (self, CHAN_VOICE, "tw/boombaby.wav", 1, ATTN_NONE);
+	else if (twrs == 5)
+		sound (self, CHAN_VOICE, "player/gib.wav", 1, ATTN_NONE);
+	else if (twrs == 6)
+        	sound (self, CHAN_VOICE, "tw/twargh.wav", 1, ATTN_NONE);
+	else if (twrs == 7)
+		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NONE);
+	else if (twrs == 8)
+		sound (self, CHAN_VOICE, "tw/twgib2.wav", 1, ATTN_NONE);
+	else if (twrs == 9)
+		sound (self, CHAN_VOICE, "player/gib.wav", 1, ATTN_NONE);
+	else if (twrs == 10)
+		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NONE);
+	else if (twrs == 11)
+        	sound (self, CHAN_VOICE, "tw/twargh.wav", 1, ATTN_NONE);
+	else if (twrs == 12)
+		sound (self, CHAN_VOICE, "tw/twgib2.wav", 1, ATTN_NONE);
+	else if (twrs == 13)
+		sound (self, CHAN_VOICE, "tw/twgib1.wav", 1, ATTN_NONE);
+	else if (twrs == 14)
+		sound (self, CHAN_VOICE, "tw/killken1.wav", 1, ATTN_NONE);
+	else if (twrs == 15)
+		sound (self, CHAN_VOICE, "tw/killken1.wav", 1, ATTN_NONE);
+	else if (twrs == 16)
+		sound (self, CHAN_VOICE, "tw/killken1.wav", 1, ATTN_NONE);
+	player_died1();
+};
+// tw50 <--
+
+void() GibPlayer =
+{
+// tw50 -->
+	local float twrs;
+	if ((TEAMPLAY & TW_FLOUNDERVISION_FLAG) && FLAG_TW)
+		ThrowHead ("progs/lego.mdl", self.health);
+	else
+		ThrowHead ("progs/h_player.mdl", self.health);
+	ThrowGib ("progs/gib1.mdl", self.health);
+	ThrowGib ("progs/gib2.mdl", self.health);
+	ThrowGib ("progs/gib3.mdl", self.health);
+	if (FLAG_TW) {
+		// ThunderWalker SuperGib begin
+		ThrowGib ("progs/gib1.mdl", self.health);
+		ThrowGib ("progs/gib2.mdl", self.health);
+		ThrowGib ("progs/gib3.mdl", self.health);
+		ThrowGib ("progs/gib1.mdl", self.health);
+		ThrowGib ("progs/gib2.mdl", self.health);
+		ThrowGib ("progs/gib3.mdl", self.health);
+		// ThunderWalker SuperGib end
+	}
+// tw50 <--
+
+	self.deadflag = DEAD_DEAD;
+
+	if (damage_attacker.classname == "teledeath")
+	{
+// pure - obsolete		self.staydeadtime = time + 2 + (random() * 3);
+		sound (self, CHAN_VOICE, "player/teledth1.wav", 1, ATTN_NONE);
+		return;
+	}
+
+	if (damage_attacker.classname == "teledeath2")
+	{
+// pure - obsolete		self.staydeadtime = time + 3 + (random() * 6);
+		sound (self, CHAN_VOICE, "player/teledth1.wav", 1, ATTN_NONE);
+		return;
+	}
+		
+// tw50 -->
+
+	if (FLAG_TW) {
+		//
+		//	ThunderWalker
+		// 	Set up to play twgib1.wav only 1 time in 16, as it gets annoying fast.
+		//
+		twrs = rint ((random()*15)+1);
+		if (twrs == 1)
+			sound (self, CHAN_VOICE, "player/gib.wav", 1, ATTN_NONE);
+		else if (twrs == 2)
+			sound (self, CHAN_VOICE, "tw/twargh.wav", 1, ATTN_NONE);
+		else if (twrs == 3)
+			sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NONE);
+		else if (twrs == 4)
+			sound (self, CHAN_VOICE, "tw/boombaby.wav", 1, ATTN_NONE);
+		else if (twrs == 5)
+			sound (self, CHAN_VOICE, "player/gib.wav", 1, ATTN_NONE);
+		else if (twrs == 6)
+       	 		sound (self, CHAN_VOICE, "tw/twargh.wav", 1, ATTN_NONE);
+		else if (twrs == 7)
+			sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NONE);
+		else if (twrs == 8)
+			sound (self, CHAN_VOICE, "tw/twgib2.wav", 1, ATTN_NONE);
+		else if (twrs == 9)
+			sound (self, CHAN_VOICE, "player/gib.wav", 1, ATTN_NONE);
+		else if (twrs == 10)
+			sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NONE);
+		else if (twrs == 11)
+			sound (self, CHAN_VOICE, "tw/twargh.wav", 1, ATTN_NONE);
+		else if (twrs == 12)
+			sound (self, CHAN_VOICE, "tw/twgib2.wav", 1, ATTN_NONE);
+		else if (twrs == 13)
+			sound (self, CHAN_VOICE, "tw/twgib1.wav", 1, ATTN_NONE);
+		else if (twrs == 14)
+			sound (self, CHAN_VOICE, "tw/killken1.wav", 1, ATTN_NONE);
+		else if (twrs == 15)
+			sound (self, CHAN_VOICE, "tw/killken1.wav", 1, ATTN_NONE);
+		else if (twrs == 16)
+			sound (self, CHAN_VOICE, "tw/killken1.wav", 1, ATTN_NONE);
+// tw50 <--
+	} else {
+		if (random() < 0.5)
+			sound (self, CHAN_VOICE, "player/gib.wav", 1, ATTN_NONE);
+		else
+			sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NONE);
+	}
 };
 
 void() PlayerDie =
 {
 	local	float	i;
 	
+
         // make dead guy release hook (wedge)
         if (self.hook_out)
         {
@@ -580,13 +755,15 @@ void() PlayerDie =
         }
 
 	self.items = self.items - (self.items & IT_INVISIBILITY);
+	CheckDropItem();					//***drop***
 	self.invisible_finished = 0;	// don't die as eyes
 	self.invincible_finished = 0;
 	self.super_damage_finished = 0;
 	self.radsuit_finished = 0;
 	self.modelindex = modelindex_player;	// don't use eyes
 
-	DropBackpack();
+	if (!FLAG_NOITEMS)
+		DropBackpack();
 	DropRune();
 	TeamCaptureDropFlagOfPlayer(self);
 	
@@ -604,10 +781,16 @@ void() PlayerDie =
 	if (self.velocity_z < 10)
 		self.velocity_z = self.velocity_z + random()*300;
 
-	if (self.health < -40)
-	{
-		GibPlayer ();
-		return;
+
+
+	if (self.health < -40) {
+		if (FLAG_TW && (self.twflags & TW_KILLING)) {		
+			rittierodt();		//tw50
+			return;
+		} else {
+			GibPlayer ();
+			return;
+		}
 	}
 
 	DeathSound();
@@ -620,30 +803,36 @@ void() PlayerDie =
 		player_die_ax1 ();
 		return;
 	}
+
+	if ((self.twflags & TW_SNIPERDEATH) && FLAG_TW)
+	{
+		headexplode();			// tw50
+	}
+
 	
 	i = cvar("temp1");
 	if (!i)
 		i = 1 + floor(random()*6);
-	
-	if (i == 1)
-		player_diea1();
-	else if (i == 2)
-		player_dieb1();
-	else if (i == 3)
-		player_diec1();
-	else if (i == 4)
-		player_died1();
-	else
-		player_diee1();
 
+	if (!(self.twflags & TW_SNIPERDEATH) || !FLAG_TW) {		// tw50
+		if (i == 1)
+			player_diea1();
+		else if (i == 2)
+			player_dieb1();
+		else if (i == 3)
+			player_diec1();
+		else if (i == 4) {
+			if (FLAG_TW)					// tw50
+				player_diee1();
+			else
+				player_died1();
+		} else
+			player_diee1();
+	}
 };
 
 void() set_suicide_frame =
 {	// used by klill command and diconnect command
-/*
-	if (self.model != "progs/player.mdl")
-		return;	// allready gibbed
-*/
 	if (self.health <= 0)
 		return;
 	self.frame = $deatha11;
@@ -721,3 +910,26 @@ void()	player_die_ax6	=	[	$axdeth6,	player_die_ax7	] {};
 void()	player_die_ax7	=	[	$axdeth7,	player_die_ax8	] {};
 void()	player_die_ax8	=	[	$axdeth8,	player_die_ax9	] {};
 void()	player_die_ax9	=	[	$axdeth9,	player_die_ax9	] {PlayerDead();};
+
+
+// tw50 -->
+// AIRG_MAIN_START
+// Airfist fire animation.
+//  For the external view we use the rock fire animation with the
+//  recoil part lengthened.
+void() player_airgun1   =[$rockatt1, player_airgun2  ] {self.weaponframe=1;};
+void() player_airgun2   =[$rockatt2, player_airgun3  ] {self.weaponframe=2;};
+void() player_airgun3   =[$rockatt3, player_airgun4  ] {self.weaponframe=3;};
+void() player_airgun4   =[$rockatt3, player_airgun5  ] {self.weaponframe=4;};
+void() player_airgun5   =[$rockatt4, player_airgun6  ] {self.weaponframe=5;};
+void() player_airgun6   =[$rockatt4, player_airgun7  ] {self.weaponframe=6;};
+void() player_airgun7   =[$rockatt5, player_airgun8  ] {self.weaponframe=7;};
+void() player_airgun8   =[$rockatt6, player_run  ] {self.weaponframe = 8;};
+// AirFist failed fire animation.
+//  For the external view we use the nail gun fire animation.
+void() player_failedairgun1   =[$nailatt1, player_failedairgun2  ] {self.weaponframe=6;};
+void() player_failedairgun2   =[$nailatt2, player_failedairgun3  ] {self.weaponframe=7;};
+void() player_failedairgun3   =[$nailatt2, player_run  ] {self.weaponframe=8;};
+// AIRG_MAIN_END
+// tw50 <--
+// *check*

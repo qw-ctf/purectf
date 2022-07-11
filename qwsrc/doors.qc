@@ -11,10 +11,10 @@ Doors are similar to buttons, but can spawn a fat trigger field around them
 to open without a touch, and they link together to form simultanious
 double/quad doors.
  
-Door.owner is the master door.  If there is only one door, it points to itself.
+Door.owner is the ma_ster door.  If there is only one door, it points to itself.
 If multiple doors, all will point to a single one.
 
-Door.enemy chains from the master door through all doors linked in the chain.
+Door.enemy chains from the ma_ster door through all doors linked in the chain.
 
 */
 
@@ -420,6 +420,8 @@ void() func_door =
 
 {
 
+
+
 	if (world.worldtype == 0)
 	{
 		precache_sound ("doors/medtry.wav");
@@ -781,3 +783,4 @@ void () func_door_secret =
 	if (!self.wait)
 		self.wait = 5;		// 5 seconds before closing
 };
+// <-- check

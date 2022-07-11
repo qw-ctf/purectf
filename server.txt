@@ -1,7 +1,7 @@
 Title    : Threewave Capture
-Filename : 3wave40.zip
-Version  : 4.00
-Date     : 97-04-12
+Filename : 3wave41.zip
+Version  : 4.10
+Date     : 97-05-02
 Author   : Dave 'Zoid' Kirsch
 Email    : zoid@threewave.com
 Info	 : This patch contains two versions of CTF4, for Regular Quake (1.06
@@ -39,7 +39,6 @@ ctf7  Tale of Two Cities     Jamie Mactaggart <Maareck@msn.com>
 ctf8  The StrongBox          Brent '[Drizzt]' Mcleod <mcleod@westworld.com>
 
 Special thanks to all the map authors for their contributions.
-
 
 The custom Skin man:  Ryan 'Grey_Ghost' Lacouture <vallore@wt.net>
 
@@ -95,6 +94,16 @@ support.
 
 Bob '[R2]Uppa' Mollard <uppa@mortal.combat.org> for much assistance in testing
 and keeping me from losing my sanity.
+
+Mark '[ S W i F T ]' Fowler for identify player impulse work and the modified
+key graphics on the status bar.  I apologize for overlooking his work in 4.0.
+
+4.1 Credits
+-----------
+
+Don 'onethumb' MacAskill for anti-crossdresser code (QW version only).
+
+Drez 'BZ' Davidson for status bar tweaks.
 
 Type of Mod
 -----------
@@ -487,7 +496,7 @@ Runes
    carry one rune at a time.
 
 MOTD
-   MOTD (Message of the day) function added.  To change it edit client.qc
+   MOTD (Message of the day) function added.  To change it edit status.qc
    and edit the text near the top.  There are different messages for
    regular deathmatch, team mode and capture the flag mode.
 
@@ -525,6 +534,12 @@ Redundant Message Removal
    Removed redundant messages such as "You got the shells" or "You got the
    armor."  This was just cluttering up the message stream and isn't needed
    since pickups are already signified by a flash and an audio cue.
+
+What's new in 4.20
+------------------
+
+- just bug fixes for server crashes
+- impulse 10&12 fixed for grapple
 
 What's new in 4.00
 ------------------

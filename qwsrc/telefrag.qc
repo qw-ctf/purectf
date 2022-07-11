@@ -25,6 +25,7 @@
 **
 */
 
+
 entity() SelectSpawnPoint;
 
 entity(entity spot) TelefragSelectSpawnPoint =
@@ -59,3 +60,19 @@ entity(entity spot) TelefragSelectSpawnPoint =
 	}
 	return (spot);
 };
+// *check*
+
+
+
+float(vector v) CheckSpawnPoint =
+{		// *check* obsolete?
+	return FALSE;
+};
+
+
+
+
+// *check*
+
+
+

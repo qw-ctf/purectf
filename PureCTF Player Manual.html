@@ -1,0 +1,1031 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage 2.0">
+<title>Pure CTF - Player Manual</title>
+<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<p align="center"><font size="7"><strong>Pure CTF</strong><br>
+</font><font size="5">Player Manual</font></p>
+
+<p align="center">Pure CTF v2.00 by <a
+href="mailto:methabol@hem.passagen.se">Methabol</a> - <a
+href="http://purectf.solgames.com/">Pure CTF</a> - <a
+href="http://ctf.solgames.se/">CTF.SE</a> </p>
+<!--webbot bot="Include" u-include="manifesto.html" tag="BODY"
+startspan --><div align="center"><center>
+
+<table border="0" width="80%">
+    <tr>
+        <td>Since Zoid's first version of 3wave CTF there have
+        been many different CTF mods out there. Some good and
+        some not so good. Most had one thing in common though:
+        You had to play with all new features, you couldn't just
+        select the ones you want. I wanted a mod where you could
+        select <em>exactly</em> what new features you wanted, and
+        which ones you rather not use at all. I also wanted a
+        solid competition mod that you could use to set up
+        clanfights or practice games quickly and easily. Finally
+        I wanted a mod that fixed all those small but annoying
+        bugs that was left since the developement of 3wave CTF
+        was discontinued. The result is Pure CTF.<p>With Pure CTF
+        <em>you</em> got the choice. You can select any of the
+        dozens of options, modes and clientpaks you want. You can
+        use it as a competition server, arena server, clanarena
+        server, even a DM server, and it supports the most
+        popular CTF mod besides 3wave, Thunderwalker CTF. And you
+        can combine any of the features making the possibilities
+        endless.</p>
+        <p align="left">Or you can play just plain, Pure CTF. </p>
+        </td>
+    </tr>
+</table>
+</center></div><!--webbot bot="Include" endspan
+i-checksum="57350" --><div align="center"><center>
+
+<table border="0">
+    <tr>
+        <td rowspan="0">&nbsp;</td>
+        <td rowspan="0"><a href="#Admin Functions">Admin
+        Functions</a></td>
+        <td align="center" rowspan="0">-</td>
+        <td rowspan="0">Admin modes, levels and commands</td>
+    </tr>
+    <tr>
+        <td colspan="4"><b>Player Settings and commands</b> </td>
+    </tr>
+    <tr>
+        <td colspan="2"><a href="#Player Commands">Player Command
+        reference</a> </td>
+        <td align="center">-</td>
+        <td>Commands for the player.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#Help texts">Help Texts</a></td>
+        <td align="center">-</td>
+        <td>Pure online help.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#Standard Commands"><font size="3">Standard
+        quake and CTF impulses</font></a></td>
+        <td align="center"><font size="2">-</font></td>
+        <td><font size="3">The original impulses from 3wave CTF.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#Player Commands"><font size="3">Player
+        Commands</font></a></td>
+        <td align="center"><font size="2">-</font></td>
+        <td><font size="3">New player commands.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#ThunderWalker impulses"><font size="3">ThunderWalker
+        impulses</font></a></td>
+        <td align="center"><font size="2">-</font></td>
+        <td><font size="3">Impulses used with TW CTF.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#Standard Commands"><font size="3">Standard
+        Commands</font></a></td>
+        <td align="center"><font size="2">-</font></td>
+        <td><font size="3">Info and statusbar.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#ThunderWalker impulses"><font size="3">Teamplay
+        commands</font></a></td>
+        <td align="center"><font size="2">-</font></td>
+        <td><font size="3">Teamplay enhancements.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#Statusbar Commands"><font size="3">Statusbar
+        Commands</font></a></td>
+        <td align="center"><font size="2">-</font></td>
+        <td><font size="3">Tweak your statusbar.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#Competition Mode"><font size="3">Competition
+        Mode</font></a></td>
+        <td align="center"><font size="2">-</font></td>
+        <td><font size="3">Special competition mode commands.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#Admin Commands"><font size="3">Admin
+        Commands</font></a></td>
+        <td align="center"><font size="2">-</font></td>
+        <td><font size="3">Kick, ban and admin the server.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#Showdown Commands"><font size="3">Showdown
+        Commands</font></a></td>
+        <td align="center"><font size="2">-</font></td>
+        <td><font size="3">Server settings like timelimit, dmm.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><a href="#Proxy Commands"><font size="3">Proxy
+        Commands</font></a></td>
+        <td align="center">-</td>
+        <td><font size="3">Proxy disabling.</font></td>
+    </tr>
+    <tr>
+        <td colspan="2"><a href="#player settings">Player
+        Settings</a> </td>
+        <td align="center">-</td>
+        <td>Player Setinfo Settings</td>
+    </tr>
+</table>
+</center></div>
+
+<h1 align="left"><a name="Player Commands">Player Commands
+Reference</a></h1>
+
+<p>There's <em>a lot</em> new commands in Pure. Most of them are
+only for admins though, and if you just want to play it's enough
+to read about the <a href="#Standard quake and CTF impulses."><font
+size="3">Standard quake and CTF impulses</font></a><font size="4"><strong>
+</strong></font>and <font size="3">the </font><a
+href="#Player Commands"><font size="3">Player Commands</font></a>.Check
+the <a href="#Admin Commands">admin</a> and <a
+href="#Showdown Commands">showdown</a> sections for more info on
+the corresponding commands. &nbsp; </p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="Help texts"><font size="4"><strong>Help
+        texts</strong></font></a></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>commands</td>
+        <td>Shows available commands</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>adminhelp</td>
+        <td>Show adminhelp</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>showhelp</td>
+        <td>Show showdown help.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>options</td>
+        <td>Show options for changing dmm, teamplay, etc.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>ctfopt</td>
+        <td>Show more showdown options like grapple, runes, etc.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>modehelp</td>
+        <td>Show Modes help</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.35)</strong></font></td>
+        <td>proxyhelp</td>
+        <td>Show proxy settings and commands.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>stathelp</td>
+        <td>Show Statusbar settings and commands.</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a
+        name="Standard quake and CTF impulses."><font size="4"><strong>Standard
+        quake and CTF impulses.</strong></font></a></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 1 - 8</td>
+        <td>Select weapon.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 10</td>
+        <td>Cycle weapons.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 12</td>
+        <td>Cycle weapons in reverse order.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 20</td>
+        <td>Toss backpack with ammo.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 21</td>
+        <td>Toss weapon.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 22</td>
+        <td>Grappling Hook.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 69</td>
+        <td>Previous weapon.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 70</td>
+        <td>Statusbar off.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 71-81</td>
+        <td>Set statusbar.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 141</td>
+        <td>Shows the name of the player you are looking at.</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="Player Commands"><font size="4"><strong>Player
+        Commands</strong></font></a><font size="4"><strong> - </strong></font><font
+        size="3">Can be used by any player.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>tossrune</td>
+        <td>Tosses the rune you are holding.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>tossflag</td>
+        <td>Tosses your flag. It will return to the enemy base in
+        5 seconds, so make sure someone is there to pick it up!</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>voteexit</td>
+        <td>Starts a vote to exit the current map.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 50</td>
+        <td>Select best non-exploding weapon in the following
+        order: 8, 5, 3, 4, 2. Never selects the Lightning Gun in
+        water.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>impulse 51</td>
+        <td>Select best weapon in the following order: 7, 6, 8,
+        5, 3, 4, 2. Never selects the Lightning Gun in water.</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="ThunderWalker impulses"><font
+        size="4"><strong>ThunderWalker impulses</strong></font></a><font
+        size="4"><strong>.</strong></font> Check the
+        ThunderWalker documentation for more info on these.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>impulse 47</td>
+        <td>Select Airlifts.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>impulse 160</td>
+        <td>Sends a flare.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>impulse 170</td>
+        <td>Self distract.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>impulse 180</td>
+        <td>Rune info.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>impulse 181</td>
+        <td>Destroy Rune.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>impulse 192</td>
+        <td>Toss health.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>impulse 200</td>
+        <td>Teleport yourself.</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="Standard Commands"><font
+        size="4"><strong>Standard Commands</strong></font></a><font
+        size="3"> - Can be used by any client. (players,
+        observers, spectators)</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>scores</td>
+        <td>Shows scores with number of caps and disconnects
+        included</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>models</td>
+        <td>Shows which models all clients have.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>settings</td>
+        <td>Shows a compact table with all settings.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>autoshot</td>
+        <td>Toggles auto scoreboard screenshots at end of
+        matches.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>autodemo</td>
+        <td>Toggles auto Proxy/QW demos in matches.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>mapqueue</td>
+        <td>Shows the current mapqueue</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.50)</strong></font></td>
+        <td>cprint</td>
+        <td>Disables centerprinting.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.51)</strong></font></td>
+        <td>cam</td>
+        <td>Changes the type of camera for spectating. (Fixed,
+        chase, etc.)</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>ping</td>
+        <td>Show all players ping, average ping and rate.(</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>v2.00)</strong></font></td>
+        <td>stats</td>
+        <td>Show stats according to the mod you are playing.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>dmstats</td>
+        <td>Shows frags, ping, kills, deaths and killratio for
+        all players.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>ctfstats</td>
+        <td>Shows frags, ping, caps, pickups, returns and defends
+        for all players.</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="Teamplay commands"><font
+        size="4"><strong>Teamplay commands</strong></font></a><font
+        size="4"><strong> - </strong></font><font size="3">Commands
+        to enhance your teamplay.</font></td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>report</td>
+        <td>Reports your status. (Health, armor, weapon)</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>impulse 161</td>
+        <td>Expert CTF Teamaudio: Is our base secure?</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>impulse 162</td>
+        <td>Expert CTF Teamaudio: Roger, base is clear.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>impulse 163</td>
+        <td>Expert CTF Teamaudio: The base is under attack!</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>impulse 164</td>
+        <td>Expert CTF Teamaudio: Our base has been overrun!</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>impulse 165</td>
+        <td>Expert CTF Teamaudio: Link up for an assault, wait
+        for my signal.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>impulse 166</td>
+        <td>Expert CTF Teamaudio: Attack now!</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>impulse 167</td>
+        <td>Expert CTF Teamaudio: Enemy units incoming.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>impulse 168</td>
+        <td>Expert CTF Teamaudio: Cover me!</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="Statusbar Commands"><font
+        size="4"><strong>Statusbar Commands</strong></font></a><font
+        size="4"><strong> - </strong></font><font size="3">Customize
+        your statusbar.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>impulse 70</td>
+        <td>Statusbar off.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>impulse 71-81</td>
+        <td>Set statusbar position. (320x200 by default)</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>stathud</td>
+        <td>Toggle statusbar HUD compatible mode. (Off by
+        default.)</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>statautoid</td>
+        <td>Toggle statusbar automatic idplayer. (Off by
+        default.)</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>statweapon</td>
+        <td>Toggle statusbar weapon status. (Off by default.)</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>stattime</td>
+        <td>Toggle statusbar time status. (On by default.)</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>statrune</td>
+        <td>Toggle statusbar rune status. (On by default.)</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>statscore</td>
+        <td>Toggle statusbar score status. (On by default.)</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="Competition Mode"><font size="4"><strong>Competition
+        Mode</strong></font></a><font size="3"> - these will only
+        work in the competition modes</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>ready</td>
+        <td>Sets your status to ready for the match.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>break</td>
+        <td>Sets your status to not ready for the match.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>status</td>
+        <td>Shows all players status's.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>sayready</td>
+        <td>Tell all nonready players to hurry up. :)</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="Admin Commands"><font size="4"><strong>Admin
+        Commands</strong></font></a> - commands for <a
+        href="#Admin Commands">admins</a>.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>admin</td>
+        <td>Starts a vote to make you admin. If you already are
+        admin it removes your adminstatus.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>super</td>
+        <td>Apply to be Superadmin. You need to set rcon_password
+        <em>before</em> you do this.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>swap</td>
+        <td>Swap a player to the other team.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>swapall</td>
+        <td>Swaps all players <em>smartly.</em> (It remembers the
+        previous game and sets colors according to it.)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>kick</td>
+        <td>Kicks a player.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>ban</td>
+        <td>Kicks a player and puts a temporary ban on him. </td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>ipban</td>
+        <td>Kicks a player and bans his IP. This is permanent
+        until removed with rcon or the server is restarted.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.40)</strong></font></td>
+        <td>kos</td>
+        <td>Kick on sight. First it asks if you want to kick the
+        player you aim at, and the kicks him if you use kos
+        again.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>start</td>
+        <td>Force the match to start regardless if everyone typed
+        ready.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>restart</td>
+        <td>Restart the map, and start match countdown directly.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>lock</td>
+        <td>Lock maxclients so that no more players can enter.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>unlock</td>
+        <td>Restores maxclients. Note that maxclients is always
+        restored on mapchanges.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.51)</strong></font></td>
+        <td>freeze</td>
+        <td>Freeze all players (Like the built-in pause function
+        in QW, except that you can use all admin commands which
+        you can't do with &quot;pause&quot;.)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>nospecs</td>
+        <td>Kicks all spectators and lock them out.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>noadmin</td>
+        <td>Removes your admin status.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>nextmap</td>
+        <td>Stops the current map and move to the next in the
+        mapqueue.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>forcebreak</td>
+        <td>Forces the game to break.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>lockautoshot</td>
+        <td>Locks <u>all</u> players to take screenshots at end
+        of maps.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>lockautodemo</td>
+        <td>Locks <u>all</u> players to take demos. Note: Many
+        might find it very annoying to be forced to take a demo.
+        (It slow performance among other things.)</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="Showdown Commands"><font
+        size="4"><strong>Showdown Commands</strong></font></a><font
+        size="3"> - commands for showdown mode (always available
+        for admins)</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>default</td>
+        <td>This sets all server settings to default. The default
+        settings are read the first time the server is started.
+        (Which means they're taken from server.cfg)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td nowrap>setinfo map &lt;maps&gt;</td>
+        <td>this change map to &lt;map&gt;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>timeup/timedown</td>
+        <td>Add/Sub 5 min to the timer.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>fragsup/fragsdown</td>
+        <td>Adds/Sub 10 frags to the fraglimit.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>dm</td>
+        <td>Change deathmatch.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>tp</td>
+        <td>Change teamplay.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>powerup</td>
+        <td>Toggle powerups.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>dropquad</td>
+        <td>Toggle dropquad.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>dropring</td>
+        <td>Toggle dropring.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>discharge</td>
+        <td>Toggle discharges.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>grapple</td>
+        <td>Toggle the Grapple.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>runes</td>
+        <td>Toggle runes.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>droprune</td>
+        <td>Toggle tossrune.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>maxspeed</td>
+        <td>Change sv_maxspeed (320-400).</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>anka</td>
+        <td>Toggle Anka Maps.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>spectalk</td>
+        <td>Toggle Spectator talk allowed during matches.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>maxspecs</td>
+        <td>Toggle Maxspectators.</td>
+    </tr>
+</table>
+</center></div>
+
+<p>&nbsp;</p>
+<div align="center"><center>
+
+<table border="1" width="75%">
+    <tr>
+        <td colspan="3"><a name="Proxy Commands"><font size="4"><strong>Proxy
+        Commands</strong></font></a><font size="4"><strong> - </strong></font><font
+        size="3">Commands to disable features from
+        FAQ/Qizmo/Cheapo etc. <br>
+        You need admin access to use them.</font></td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>proxyloc</td>
+        <td>Toggles FAQ/Qizmo locations disable.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>proxytimer</td>
+        <td>Toggles FAQ/Qizmo powerup timer disable.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>proxysound</td>
+        <td>Toggles FAQ/Qizmo sound messages disable.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>proxylag</td>
+        <td>Toggles FAQ/Qizmo proxylag disable.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>proxyrlag</td>
+        <td>Toggles FAQ/Qizmo auto report lag.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>proxynoe</td>
+        <td>Toggles FAQ/Qizmo %e reporting.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>*?*</td>
+        <td>Toggles FAQ/Qizmo spectator voice channels.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>proxyall</td>
+        <td>Toggles all FAQ/Qizmo features.</td>
+    </tr>
+</table>
+</center></div>
+
+<h1><a name="player settings">Player Settings<font
+color="#FF8000"><strong>(v1.51)</strong></font></a></h1>
+
+<p>Add these settings to your config or type them in the console.
+New for v1.51 is that all settings is set with <em>one</em>
+setinfo variable, &quot;pure&quot;, to prevent setinfo overflow.
+Add the values you want from the table and then add a line like
+this to your config:</p>
+<div align="center"><center>
+
+<table border="0" cellspacing="8" width="80%">
+    <tr>
+        <td nowrap><font color="#FF0000">setinfo pure 8258</font></td>
+        <td>This sets the statusbar to pos. 2 with disabled rune
+        status. and enables autoshot 2+64+8192=8258</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+</table>
+</center></div>
+
+<p>An easy way to do small changes is to go to a Pure server and
+use the related commands or the menu to set the settings you
+want. After each change Pure will tell you the new value of the
+pure variable for your config.&nbsp; </p>
+
+<p><font color="#FF0000">NOTE:</font><font color="#000000"> If
+you use some of the old variables (ad, as, etc), Pure will
+acknowledge them when you enter a server and tell you the correct
+new setting for &quot;pure&quot;. After you have added it, <em>remove
+the old ones.</em> (Avoids trouble.)</font></p>
+
+<table border="1">
+    <tr>
+        <td align="center"><font size="4"><strong>Player Settings</strong></font></td>
+        <td align="center" nowrap><font size="4"><strong>Command</strong></font></td>
+        <td align="center" colspan="2"><font size="4"><strong>Values</strong></font></td>
+    </tr>
+    <tr>
+        <td rowspan="2"><strong>Statusbar position</strong> Sets
+        the position of the CTF statusbar.</td>
+        <td align="center" rowspan="2" nowrap>impulse 70-81</td>
+        <td align="center">0</td>
+        <td align="center">Statusbar disabled.</td>
+    </tr>
+    <tr>
+        <td align="center">1-11</td>
+        <td align="center">Set position.</td>
+    </tr>
+    <tr>
+        <td><strong>Enable auto screenshots</strong> Takes a
+        screenshot automatically at the end of a match.</td>
+        <td align="center" nowrap>autoshot</td>
+        <td align="center">16</td>
+        <td align="center">Autoshot enabled.</td>
+    </tr>
+    <tr>
+        <td rowspan="4"><strong>Enable auto demo</strong>
+        Automatically starts and stops demo in matches so you
+        don't get a lot of useless stuff from standby or map
+        changes.</td>
+        <td align="center" rowspan="4" nowrap>autodemo</td>
+        <td align="center">0</td>
+        <td align="center">Recording off.</td>
+    </tr>
+    <tr>
+        <td align="center">32</td>
+        <td align="center">Recording by proxy if you have a
+        demoproxy, otherwise uses the default QW recording</td>
+    </tr>
+    <tr>
+        <td align="center">64</td>
+        <td align="center">Recording by the built-in recording in
+        QW.</td>
+    </tr>
+    <tr>
+        <td align="center">96</td>
+        <td><em>Always</em> records demos, even on normal
+        servers. Useful if you want demos splitted at mapchanges.</td>
+    </tr>
+    <tr>
+        <td rowspan="2"><strong>Disable Centerprint</strong> Turn
+        off most centerprinted messages in Pure.</td>
+        <td align="center" rowspan="2">cprint</td>
+        <td align="center">0</td>
+        <td align="center">Centerprint on.</td>
+    </tr>
+    <tr>
+        <td align="center">128</td>
+        <td align="center">Centerprint off.</td>
+    </tr>
+    <tr>
+        <td rowspan="3"><strong>Spectator/observer tracking </strong>Selects
+        the style you're tracking with.</td>
+        <td align="center" rowspan="3" nowrap>cam</td>
+        <td align="center">0</td>
+        <td align="center">Chasecam.</td>
+    </tr>
+    <tr>
+        <td align="center">256</td>
+        <td align="center">Static Cam.</td>
+    </tr>
+    <tr>
+        <td align="center">768</td>
+        <td align="center">Cam off.</td>
+    </tr>
+    <tr>
+        <td rowspan="2"><strong>Statusbar HUD support</strong> If
+        enabled this option prints the status on two lines which
+        may help if you play with the QW HUD or with cl_showfps
+        enabled.</td>
+        <td align="center" rowspan="2">stathud</td>
+        <td align="center">0</td>
+        <td align="center">Single line statusbar.</td>
+    </tr>
+    <tr>
+        <td align="center">1024</td>
+        <td align="center">Double line statusbar.</td>
+    </tr>
+    <tr>
+        <td><strong>Statusbar Auto ID players</strong> Enables
+        &quot;idplayer&quot; as with impulse 141 but automatic.</td>
+        <td align="center">statautoid</td>
+        <td align="center">2048</td>
+        <td align="center">Auto ID players.</td>
+    </tr>
+    <tr>
+        <td><strong>Statusbar weaponstatus</strong>. Shows your
+        current weapon on the statusbar. Not recommended if you
+        are a HPB, since this means the statusbar is updated
+        every time you change weapons.</td>
+        <td align="center">statweapon</td>
+        <td align="center">4096</td>
+        <td align="center">Weaponstatus on.</td>
+    </tr>
+    <tr>
+        <td rowspan="3"><strong>Statusbar partial disable.</strong>
+        All these options disables a part of the standard
+        statusbar, which saves screen space and bandwidth.</td>
+        <td align="center">statrune</td>
+        <td align="center">8192</td>
+        <td align="center">Disable runestatus.</td>
+    </tr>
+    <tr>
+        <td align="center">stattime</td>
+        <td align="center">16384</td>
+        <td align="center">Disable time left.</td>
+    </tr>
+    <tr>
+        <td align="center">statscore</td>
+        <td align="center">32768</td>
+        <td align="center">Disable scores.</td>
+    </tr>
+    <tr>
+        <td><strong>Block teamaudio. </strong>No Teamaudio is
+        sent to you. (Useful if you don't have the sounds.)</td>
+        <td align="center">teamaudio</td>
+        <td>65536</td>
+        <td align="center">Disable Audio.</td>
+    </tr>
+</table>
+</body>
+</html>

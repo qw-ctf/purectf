@@ -24,3 +24,4 @@ $type vp_parallel
 $load id1/gfx/sprites/light.lbm
 $frame	104	32	32	32
 
+// *check*

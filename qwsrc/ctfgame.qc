@@ -1,5 +1,4 @@
 
-float VOTEEXIT_TIME_LIMIT	=	60;		// 60 seconds after first vote
 float voteexit_time;
 entity vote_leader;		// current leader
 entity lastvotespawn;
@@ -82,7 +81,7 @@ local entity	t;
 
 	if (other.voted) {
 		if (other.voted < time)
-			TeamPlayerUpdate(other, "You have already voted.");
+			PrintStatusbar(other, "You have already voted.",1);
 		other.voted = time + 1;
 		voteexit_teleport();
 		return;
@@ -128,7 +127,7 @@ local entity	t;
 };
 
 /*QUAKED trigger_voteexit (.5 .5 .5) ?
-A merge of trigger_changelevel and trigger_teleport.  A player touching
+A merge of trigger_change level and trigger_teleport.  A player touching
 this this teleported just like a trigger_teleport, except this triggers
 .cnt field gets incremented.  This allows players to vote for their exit.
 See status.qc for the display and total of the voting.
@@ -145,3 +144,4 @@ void() trigger_voteexit =
 	self.cnt = 0;
 };
 
+// *check*

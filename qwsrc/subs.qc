@@ -2,7 +2,13 @@
 
 void() SUB_Null = {};
 
-void() SUB_Remove = {remove(self);};
+void() SUB_Remove = {
+	//***pure*** --> Pause function v1.51
+	if (FreezeThink())
+		return;
+	//***pure*** <--
+	remove(self);
+};
 
 
 /*
@@ -109,6 +115,10 @@ After moving, set origin to exact final destination
 */
 void()  SUB_CalcMoveDone =
 {
+//***pure*** --> Pause function v1.51
+	if (FreezeThink())
+		return;
+//***pure*** <--
 	setorigin(self, self.finaldest);
 	self.velocity = '0 0 0';
 	self.nextthink = -1;
@@ -211,6 +221,13 @@ void() SUB_UseTargets =
 {
 	local entity t, stemp, otemp, act;
 
+/* debugtarget
+	if (FLAG_DEBUG && (self.target != string_null)) {
+		bprint(PRINT_HIGH, "target: ");
+		bprint(PRINT_HIGH, self.target);
+		bprint(PRINT_HIGH, "\n");
+	}
+*/
 //
 // check for a delay
 //
@@ -234,7 +251,7 @@ void() SUB_UseTargets =
 //
 	if (activator.classname == "player" && self.message != "")
 	{
-		centerprint (activator, self.message);
+		PrintStatusbar(activator, self.message,1);
 		if (!self.noise)
 			sound (activator, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
 	}
@@ -268,6 +285,20 @@ void() SUB_UseTargets =
 			{
 				return;
 			}
+/* ***debug*** 
+
+			bprint(PRINT_HIGH, "Trigger targetname:");
+			bprint(PRINT_HIGH, t.targetname);
+			bprint(PRINT_HIGH, "\n");
+			bprint(PRINT_HIGH, "Trigger classname:");
+			bprint(PRINT_HIGH, t.classname);
+			bprint(PRINT_HIGH, "\n");
+			bprint(PRINT_HIGH, "Trigger model:");
+			bprint(PRINT_HIGH, t.model);
+			bprint(PRINT_HIGH, "\n");
+***debug*** */
+
+
 			stemp = self;
 			otemp = other;
 			self = t;
@@ -286,3 +317,4 @@ void() SUB_UseTargets =
 
 };
 
+// *check*

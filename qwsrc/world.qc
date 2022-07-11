@@ -1,6 +1,6 @@
 
 void() InitBodyQue;
-
+void() CheckRules;
 
 void() main =
 {
@@ -176,20 +176,29 @@ void() worldspawn =
 	runespawned = 0;
 	InitBodyQue ();
 
+	SPAWNDELAY = 0.2;
+
 // custom map attributes
 
-// can't change gravity in QuakeWorld
-/*
-	if (self.model == "maps/e1m8.bsp")
+// ***maps*** --> 		gravity support (e1m8) and and allstars comp.
+	ForceUpdateVariables();
+	InitCustomStuff();
+
+	if ((self.model == "maps/e1m8.bsp") && !stof(infokey(world, "fixe1m8")))
 		cvar_set ("sv_gravity", "100");
 	else
 		cvar_set ("sv_gravity", "800");
-*/
 
-	if (self.model == "maps/ctfstart.bsp" || self.model == "maps/start.bsp")
+	if (self.model == "maps/ctfstart.bsp" || 
+	    self.model == "maps/epstart.bsp"  ||	
+	    self.model == "maps/twstart.bsp"  ||
+	    self.model == "maps/allstart.bsp"  ||
+	    self.model == "maps/start.bsp")
 		gamestart = 1;
 	else
 		gamestart = 0;
+// ***maps*** <--
+
 
 // the area based ambient sounds MUST be the first precache_sounds
 
@@ -209,7 +218,7 @@ void() worldspawn =
 	precache_sound ("player/drown2.wav");		// drowning pain
 	precache_sound ("player/gasp1.wav");		// gasping for air
 	precache_sound ("player/gasp2.wav");		// taking breath
-	precache_sound ("player/h2odeath.wav");		// drowning death
+	precache_sound (SOUND_H2ODEATH);			// drowning death
 
 	precache_sound ("misc/talk.wav");			// talk
 	precache_sound ("player/teledth1.wav");		// telefrag
@@ -230,7 +239,7 @@ void() worldspawn =
 // player gib sounds
 	precache_sound ("player/gib.wav");			// player gib sound
 	precache_sound ("player/udeath.wav");		// player gib sound
-	precache_sound ("player/tornoff2.wav");		// gib sound
+	precache_sound (SOUND_LEAVESERVER);		// gib sound
 
 // player pain sounds
 
@@ -242,11 +251,17 @@ void() worldspawn =
 	precache_sound ("player/pain6.wav");
 
 // player death sounds
-	precache_sound ("player/death1.wav");
-	precache_sound ("player/death2.wav");
-	precache_sound ("player/death3.wav");
-	precache_sound ("player/death4.wav");
-	precache_sound ("player/death5.wav");
+	if (NUMBER_OF_DEATHS >= 1) precache_sound (SOUND_DEATH1);
+	if (NUMBER_OF_DEATHS >= 2) precache_sound (SOUND_DEATH2);
+	if (NUMBER_OF_DEATHS >= 3) precache_sound (SOUND_DEATH3);
+	if (NUMBER_OF_DEATHS >= 4) precache_sound (SOUND_DEATH4);
+	if (NUMBER_OF_DEATHS >= 5) precache_sound (SOUND_DEATH5);
+	if (NUMBER_OF_DEATHS >= 6) precache_sound (SOUND_DEATH6);
+	if (NUMBER_OF_DEATHS >= 7) precache_sound (SOUND_DEATH7);
+	if (NUMBER_OF_DEATHS >= 8) precache_sound (SOUND_DEATH8);
+	if (NUMBER_OF_DEATHS >= 9) precache_sound (SOUND_DEATH9);
+	if (NUMBER_OF_DEATHS >= 10) precache_sound (SOUND_DEATH10);
+	
 
 // ax sounds	
 	precache_sound ("weapons/ax1.wav");			// ax swoosh
@@ -284,9 +299,6 @@ void() worldspawn =
 	precache_model ("progs/v_shot2.mdl");
 	precache_model ("progs/v_nail2.mdl");
         precache_model ("progs/v_rock2.mdl");
-        precache_model ("progs/v_star.mdl");// precache grapple (Wedge)
-        precache_model ("progs/bit.mdl");// precache grapple (Wedge)
-        precache_model ("progs/star.mdl");// precache grapple (Wedge)
 
         precache_model ("progs/bolt.mdl");              // for lightning gun
 	precache_model ("progs/bolt2.mdl");		// for lightning gun
@@ -303,7 +315,158 @@ void() worldspawn =
 	precache_model ("progs/zom_gib.mdl");
 
 	precache_model ("progs/v_light.mdl");
+
+// Prechaches for dynamic maps -->
 	
+	precache_model ("maps/b_shell0.bsp");
+	precache_model ("maps/b_shell1.bsp");
+	precache_model ("maps/b_nail0.bsp");
+	precache_model ("maps/b_nail1.bsp");
+	precache_model ("maps/b_rock0.bsp");
+	precache_model ("maps/b_rock1.bsp");
+	precache_model ("maps/b_batt0.bsp");
+	precache_model ("maps/b_batt1.bsp");
+
+	precache_model ("progs/invulner.mdl");
+	precache_sound ("items/protect.wav");
+	precache_sound ("items/protect2.wav");
+	precache_sound ("items/protect3.wav");
+
+	precache_model ("progs/invisibl.mdl");
+	precache_sound ("items/inv1.wav");
+	precache_sound ("items/inv2.wav");
+	precache_sound ("items/inv3.wav");
+	precache_sound ("ambience/hum1.wav");
+	
+	precache_model ("progs/suit.mdl");
+	precache_sound ("items/suit.wav");
+	precache_sound ("items/suit2.wav");
+
+	precache_model("maps/b_bh10.bsp");
+	precache_sound("items/r_item1.wav");
+	precache_model("maps/b_bh100.bsp");
+	precache_sound("items/r_item2.wav");
+	precache_model("maps/b_bh25.bsp");
+	precache_sound("items/health1.wav");
+
+// <-- Prechaches for dynamic maps 
+	
+
+// tw50 --> precache TW stuff	
+	if (FLAG_AIRFIST) {
+		precache_model ("progs/v_airgun.mdl");  // Player view of airgun
+		precache_model ("progs/s_ablast.spr");	// Air Gun Fire sprite
+	}
+
+	if (FLAG_TW) {
+		precache_sound ("tw/tfsniper.wav");  	// sniper firing sound (from team fortress)
+		precache_model ("progs/g_snipe1.mdl"); 	// Spinny Sniper
+		precache_model ("progs/v_sniper.mdl");  // Handy Sniper
+		precache_sound ("tw/twgtwp1.wav");  	// tw groovy
+		precache_sound ("tw/twharp.wav");	// harpoon firing
+		precache_model ("progs/twharp.mdl");    // Grapple harpoon
+		precache_model ("progs/twharpgn.mdl");	// Harpoon Gun
+		precache_sound ("tw/twgiggle.wav");	// Mad giggle
+		precache_model ("progs/link.mdl");	// grapple link
+		precache_model ("progs/tw_back.mdl");	// backpack
+		precache_model ("progs/twbolt1.mdl"); 	// laser bolt
+		precache_model ("progs/twlaserh.mdl"); 	// laser hand held
+		precache_model ("progs/twlaser.mdl"); 	// laser spin
+		precache_sound ("tw/twlaz04.wav"); 	// laser sound
+		precache_model ("progs/rarmor1.mdl");	// living armor rune
+		precache_model ("progs/protect2.mdl");  // Protection rune
+		precache_sound ("tw/protect.wav");	// Protection sound
+		precache_sound ("tw/twpower.wav");  	// rune touch sound
+		precache_model ("progs/vampire2.mdl");	// vampirism rune
+		precache_sound ("tw/vampire.wav");	// Vampire Rune sound
+		precache_sound ("tw/twregen2.wav");     // regeneration rune
+		precache_sound ("tw/twgrenad.wav");	// ThunderWalker grenade sound    
+		precache_sound ("tw/twrkt.wav");	// rocket sound 
+		precache_model ("progs/cloak.mdl");     // Cloaking Rune
+		precache_sound ("tw/twcloak.wav");	// Cloaking sound
+		precache_sound ("tw/twcloak2.wav");	// Uncloaking sound
+		precache_sound ("tw/twcloh2o.wav");	// Cloak Water fail sound
+		precache_sound (SOUND_CAPTURE);  	// tw SPOON
+		precache_sound ("tw/twtele.wav");       // teleport sound
+		precache_sound ("doors/basetry.wav");   // teleport no work sound
+		precache_sound ("tw/spawnoff.wav");	// invince wear off time
+		precache_sound ("tw/flareup.wav");	// flareup sound
+		precache_model ("progs/flare.mdl");	// the flare
+		precache_model ("progs/fish.mdl");	// Floundervision!
+		precache_sound ("tw/twgib1.wav"); 	// tw napalm
+//		precache_sound ("tw/twgib2.wav");    	// splat owwww
+//		precache_sound ("tw/twdeth02.wav");	// tw death sound
+//		precache_sound ("tw/twdeth04.wav");	// tw death sound
+//		precache_sound ("tw/twdeth06.wav");	// tw death sound
+//		precache_sound ("tw/twdeth08.wav");	// tw death sound
+//		precache_sound ("tw/twdeth09.wav");	// tw death sound
+		precache_sound ("tw/twargh.wav");       // horrible scream
+		precache_model ("progs/twregpak.mdl");	// health pack tossed
+		precache_sound ("tw/twboump.wav");	// pick up a health pack
+		precache_model ("progs/twvshota.mdl");	// single shotgun
+		precache_model ("progs/twvshot2.mdl");	// two shotguns
+		precache_model ("progs/twg_shot.mdl");	// spinning shotgun
+		precache_model ("progs/twbolt-b.mdl");  
+		precache_sound ("tw/suicide2.wav");
+		precache_sound ("tw/killken1.wav");
+		precache_sound ("tw/boombaby.wav");
+		precache_sound ("tw/tw_shot.wav");
+		precache_sound ("tw/tw_shot2.wav");
+// Custom	precache_sound ("tw/cantfite.wav");	
+		precache_sound ("tw/mmmbeer.wav");	
+		precache_model ("progs/lego.mdl");
+	}
+
+	// Precache CTF Stuff
+	if (FLAG_CTF) {
+		precache_model ("progs/flag.mdl");
+		precache_sound (SOUND_FLAGNOICE);
+		precache_sound(SOUND_GETFLAG);          // flag taken
+		precache_sound(SOUND_CAPTURE);		// flag capture
+	}
+
+	// Extras
+	if (FLAG_RASOUNDS) {
+		precache_sound("ra/fight.wav");
+		precache_sound("ra/1.wav");
+		precache_sound("ra/2.wav");
+		precache_sound("ra/3.wav");
+		// *Check* More ra sounds?
+	}
+	
+	if (FLAG_FUNSOUNDS) {
+		precache_sound("fun/starting.wav");
+		precache_sound("fun/goodday.wav");
+		precache_sound("fun/gameover.wav");
+	}
+
+	
+	// Debugging
+	if (FLAG_DEBUG) {
+		precache_model("progs/purewall.mdl");
+	}
+
+        //grapple sounds (wedge)
+	if (FLAG_HOOK) {
+		precache_model ("progs/v_star.mdl");// precache grapple (Wedge)
+		precache_model ("progs/bit.mdl");// precache grapple (Wedge)
+		precache_model ("progs/star.mdl");// precache grapple (Wedge)
+	        precache_sound ("weapons/chain1.wav");
+       		precache_sound ("weapons/chain2.wav");
+       		precache_sound ("weapons/chain3.wav");
+        	precache_sound ("weapons/bounce2.wav");
+        	precache_sound ("blob/land1.wav");	
+	}
+
+	//***multiweapon***
+	if (FLAG_MULTIWEAPON)			
+	        MultiWeapon_PreCache ();	
+
+
+	PureInitMap();		// *pure* Start map initiation
+
+	AntiTimer();		// Spawn antitimer
+
 //
 // Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
 //
@@ -350,15 +513,6 @@ void() worldspawn =
 	lightstyle(63, "a");
 };
 
-void() StartFrame =
-{
-	timelimit = cvar("timelimit") * 60;
-	fraglimit = cvar("fraglimit");
-	teamplay = cvar("teamplay");
-	deathmatch = cvar("deathmatch");
-	
-	framecount = framecount + 1;
-};
 
 /*
 ==============================================================================
@@ -406,7 +560,37 @@ void(entity ent) CopyToBodyQue =
 	bodyque_head.flags = 0;
 	setorigin (bodyque_head, ent.origin);
 	setsize (bodyque_head, ent.mins, ent.maxs);
+
 	bodyque_head = bodyque_head.owner;
 };
 
+//
+// World's think function.
+//
+void() StartFrame =
+{
+	framecount = framecount + 1;
 
+	if (!TOTALPLAYERS)
+		return;
+
+	UpdateVariables();
+
+	CheckPingBan();				// *obsolete* ?
+
+	if (blinktime < time) {			// *check* Humm?
+		blink = !blink;
+		blinktime = time + 0.4;
+	}
+
+	if (VOTE_TIMEOUT)
+		CheckVoteTimeout();
+
+// debug	localcmd("echo test\n");
+
+
+	CheckTimers();
+	CheckRules ();
+};
+
+// <-- check

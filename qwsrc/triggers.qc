@@ -80,8 +80,12 @@ void() multi_use =
 
 void() multi_touch =
 {
+	if (FREEZEFLAGS & FREEZE_WORLD)		//***pure*** pauses (v1.51)
+		return;
+
 	if (other.classname != "player")
 		return;
+
 	
 // if the trigger has an angles field, check player's facing direction
 	if (self.movedir != '0 0 0')
@@ -233,20 +237,20 @@ void() counter_use =
 		&& (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
 		{
 			if (self.count >= 4)
-				centerprint (activator, "There are more to go...");
+				PrintStatusbar(activator, "There are more to go...",1);
 			else if (self.count == 3)
-				centerprint (activator, "Only 3 more to go...");
+				PrintStatusbar(activator, "Only 3 more to go...",1);
 			else if (self.count == 2)
-				centerprint (activator, "Only 2 more to go...");
+				PrintStatusbar(activator, "Only 2 more to go...",1);
 			else
-				centerprint (activator, "Only 1 more to go...");
+				PrintStatusbar(activator, "Only 1 more to go...",1);
 		}
 		return;
 	}
 	
 	if (activator.classname == "player"
 	&& (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
-		centerprint(activator, "Sequence completed!");
+		PrintStatusbar(activator, "Sequence completed!",1);
 	self.enemy = activator;
 	multi_trigger ();
 };
@@ -375,7 +379,7 @@ local vector	org;
 
 	if (self.spawnflags & PLAYER_ONLY)
 	{
-		if (other.classname != "player")
+		if (!IsClassPlayer(other))
 			return;
 	}
 
@@ -383,21 +387,38 @@ local vector	org;
 	if (other.health <= 0 || other.solid != SOLID_SLIDEBOX)
 		return;
 
+// ***telebug*** -->  Instead of crashing the server, just ignore a nonvalid teleporter.
+	t = find (world, targetname, self.target);
+
+	// Debugparameter to find faulty teleporters.
+	if (FLAG_TELEDEBUG) {
+		bprint(PRINT_HIGH, "Destination: ");
+		bprint(PRINT_HIGH, self.target);
+		bprint(PRINT_HIGH, "\n");
+	}
+	
+	// Exit if no target
+	if (!t) return; 		// Previous--> objerror ("couldn't find target");
+
+
+	LAST_TELEPORTER = t;
+
+// ***telebug*** <--
+
+
 	SUB_UseTargets ();
 
 // put a tfog where the player was
 	spawn_tfog (other.origin);
 
-	t = find (world, targetname, self.target);
-	if (!t)
-		objerror ("couldn't find target");
-		
 // spawn a tfog flash in front of the destination
 	makevectors (t.mangle);
 	org = t.origin + 32 * v_forward;
 
-	spawn_tfog (org);
-	spawn_tdeath(t.origin, other);
+	if (!IsObserver(other)) {
+		spawn_tfog (org);
+		spawn_tdeath(t.origin, other);
+	}
 
 // move the player and lock him down for a little while
 	if (!other.health)
@@ -409,7 +430,9 @@ local vector	org;
 
 	setorigin (other, t.origin);
 	other.angles = t.mangle;
-	if (other.classname == "player")
+// ***purectf*** -->
+	if (IsClassPlayer(other))
+// ***purectf*** <--
 	{
                 // Teleporting - detach hook (wedge)
                 if (other.weapon == IT_GRAPPLE && other.hook_out)
@@ -417,7 +440,6 @@ local vector	org;
                         sound (other, CHAN_WEAPON, "weapons/bounce2.wav", 1, ATTN_NORM);
                         other.on_hook = FALSE;
                         other.hook_out = FALSE;
-                        other.fire_held_down = FALSE;
                         other.weaponframe = 0;
                         other.attack_finished = time + 0.75;// avoid instant rehook
                 }
@@ -427,6 +449,8 @@ local vector	org;
 		if (other.flags & FL_ONGROUND)
 			other.flags = other.flags - FL_ONGROUND;
 		other.velocity = v_forward * 300;
+		if (FLAG_STANDBY || CountDown) 		// Fix for getting stuck in standby etc.
+			other.solid = SOLID_NOT;
 	}
 	other.flags = other.flags - other.flags & FL_ONGROUND;
 };
@@ -436,6 +460,7 @@ This is the destination marker for a teleporter.  It should have a "targetname" 
 */
 void() info_teleport_destination =
 {
+	if (ARENA_INHIBIT) {remove(self);return;}
 // this does nothing, just serves as a target spot
 	self.mangle = self.angles;
 	self.angles = '0 0 0';
@@ -470,7 +495,7 @@ void() trigger_teleport =
 
 	if (!(self.spawnflags & SILENT))
 	{
-		precache_sound ("ambience/hum1.wav");
+		if (!NOSPAWN) precache_sound ("ambience/hum1.wav");
 		o = (self.mins + self.maxs)*0.5;
 		ambientsound (o, "ambience/hum1.wav",0.5 , ATTN_STATIC);
 	}
@@ -520,7 +545,7 @@ void() trigger_onlyregistered_touch =
 	{
 		if (self.message != "")
 		{
-			centerprint (other, self.message);
+			PrintStatusbar (other, self.message,1);
 			sound (other, CHAN_BODY, "misc/talk.wav", 1, ATTN_NORM);
 		}
 	}
@@ -546,6 +571,9 @@ void() hurt_on =
 
 void() hurt_touch =
 {
+	if (FREEZEFLAGS & FREEZE_WORLD)		//***pure*** pauses (v1.51)
+		return;
+
 	if (other.takedamage)
 	{
 		self.solid = SOLID_NOT;
@@ -609,8 +637,10 @@ void() trigger_push =
 
 //============================================================================
 
+
 void() trigger_monsterjump_touch =
 {
+/*
 	if ( other.flags & (FL_MONSTER | FL_FLY | FL_SWIM) != FL_MONSTER )
 		return;
 
@@ -624,6 +654,7 @@ void() trigger_monsterjump_touch =
 	other.flags = other.flags - FL_ONGROUND;
 
 	other.velocity_z = self.height;
+*/
 };
 
 /*QUAKED trigger_monsterjump (.5 .5 .5) ?
@@ -633,6 +664,7 @@ Walking monsters that touch this will jump in the direction of the trigger's ang
 */
 void() trigger_monsterjump =
 {
+/*
 	if (!self.speed)
 		self.speed = 200;
 	if (!self.height)
@@ -641,5 +673,7 @@ void() trigger_monsterjump =
 		self.angles = '0 360 0';
 	InitTrigger ();
 	self.touch = trigger_monsterjump_touch;
+*/
 };
 
+// *check*

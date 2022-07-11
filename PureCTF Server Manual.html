@@ -1,0 +1,2280 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage 2.0">
+<title>Pure CTF - Server manual</title>
+<meta name="FORMATTER" content="Microsoft FrontPage 2.0">
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<h1 align="center"><font size="7"><strong>Pure CTF</strong><br>
+</font><font size="5">Server Manual</font></h1>
+
+<p align="center">Pure CTF v2.00 by <a
+href="mailto:methabol@hem.passagen.se">Methabol</a> - <a
+href="http://purectf.solgames.com/">Pure CTF</a> - <a
+href="http://ctf.solgames.se/">CTF.SE</a> </p>
+<!--webbot bot="Include" u-include="manifesto.html" tag="BODY"
+startspan --><div align="center"><center>
+
+<table border="0" width="80%">
+    <tr>
+        <td>Since Zoid's first version of 3wave CTF there have
+        been many different CTF mods out there. Some good and
+        some not so good. Most had one thing in common though:
+        You had to play with all new features, you couldn't just
+        select the ones you want. I wanted a mod where you could
+        select <em>exactly</em> what new features you wanted, and
+        which ones you rather not use at all. I also wanted a
+        solid competition mod that you could use to set up
+        clanfights or practice games quickly and easily. Finally
+        I wanted a mod that fixed all those small but annoying
+        bugs that was left since the developement of 3wave CTF
+        was discontinued. The result is Pure CTF.<p>With Pure CTF
+        <em>you</em> got the choice. You can select any of the
+        dozens of options, modes and clientpaks you want. You can
+        use it as a competition server, arena server, clanarena
+        server, even a DM server, and it supports the most
+        popular CTF mod besides 3wave, Thunderwalker CTF. And you
+        can combine any of the features making the possibilities
+        endless.</p>
+        <p align="left">Or you can play just plain, Pure CTF. </p>
+        </td>
+    </tr>
+</table>
+</center></div><!--webbot bot="Include" endspan
+i-checksum="57350" -->
+
+<h1 align="center">Index</h1>
+<div align="center"><center>
+
+<table border="0">
+    <tr>
+        <td colspan="3" bgcolor="#CCCCCC"><b>Server configuration</b>
+        </td>
+    </tr>
+    <tr>
+        <td><a href="#Quickinstallation">Quick Installation or
+        upgrade</a> </td>
+        <td align="center">-</td>
+        <td>Installation instructions</td>
+    </tr>
+    <tr>
+        <td>- <a href="#Installing from scratch">Installing from
+        scratch</a></td>
+        <td align="center">-</td>
+        <td>Install Pure CTF</td>
+    </tr>
+    <tr>
+        <td>- <a href="#Upgrading">Upgrading</a></td>
+        <td align="center">-</td>
+        <td>Upgrading from Pure or any other CTF patch.</td>
+    </tr>
+    <tr>
+        <td>- <a href="#Easy setup table">Easy setup table</a></td>
+        <td align="center">-</td>
+        <td>Quick guide to server settings setup.</td>
+    </tr>
+    <tr>
+        <td><a href="#Admin Functions">Admin Functions</a></td>
+        <td align="center">-</td>
+        <td>Admin modes, levels and commands</td>
+    </tr>
+    <tr>
+        <td><a href="#servermodes">Server Modes</a> </td>
+        <td align="center">-</td>
+        <td>The major server modes.</td>
+    </tr>
+    <tr>
+        <td><a href="#server settings">Server Settings</a> </td>
+        <td align="center">-</td>
+        <td>Server.cfg settings.</td>
+    </tr>
+    <tr>
+        <td><a href="#The freeze function">The freeze function</a>
+        </td>
+        <td>-</td>
+        <td>An enhancement to the pause function in QW.</td>
+    </tr>
+    <tr>
+        <td><a href="#Anticheat features">Anticheat features</a><font
+        color="#FF8000"><strong> </strong></font></td>
+        <td>-</td>
+        <td>Several anticheating measures.</td>
+    </tr>
+    <tr>
+        <td><a href="#Paintball Mode">Paintball Mode</a></td>
+        <td>-</td>
+        <td>The paintball and practice mode.</td>
+    </tr>
+    <tr>
+        <td><a href="#Arena Mode">Arena Support</a><font
+        color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>-</td>
+        <td>Support for Arena and Clan Arena.</td>
+    </tr>
+    <tr>
+        <td><a href="#Thunder Walker">Thunderwalker CTF</a><font
+        color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>-</td>
+        <td>Support for Thunderwalker CTF</td>
+    </tr>
+    <tr>
+        <td><a href="#Extra clientpaks">Extra clientpaks</a></td>
+        <td>-</td>
+        <td>Support for external clientpaks.</td>
+    </tr>
+    <tr>
+        <td><a href="#mapqueue">The Map queue</a> </td>
+        <td align="center">-</td>
+        <td>Configuring the map queue.</td>
+    </tr>
+    <tr>
+        <td><a href="#Message of the day">Message of the day
+        (MOTD)</a></td>
+        <td align="center">-</td>
+        <td>Configuring MOTD</td>
+    </tr>
+    <tr>
+        <td><a href="#Ping ban">Ping ban</a> </td>
+        <td align="center">-</td>
+        <td>Using the Ping ban feature</td>
+    </tr>
+    <tr>
+        <td><a href="#ctfrank">CTF Rank</a> </td>
+        <td align="center">-</td>
+        <td>The ranking system CTF Rank</td>
+    </tr>
+    <tr>
+        <td><a href="#CTF Showdown">CTF Showdown</a></td>
+        <td align="center">-</td>
+        <td>CTF Showdown Mode and commands</td>
+    </tr>
+    <tr>
+        <td colspan="3" bgcolor="#CCCCCC"><b>Patch info</b> </td>
+    </tr>
+    <tr>
+        <td><a href="#Optimizations">Optimizations</a> </td>
+        <td align="center">-</td>
+        <td>Info about optimizations</td>
+    </tr>
+    <tr>
+        <td><a href="#fixedbugs">Fixed Bugs</a> </td>
+        <td align="center">-</td>
+        <td>Info of the Threewave CTF bugs fixed.</td>
+    </tr>
+    <tr>
+        <td><a href="#Todo and known bugs.">Todo and known bugs</a></td>
+        <td align="center">-</td>
+        <td>Coming attractions.</td>
+    </tr>
+    <tr>
+        <td><a href="#History">History</a> </td>
+        <td align="center">-</td>
+        <td>Version history</td>
+    </tr>
+    <tr>
+        <td colspan="3" bgcolor="#CCCCCC"><b>Related files</b></td>
+    </tr>
+    <tr>
+        <td><a href="../files/server.txt">server.txt</a></td>
+        <td align="center">-</td>
+        <td>Original Threewave CTF doc</td>
+    </tr>
+    <tr>
+        <td><a href="../files/pingstat.txt">pingstat.txt</a></td>
+        <td align="center">-</td>
+        <td>pingstat doc</td>
+    </tr>
+</table>
+</center></div>
+
+<h1 align="center">&nbsp; Credits</h1>
+<div align="center"><center>
+
+<table border="0" width="60%">
+    <tr>
+        <td>Pure CTF is mainly made by <a
+        href="mailto:methabol@hem.passagen.se">Methabol</a>: A
+        lot of new coding, most of the bug fixes and features.
+        Also made this documentation and the <a
+        href="http://purectf.solgames.com/">web page</a>.&nbsp;<br>
+        <ul>
+            <li><a href="mailto:mlq@df.lth.se">[LoRD]Tar</a> for
+                some help and bug fixes. (The &quot;floating
+                flag&quot; bug and the &quot;multiple
+                capture&quot; bug.)</li>
+            <li><a href="mailto:mlq@df.lth.se">[LoRD]Tar</a> and <a
+                href="mailto:tsn@df.lth.se">[LoRD]Conar</a> for <a
+                href="#ctfrank">CTFRank</a>.</li>
+            <li><a href="mailto:mlq@df.lth.se">[LoRD]Tar</a> for
+                the original CTF Showdown mod, based on the
+                QWDuel mod by <a href="mailto:tjp@cc.jyu.fi">Fang^FAQ^</a>.</li>
+            <li><a href="mailto:max.tauntor@pobox.se">Max Tauntor</a>
+                for the tossrune code.</li>
+            <li><a href="mailto:possum@road.kill.com">Possum</a>
+                for the dropquad/ring code and some misc. ideas I
+                got from his <a
+                href="http://road.kill.com/randomize/">Random CTF</a>
+                patch.</li>
+            <li><a href="mailto:steve@activesw.com">Steve
+                Jankowski</a> for the original Qstat.</li>
+            <li><a href="http://www.thunderwalker.net/">Team
+                Thunderwalker</a> for Thunderwalker CTF.</li>
+            <li><a href="mailto:r151925@proffa.cc.tut.fi">Ilkka
+                Rajala</a> for the original botkick module.</li>
+            <li>The people at <a
+                href="http://www.planetquake.com/servers/arena/">Rocket
+                Arena</a> for Arena and Clanarena</li>
+            <li><a href="mailto:rmercer1@mindspring.com">Ronald
+                &quot;The_DM&quot; Mercer</a> for <a
+                href="http://loc.gamesnet.net/ctfplus/">CTF+</a>,
+                which I got some ideas and code snippets from.</li>
+            <li>The team at <a
+                href="http://www.thunderwalker.net/">Thunderwalker
+                CTF</a> for for the original TW CTF.</li>
+            <li>...and of course Zoid and the rest for the
+                original Threewave CTF. Credits for this can be
+                found in the <a
+                href="../../../home/fpweb/PureCTF/PROJECT/server.txt">original
+                Threewave CTF documentation</a></li>
+        </ul>
+        <p>Thanks to Overfiend, U_Discharge, Madman, Lakris,
+        Harvester, Poodel, Miyamoto, CEnder and many others for
+        useful suggestions.</p>
+        <p>Thanks to Apache for promoting it to be used in
+        several tournaments.</p>
+        <p>Thanks to DaBull of <a href="http://www.clancnn.net/">Clan
+        CNN</a> for the help with testing and finding bugs in the
+        TW support.</p>
+        <p>Thanks do Crocodile for testing out the DM functions.</p>
+        <p>Thanks to Maelstorm, Jarrot, Hooch, Seb, Copycat and
+        others for helping me beta test it.</p>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<h1><a name="Quickinstallation">Quick Installation or upgrade</a></h1>
+
+<p>First unzip the pure CTF zip into your CTF server directory.
+Note: this will <i>not</i> replace your old server config or your
+MOTD file, so you won't risk losing any settings. Check the
+upgrade or new install sections below.</p>
+
+<p>Note: <strong>You don't need to convert the ID maps to use
+them with Pure CTF.</strong> All converting is done on-the-fly by
+the QuakeC code. If you run with converted maps anyway (e.g.
+Q-mans conversions), Pure CTF will detect this and not change
+anything, but then you waste 43 megs of HD space. If you already
+have converted them you can safely remove this files from the <font
+color="#FF0000">quake/CTF/maps/</font><font color="#000000">
+directory: </font><font color="#FF0000">e?m?.bsp dm?.bsp end.bsp
+*.ent</font></p>
+
+<h2><a name="Installing from scratch">Installing from scratch</a></h2>
+
+<ul>
+    <li><font color="#000000">If you want to change the MOTD,
+        rename </font><font color="#FF0000">motd_new.qc</font><font
+        color="#000000"> to </font><font color="#FF0000">MOTD.qc</font><font
+        color="#000000">, edit it and recompile. More about this
+        in the </font><a href="#Message of the day"><font
+        color="#000000">MOTD</font></a><font color="#000000">
+        section.</font></li>
+    <li><font color="#000000">Rename the file </font><font
+        color="#FF0000">purectf.cfg</font><font color="#000000">
+        to </font><font color="#FF0000">server.cfg</font><font
+        color="#000000"> and change the settings you want.
+        There's a <i>lot</i> of settings there, but you can leave
+        most as they are by default. The important ones to change
+        are:</font></li>
+    <li><table border="0">
+            <tr>
+                <td><ul>
+                    <li>The <font color="#FF0000">Server info</font>
+                        section. Change all settings there to
+                        reflect your server.&nbsp;</li>
+                    <li><font color="#FF8000"><strong>(v1.30)</strong></font><font
+                        color="#000000"><strong> </strong>The </font><font
+                        color="#FF0000">admin</font><font
+                        color="#000000"> section. More about this
+                        </font><a href="#Admin Functions"><font
+                        color="#000000">here</font></a><font
+                        color="#000000">. <em>R</em></font><i>emember
+                        to change the rcon_password!</i></li>
+                    <li>The <font color="#FF0000">deathmatch</font><font
+                        color="#000000"> setting in </font><font
+                        color="#FF0000">game rules.</font><font
+                        color="#000000">&nbsp; 1 is respawning
+                        weapons, 3 is static.</font></li>
+                    <li><font color="#000000">The </font><font
+                        color="#FF0000">map queue.</font><font
+                        color="#000000"> Enter your favorite maps
+                        to cycle on the server, or select &quot;</font><font
+                        color="#FF0000">samelevel 0</font><font
+                        color="#000000">&quot; for standard
+                        mapvote.</font></li>
+                    <li><font color="#000000">Note: toss rune,
+                        drop quad, dropping, GL glow and shirt
+                        lock are on by default. All these can be
+                        found in the </font><font color="#FF0000">Pure
+                        CTF features</font><font color="#000000">
+                        section.</font></li>
+                    <li><font color="#000000">Also, check the </font><a
+                        href="#Easy setup table"><font
+                        color="#000000">easy setup</font></a><font
+                        color="#000000"> table below</font></li>
+                </ul>
+                </td>
+            </tr>
+        </table>
+    </li>
+    <li><font color="#000000">You're ready to go! Check out the </font><a
+        href="#servermodes"><font color="#000000">server modes</font></a><font
+        color="#000000"> and </font><a href="#server settings"><font
+        color="#000000">server settings</font></a><font
+        color="#000000"> sections in this manual for more
+        configuration info.</font></li>
+</ul>
+
+<h2><a name="Upgrading">Upgrading</a></h2>
+
+<p>For all mods: Just unzip Pure CTF and remove the converted
+maps (see above) and you should be ready to go since Pure CTF is
+backward compatible. It's recommended however that you scrap your
+old config and replace it by renaming <font color="#FF0000">purectf.cfg</font>
+to get all new settings and options as the admin commands, etc.</p>
+
+<ul>
+    <li><strong>Pure CTF:</strong> There are a few new settings
+        for your config. Check out the <a href="#Admin Functions">admin</a>
+        section, and then the <a href="#server settings">Server
+        Settings</a> section. All that's new is marked in this
+        document with: <font color="#FF8000"><strong>(v1.30)</strong></font><font
+        color="#000000"><strong>, </strong></font><font
+        color="#FF8000"><strong>(v1.35)</strong></font><font
+        color="#000000"><strong> </strong>and so on</font><font
+        color="#FF8000"><strong>.</strong></font></li>
+    <li><strong>Threewave CTF:</strong> It's recommend that you
+        scrap your old config and start fresh with by replacing
+        it with <font color="#FF0000">purectf.cfg</font>. Just
+        move over your rcon_password, deathmatch and misc.
+        serverinfo settings. Make sure to check out the <a
+        href="#Admin Functions">admin</a>, <a href="#mapqueue">mapqueue</a>
+        and <a href="#Message of the day"><font color="#000000">MOTD</font></a><font
+        color="#000000"> </font>sections. If your running the
+        server as a clanfight server, check out the competition
+        mode in the <a href="#servermodes">server modes</a>
+        section</li>
+    <li><strong>CTF Showdown:</strong> Remember to add
+        &quot;serverinfo mode 4&quot; to your config to put the
+        server in showdown mode. For more information, read the <a
+        href="#CTF Showdown">CTF Showdown</a> section.</li>
+</ul>
+
+<p align="center"><a name="Easy setup table"><font size="4"><strong>Easy
+setup table</strong></font></a></p>
+
+<table border="1">
+    <tr>
+        <td>&nbsp;</td>
+        <td align="center">modechange</td>
+        <td align="center">adminvote</td>
+        <td align="center">servermode</td>
+        <td align="center">voteexit</td>
+        <td align="center">revert</td>
+        <td>Comment</td>
+    </tr>
+    <tr>
+        <td>Public server</td>
+        <td align="center">0</td>
+        <td align="center">0</td>
+        <td align="center">0</td>
+        <td align="center">1</td>
+        <td align="center">0</td>
+        <td>This server will run along as a public server. Vote
+        exit is enabled and players that you only give adminpass
+        can't change mode.</td>
+    </tr>
+    <tr>
+        <td>Part time Public/Match</td>
+        <td align="center">1</td>
+        <td align="center">0</td>
+        <td align="center">0</td>
+        <td align="center">1</td>
+        <td align="center">10</td>
+        <td>This works as public server most of the time, but
+        those with adminpass can change to comp. mode to play a
+        match. It reverts back after 10 min if they forget to
+        change back to normal mode.</td>
+    </tr>
+    <tr>
+        <td>Private match server</td>
+        <td align="center">0</td>
+        <td align="center">0</td>
+        <td align="center">1</td>
+        <td align="center">0</td>
+        <td align="center">0</td>
+        <td>The server is locked in competition mode. You can
+        loan the server to others for matches by giving them
+        adminpass if you don't trust them with rcon.</td>
+    </tr>
+</table>
+
+<h1><a name="servermodes">Server Modes</a></h1>
+
+<p>Switch mode using &quot;<font color="#FF0000">serverinfo mode
+#</font>&quot;. <br>
+&nbsp; </p>
+
+<table border="1">
+    <tr>
+        <td>&nbsp;</td>
+        <td align="center"><font size="4"><u>Mode</u></font></td>
+        <td><font size="4"><u>Name</u></font></td>
+        <td><font size="4"><u>Description</u></font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td align="center">0</td>
+        <td>standard</td>
+        <td><font size="3">This is the standard server mode,
+        suitable for a public server.</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td align="center">1</td>
+        <td>competition</td>
+        <td><font size="3">This mode is a mode intended to
+        greatly simplify clan fights. All players is in
+        &quot;standby mode&quot; until every one types
+        &quot;ready&quot;. Then, after a 15 second countdown, the
+        match starts. </font><font color="#FF8000" size="3"><strong>(v1.30)</strong></font>&nbsp;If
+        you want to use this mode, make sure to read about the <a
+        href="#Admin Functions">admin functions</a>, since these
+        will help you a <em>lot</em>.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td align="center">2</td>
+        <td>arena</td>
+        <td><font size="3">Arena mode. Read more about it in the </font><a
+        href="#Arena Mode"><font size="3">Arena</font></a><font
+        size="3"> section. If you enable both Arena and
+        Competition you get Clan Arena.</font></td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.30)</strong></font></td>
+        <td align="center">4</td>
+        <td>Thunderwalker</td>
+        <td>Thunderwalker support. Read more about it in the <a
+        href="#Thunder Walker">Thunderwalker CTF</a> Section.</td>
+    </tr>
+</table>
+
+<h1><a name="Admin Functions">Admin Functions</a> <font
+color="#FF8000"><strong>(v1.30)</strong></font></h1>
+
+<p><font color="#000000">The admin functions adds a lot of
+commands that's easier to use than rcon commands, or does things
+that you can't do with rcon , such as swapping players, or start
+fights in competition mode. There can never be more than one
+admin at any time and there are three different &quot;admin
+levels&quot;:</font></p>
+
+<table border="1">
+    <tr>
+        <td>&nbsp;</td>
+        <td>Access</td>
+        <td>overrides</td>
+        <td>modechange limitations</td>
+        <td>Comment</td>
+    </tr>
+    <tr>
+        <td>Voted admin</td>
+        <td>by server vote<br>
+        &quot;<font color="#FF0000">adminvote</font>&quot; must
+        be enabled on the server</td>
+        <td>none</td>
+        <td>Can never change servermode</td>
+        <td>Most useful for public showdown servers.</td>
+    </tr>
+    <tr>
+        <td>Standard admin</td>
+        <td>by typing &quot;<font color="#FF0000">setinfo admin
+        &lt;pass&gt;</font><font color="#000000">&quot;<br>
+        &quot;</font><font color="#FF0000">adminpass</font><font
+        color="#000000">&quot; must be set on the server</font></td>
+        <td>any voted admin</td>
+        <td>Can change servermode if &quot;modechange&quot; is
+        set on the server</td>
+        <td>Give this to people you want to give admin access,
+        but don't want to give full rcon access.</td>
+    </tr>
+    <tr>
+        <td>Super admin</td>
+        <td>by typing the command &quot;<font color="#FF0000">super</font>&quot;<br>
+        You must have the rcon_password</td>
+        <td>any admin, including another super admin</td>
+        <td>Can always change mode.</td>
+        <td>Any with rcon have access to this.</td>
+    </tr>
+</table>
+
+<p><font color="#000000">An admin have access to all admin
+commands and </font><a href="#CTF Showdown"><font color="#000000">showdown</font></a><font
+color="#000000"> commands. They are listed in the </font><a
+href="#Player Commands"><font color="#000000">player commands
+reference</font></a><font color="#000000">.</font></p>
+
+<h1><a name="server settings">Server Settings</a></h1>
+
+<p>All these settings are set with localinfo, e.g.: </p>
+
+<ul>
+    <li><font color="#FF0000">localinfo tr 1</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        // Enable Toss rune.</li>
+</ul>
+
+<table border="1">
+    <tr>
+        <td colspan="4"><strong>Admin settings</strong> - for
+        more info and a quick setup guide, go to the <a
+        href="#Admin Functions">admin functions</a> section.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>rcon_password</td>
+        <td>Gives access to the console. Read more about this in
+        the QWSV manual.</td>
+        <td>none = off</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>adminpass</td>
+        <td>Gives access to the Pure CTF <a
+        href="#Admin Functions">admin functions</a>.</td>
+        <td>none = off</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>tinyadminpass</td>
+        <td>Gives &quot;Tiny&quot; admin access. (You can only
+        change map and kick players)</td>
+        <td>none = off</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>modechange</td>
+        <td>Allow standard and vote admins to change mode. Voted
+        admins can never change mode and super admins can always
+        change. (Supers have rcon anyway.)</td>
+        <td>bitmask: <br>
+        1 = standard admins<br>
+        2=vote admins</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>adminvote</td>
+        <td>Allow players to become admins through server vote.</td>
+        <td>0 = no votes 1 = enable votes.</td>
+    </tr>
+</table>
+
+<table border="1">
+    <tr>
+        <td colspan="4"><strong>Pure CTF features</strong></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>mode</td>
+        <td>Sets <a href="#servermodes">server mode</a>.&nbsp;</td>
+        <td nowrap>1 = comp <br>
+        2 = arena<br>
+        4 = Thunderwalker</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>revert</td>
+        <td>After the last player leaves, the server will wait
+        this many minutes and then revert to standard mode.
+        Useful for a part time match server if someone forgets to
+        change back to public.</td>
+        <td>0 = off, value = minutes</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.50)</strong></font></td>
+        <td>paintball</td>
+        <td>***This variable is no longer used!****</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>tr</td>
+        <td>Enables Toss rune.</td>
+        <td nowrap>1 = enable</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>tf</td>
+        <td>Enable tossflag.</td>
+        <td>1 = enable flag tossing</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>dq</td>
+        <td>Enables Drop quad.</td>
+        <td nowrap>1 = enable</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>dr</td>
+        <td>Enables Drooping</td>
+        <td nowrap>1 = enable</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>pingban</td>
+        <td>Enables Ping ban.</td>
+        <td nowrap>ban with ping below &quot;value&quot;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>hpbpan</td>
+        <td>Enables HPB ban. Useful if you don't want really
+        highpingers on your server.</td>
+        <td>ban with ping above &quot;value&quot;</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>pingsensitivity</td>
+        <td>Sets sensitivity for pingchecks. Default is 4 and
+        higher values gives you lower sens.</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>glglow</td>
+        <td>Enables GL red/blue glow</td>
+        <td nowrap>bit mask: 1 = players with powerups, 2 =
+        powerups, 4 = flags</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>shirtlock</td>
+        <td>Locks the players topcolor to their team color</td>
+        <td nowrap>0 = off, 1 = only on connect, 2 = always</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>disablepowerups</td>
+        <td>Disable powerups.</td>
+        <td nowrap>bit mask: 1 = quad, 2 = pentagram, 4 = ring</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>discharge</td>
+        <td>Discharge bug fix/features</td>
+        <td nowrap>0 = bug fixed - Only players in water take
+        damage.&nbsp; <br>
+        1 = off - Only the player who discharges take
+        damage.&nbsp; <br>
+        2 = as v4.2 - All players in reach take damage</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>runes</td>
+        <td>Runes feature. The improved haste is from Threewave
+        CTF v4.21 and means that you run and grapple 25% faster
+        with haste. (Why is this default? 1) It's in the latest
+        &quot;official release&quot;. 2) I like it better because
+        haste is arguably the weakest rune and it makes it
+        stronger..)</td>
+        <td nowrap>0 = fixed - With the improved haste from
+        v4.21.&nbsp; <br>
+        1 = off - No runes.&nbsp; <br>
+        2 = as v4.2</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>hook</td>
+        <td>Hook bug fixed and features</td>
+        <td nowrap>0 = fixed - The &quot;multiple hooks&quot; bug
+        fixed.&nbsp; <br>
+        1 = off - No hook.&nbsp; <br>
+        2 = as v4.2 - Multiple hooks possible.&nbsp; <br>
+        3 = as v4.21 - Zoid's hook fix. (Don't work correctly.)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>ankamaps</td>
+        <td>Toggle the use of &quot;anka&quot; maps.</td>
+        <td>0 = disable, 1 = enable</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>voteexit</td>
+        <td>Enable the players to vote to exit the map.</td>
+        <td>1 = on</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>quietstandby</td>
+        <td>Don't allow players to shoot during standby mode.</td>
+        <td>1 = disable shooting</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>specmaxrate</td>
+        <td>Limits rate for spectators to ease server load.
+        Default is 2500.</td>
+        <td>value = max rate</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>playermaxrate</td>
+        <td>Limits rate for players. Default is off.</td>
+        <td>value = max rate</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.55)</strong></font></td>
+        <td>playerminrate</td>
+        <td>Limit lower rate for players Default it 2000..</td>
+        <td>value = min rate</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>disableimpulses</td>
+        <td>Disables the new &quot;best weapon&quot; impulses, 50
+        and 51</td>
+        <td>1 = disable</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>disablefreeze</td>
+        <td>Disables the <a href="#The freeze function">freeze</a>
+        features selectively.</td>
+        <td>Bitmask:<br>
+        1: Freeze by admin.<br>
+        2: Auto freeze in matches.<br>
+        4:Freeze by vote</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>anticheats</td>
+        <td>Enable cheat checking/kicking. Check the <a
+        href="#Anticheat features">anticheat</a> section to se
+        values.</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.55)</strong></font></td>
+        <td>grapplesky</td>
+        <td>Enable the grapple to stick on &quot;sky&quot;:s.</td>
+        <td>1: enable</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.55)</strong></font></td>
+        <td>extras</td>
+        <td>Enable <a href="#Extra clientpaks">extra clientpaks</a>.</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.55)</strong></font></td>
+        <td>startdelay</td>
+        <td>Delays map starts X seconds. Like fairstarts but on
+        public servers. 20 is a good value.</td>
+        <td>value = delaytime</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.55)</strong></font></td>
+        <td>scramble</td>
+        <td>Scramble teams at mapchange to make them more fair.
+        Set to same value as startdelay if you use that,
+        otherwise 30 is good.</td>
+        <td>value = scrambletime</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>teamtalk</td>
+        <td>Bitfield for teamtalk features: 1=Disable Expert
+        teamaudio. 2=Enable custom teamsounds. 4=Disable
+        &quot;report&quot;</td>
+        <td>bitfield</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>logging</td>
+        <td>Set type of logging.</td>
+        <td>0=ctfrank<br>
+        1 = gibstats logstandard</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>autostats</td>
+        <td>Control automatic stats at end of level. (&quot;all
+        stats&quot; Could possibly flood players on a crowded
+        server.)</td>
+        <td>0 = normal stats<br>
+        1 = stats off<br>
+        2 = all stats</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>noautofriction</td>
+        <td>Disables automatic friction according to sv_maxspeed.</td>
+        <td>1 = Disable autofriction.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>countdowntime</td>
+        <td>Sets countdowntime in seconds for matchstarts.
+        Default is 15 seconds.</td>
+        <td>Value in seconds.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>autospectalk</td>
+        <td>Disables spectalk automatically in matches and
+        enables it again in standaby.</td>
+        <td>1 = Set automatically.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>auto_sv_gamedir</td>
+        <td>Sets sv_gamedir &quot;smartly&quot; to ctf, arena,
+        qw, etc, depending on what mode your server runs in. Set
+        this if you want to change mode &quot;on the fly&quot;
+        with minimum fuss.</td>
+        <td>1 = Set automatically.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>randomrespawn</td>
+        <td>Randomizes respawntimes. 0=no randomness, 1=max
+        randomness.</td>
+        <td>Any value from 0 to 1.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>teamaudio</td>
+        <td>Disables the teamaudio and other teamplay
+        enhancements. This is a bitfield, so every function can
+        be disabled separately.</td>
+        <td>Disable:<br>
+        1 = Expert sounds.<br>
+        2 = The &quot;report&quot; cmd<br>
+        4 = Pure teamaudio<br>
+        8 = Custom sounds.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>audiolimit</td>
+        <td>Sets how often a player can play a teamsound in
+        seconds. Note that the lowest value is 0.1, since 0 will
+        set it to the default of 1.</td>
+        <td>Value in seconds.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>lockautoshot</td>
+        <td>Forces every player to take a screenshot at the end
+        of a match.</td>
+        <td>1 = autoshot on.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>lockautodemo</td>
+        <td>Forces every player to take a demo.</td>
+        <td>1 = autodemo on.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>fixe1m8</td>
+        <td>E1M8 fix that makes it use standard gravit for those
+        who want it.</td>
+        <td>0 = e1m8 grav.<br>
+        1 = standard grav.</td>
+    </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="1">
+    <tr>
+        <td colspan="4"><strong>Game tweak parameters</strong> -
+        parameters you can tweak to make CTF the way you want it.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>hastespeed</td>
+        <td>Sets haste's additional playerspeed.</td>
+        <td>1.25 = default</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>hasterate</td>
+        <td>Sets haste's firerate.</td>
+        <td>2 = default</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.50)</strong></font></td>
+        <td>strength</td>
+        <td>Strength damage multiplier. Default is 2. (Double
+        damage.)</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.50)</strong></font></td>
+        <td>resistance</td>
+        <td>Resistance damage multiplier. Default is 0.5. (Half
+        damage.)</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.50)</strong></font></td>
+        <td>regrate</td>
+        <td>Health regeneration rate. Default is 5. </td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.50)</strong></font></td>
+        <td>regmax</td>
+        <td>Health regeneration max. Default is 150.</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.55)</strong></font></td>
+        <td>armorrate</td>
+        <td>Armor regeneration rate. Default is 5. </td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.55)</strong></font></td>
+        <td>armormax</td>
+        <td>Armor regeneration max. Default is 150.</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>hookpull</td>
+        <td>Multiplier for how fast you're pulled by a hook.1
+        =default. If not value is set, it will use
+        &quot;hookspeed&quot;.</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>hookspeed</td>
+        <td>Sets the hookspeed, as a multiple of the standard
+        hook speed. Note: hookspeed also changes with
+        sv_maxspeed.</td>
+        <td>0 or 1 = standard speed<br>
+        other values = faster or slower</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.51)</strong></font></td>
+        <td>quadrespawn</td>
+        <td>Seconds until a quad respawns. (Default is 60)</td>
+        <td>values in seconds</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.51)</strong></font></td>
+        <td>pentarespawn</td>
+        <td>Seconds until a penta respawns. (Default is 300)</td>
+        <td>values in seconds</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.51)</strong></font></td>
+        <td>ringrespawn</td>
+        <td>Seconds until a ring respawns. (Default is 300)</td>
+        <td>values in seconds</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>ammorespawn</td>
+        <td>Seconds for ammo respawns. (Default is 30)</td>
+        <td>values in seconds</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>armorrespawn</td>
+        <td>Seconds for armor respawns. (Default 20)</td>
+        <td>values in seconds</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>healthrespawn</td>
+        <td>Seconds for health respawns. (Default 20)</td>
+        <td>values in seconds</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v2.00)</strong></font></td>
+        <td>weaponsrespawns</td>
+        <td>Seconds for weapons respawns. (Default 30)</td>
+        <td>values in seconds</td>
+    </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="1">
+    <tr>
+        <td colspan="4"><strong>Debug Settings</strong> -
+        Normally you shouldn't have to change these, they're just
+        intended for server testing and suchlike.</td>
+    </tr>
+    <tr>
+        <td><font color="#FF8000"><strong>(v1.50)</strong></font></td>
+        <td>puredisable</td>
+        <td>Disabling for misc. fixes and features. <ul>
+            <li>1: Disable Wrong deathmessage fix.</li>
+            <li>2: Disable Out of spawnspots fix.</li>
+            <li>4: Disable Respawn telefrag fix.</li>
+        </ul>
+        </td>
+        <td>Default=0<p>Just add the values for the features you
+        want to disable.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>floatflagbug</td>
+        <td>Debug parameter: Disables the fix for the bug where
+        the flag &quot;floats around&quot; after being dropped on
+        a teleporter.</td>
+        <td nowrap>0 = enable fix&nbsp; <br>
+        1 = disable fix</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>logbug</td>
+        <td>Debug parameter: Disables the new messages for
+        killing the flag carrier.</td>
+        <td nowrap>0 = enable fix&nbsp; <br>
+        1 = disable fix</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>teledebug</td>
+        <td>Debug parameter: Enables teleporter debugging, useful
+        for tracking down faulty teleporters.</td>
+        <td nowrap>0 = disable debugging&nbsp; <br>
+        1 = enable debugging</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>singlecap</td>
+        <td>Debug parameter: This disables the block to pick up
+        the flag if there is no one in the other team.</td>
+        <td nowrap>0 = disallow single caps&nbsp; <br>
+        1 = allow single caps</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>nodynamicmaps</td>
+        <td>Turn off the dynamic map conversion.</td>
+        <td>1 = disable conversion</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>notimer</td>
+        <td>Turn off the countdowntimer.</td>
+        <td>1 = disable timer</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>disableimpulses</td>
+        <td>Disable the &quot;best weapon&quot; impulse
+        (50&amp;51);</td>
+        <td>1 = disable</td>
+    </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="1">
+    <tr>
+        <td colspan="4"><strong>Mapqueue settings</strong> - More
+        about this in the <a href="#mapqueue">mapqueue</a>
+        section</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>votemap</td>
+        <td>Sets the episode vote map to provide allstar and
+        ctfep support. See <a href="#mapqueue">map queue</a>.</td>
+        <td nowrap>Legal values: ctfstart, allstart, epstart,
+        twstart.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>defaultmap</td>
+        <td>Sets the default map to take if you're not in the <a
+        href="#mapqueue">map queue</a>.</td>
+        <td nowrap>&lt;mapname&gt;</td>
+    </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="1">
+    <tr>
+        <td colspan="4"><strong>CTF Showdown Defaults </strong>-
+        these are the values set when you use the
+        &quot;default&quot; command. <font color="#FF8000"><strong>(v1.30)</strong></font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>default_timelimit</td>
+        <td>Default value for timelimit</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>default_fraglimit</td>
+        <td>Default value for fraglimit</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>etc...</td>
+        <td>The same for all default values.</td>
+        <td>&nbsp;</td>
+    </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h1><a name="The freeze function">The freeze function</a></h1>
+
+<p>Since v2.20, QW has included a pause function. The freeze
+function in Pure works like it but have many enhancements. Only
+admins are allowed to freeze, or you can enable freeze by vote.
+Also in matches, you can set it so it <em>automatically</em>
+freezes, if someone disconnects. The game is freezed until the
+player or a replacement returns. To freeze or start a vote to
+freeze, use the command &quot;<font color="#FF0000">freeze</font>&quot;.</p>
+
+<p>All features are on by default. You can disable them with the
+localinfo variable &quot;disablefreeze&quot;</p>
+<div align="center"><center>
+
+<table border="0">
+    <tr>
+        <td>Bit</td>
+        <td>Comment</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Disables freezes by an admin.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Disables auto freezes when a player disconnects in a
+        match.</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>Disables freezes by vote.</td>
+    </tr>
+</table>
+</center></div>
+
+<h1><a name="Anticheat features">Anticheat features</a> <font
+color="#FF8000"><strong>(1.51)</strong></font></h1>
+
+<p>Pure has several anticheat features. Add the values for the
+features you want and use the localinfo variable <font
+color="#FF0000">anticheats</font><font color="#000000"> to enable
+them.</font></p>
+<div align="center"><center>
+
+<table border="0" width="80%">
+    <tr>
+        <td>Bit</td>
+        <td>Comment</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Botcheck - checks for &quot;botlike behavior&quot;.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Botkick - Autokicks bot. use with caution. The
+        botcheck detector is far from perfect and gives false
+        alarms from time to time. Best used for a public server.
+        (Needs Botcheck set to work.)</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>Alternate botdetection method.</td>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td>Player.mdl modelkick - kick players with illegal
+        models. Pure should recognize the original model and the
+        correct CTF models.</td>
+    </tr>
+    <tr>
+        <td>32</td>
+        <td>Eyes.mdl modelkick. Same as above but for eyes.mdl.</td>
+    </tr>
+    <tr>
+        <td>128</td>
+        <td>Poweruptimer jammer. Disturbs hacked poweruptimer
+        proxys.</td>
+    </tr>
+</table>
+</center></div>
+
+<p>If you have problem with the modelkick method kicking people
+that has correct models, but models that Pure don't recognize,
+you can add your own &quot;approved&quot; models. Use localinfo <font
+color="#FF0000">emodel1</font>, <font color="#FF0000">emodel2</font>,
+<font color="#FF0000">pmodel1</font> and <font color="#FF0000">pmodel2</font><font
+color="#000000"> to set the allowed checksum values.</font></p>
+
+<h1><a name="Paintball Mode">Paintball Mode</a></h1>
+
+<p>Paintball / Practice mode has been removed with v1.55. Use the
+clanarena mode instead.</p>
+
+<h1><a name="Arena Mode">Arena Mode</a><font color="#FF8000"><strong>(v1.55)</strong></font></h1>
+
+<p>Arena mode is like a standard Arena server, but you can of
+course combine it with Pure's other features like CTF or TW
+weapons. If you play Arena with competition mode enabled, you get
+&quot;Clan Arena&quot;. To play with the arena maps or arena
+sounds you'll need the Arena Client pak, which can be found on
+the <a href="http://www.planetquake.com/servers/arena/">Rocket
+Arena Homepage</a>. To play Arena set bit 2 in the mode variable.
+To play ClanArena set bit 1 and 2.</p>
+
+<h1><a name="Thunder Walker">Thunder Walker</a><font
+color="#FF8000"><strong>(v1.55)</strong></font></h1>
+
+<p><font color="#000000">Pure supports Thunderwalker CTF with all
+it's features. To play TWCTF you'll need the TW clientpak which
+can be found with playing info and other things at the </font><a
+href="http://www.thunderwalker.net/"><font color="#000000">Thunder
+Walker</font></a><font color="#000000"> homepage.To play with
+Thunderwalker support, set bit 3 to the serverinfo variable mode.</font></p>
+
+<h1><a name="Extra clientpaks"><font color="#000000">Extra
+clientpaks</font></a></h1>
+
+<p><font color="#000000">The localinfo variable
+&quot;extras&quot; enables several features that requires extra
+files to be installed or downloaded. Just add the values for the
+features you want and add &quot;localinfo extras
+&lt;value&gt;&quot; to your config. To find any of the files
+needed for this check the </font><a
+href="http://purectf.solgames.com/files.html"><font
+color="#000000">filepage</font></a><font color="#000000"> at
+Pure's homepage.</font></p>
+
+<table border="0">
+    <tr>
+        <td>Bit</td>
+        <td>Name </td>
+        <td>Description</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>RA sounds</td>
+        <td>Enables The rocket arena sounds for countdowns.
+        Requires the sounds from the RA clientpak.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Visible weapons</td>
+        <td>Enables Visible Weapons. Requires The visible weapons
+        pak from Gatherers CTF.</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>Hook</td>
+        <td>Enables the hook. This is always selected in CTF.
+        Requires the CTF 3.0 clientpak</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>Runes</td>
+        <td>Enables the runes. This is always selected in CTF.
+        Requires the CTF 3.0 clientpak</td>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td>Airfist</td>
+        <td>Enables the Airfist. This is always selected in
+        Thunderwalker CTF. Requires the Airfist or TW clientpak.</td>
+    </tr>
+</table>
+
+<h1>The Map queue</h1>
+
+<p>The map queue function in Pure CTF are totally compatible with
+allstar, ctfep, etc. You set map queue mode with the
+&quot;samelevel&quot; command. Most server admins will probably
+want to use the &quot;custom&quot; map queue (samelevel 2) to run
+their favorite maps only. <br>
+The status of the map queue is updated automatically into server
+variable &quot;map queue&quot;. If the value there is
+&quot;*broken*&quot; your queue has an error and should be
+corrected. <br>
+If you use &quot;samelevel 0&quot; you have to set the votemap
+depending on which maps you want to play according to one the
+following: <br>
+&nbsp; </p>
+
+<table border="1">
+    <tr>
+        <td>serverinfo votemap ctfstart</td>
+        <td>Standard Threewave CTF v4.0+</td>
+    </tr>
+    <tr>
+        <td>serverinfo votemap epstart</td>
+        <td>CTF Expansion Pack</td>
+    </tr>
+    <tr>
+        <td>serverinfo votemap allstart</td>
+        <td>Allstar CTF.</td>
+    </tr>
+    <tr>
+        <td>serverinfo votemap twstart</td>
+        <td>Thunder walker CTF v3.0</td>
+    </tr>
+</table>
+
+<p>&nbsp; </p>
+
+<table border="1" width="100%">
+    <tr>
+        <td align="center">Samelevel</td>
+        <td align="center">Name</td>
+        <td>Description</td>
+    </tr>
+    <tr>
+        <td align="center">0</td>
+        <td align="center">Standard</td>
+        <td>This is the standard map queue from CTF 4.0+ and
+        Allstar CTF. You vote for a episode to play at the
+        votemap, then play all maps in the episode and then
+        return to the votemap. Set &quot;votemap&quot; to the
+        start map for your mod.&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center">1</td>
+        <td align="center">Samelevel</td>
+        <td>This repeats the same level over and over.</td>
+    </tr>
+    <tr>
+        <td align="center">2</td>
+        <td align="center">Custom</td>
+        <td>Custom map queue with localinfo as in QW 2.0. Syntax
+        is &quot;<font color="#FF0000">localinfo &lt;from&gt;
+        &lt;to&gt;</font>&quot;, and you have to do one of these
+        for every map. Set &quot;defaultmap&quot; to catch any
+        maps not in the queue.</td>
+    </tr>
+    <tr>
+        <td align="center">3</td>
+        <td align="center">Random</td>
+        <td>Select maps randomly. Set &quot;<font color="#FF0000">localinfo
+        maps XX</font>&quot; where XX is the number of maps to
+        pick from, then &quot;<font color="#FF0000">localinfo&nbsp;
+        mapYY&nbsp;&lt;mapname&gt;</font>&quot; where YY is the
+        map to pick and &lt;mapname&gt; is the shortname for the
+        map. Note: You can't have more than 50 maps to pick from.</td>
+    </tr>
+</table>
+
+<h3 align="center">Example Map Queues</h3>
+<div align="center"><center>
+
+<table border="1">
+    <tr>
+        <td align="center">Standard mapqueue <br>
+        This will cycle 14 maps in order.</td>
+        <td align="center">Random mapqueue<br>
+        This will pick one of 6 maps every map change.</td>
+    </tr>
+    <tr>
+        <td nowrap>samelevel 2&nbsp; <br>
+        localinfo defaultmap e2m1&nbsp; <br>
+        localinfo e2m1 e2m2&nbsp; <br>
+        localinfo e2m2 e2m5&nbsp; <br>
+        localinfo e2m5 e3m6&nbsp; <br>
+        localinfo e3m6 e4m3&nbsp; <br>
+        localinfo e4m3 dm3&nbsp; <br>
+        localinfo dm3 dm6&nbsp; <br>
+        localinfo dm6 ctf2m1&nbsp; <br>
+        localinfo ctf2m1 ctf2m2&nbsp; <br>
+        localinfo ctf2m2 ctf2m3&nbsp; <br>
+        localinfo ctf2m3 ctf2m7&nbsp; <br>
+        localinfo ctf2m7 e1m1&nbsp; <br>
+        localinfo e1m1 e1m4&nbsp; <br>
+        localinfo e1m4 e2m1</td>
+        <td valign="top" nowrap>samelevel 3&nbsp; <br>
+        localinfo maps 6&nbsp; <br>
+        localinfo map01 ctf2m1&nbsp; <br>
+        localinfo map02 ctf2m2&nbsp; <br>
+        localinfo map03 ctf2m3&nbsp; <br>
+        localinfo map04 ctf2m5&nbsp; <br>
+        localinfo map05 ctf2m7&nbsp; <br>
+        localinfo map06 ctf2m8&nbsp;</td>
+    </tr>
+</table>
+</center></div>
+
+<h1 align="left"><a name="Ping ban">Ping ban</a></h1>
+
+<p>You can set the server to &quot;hpb only&quot; by setting <font
+color="#FF0000">serverinfo pingban &lt;value&gt;</font><font
+color="#000000"> where &quot;value&quot; is the lowest ping
+allowed.</font> Note that if you're using qw2.21 or higher you
+don't need any external program since QW finally has a way to
+check pings. Otherwise you need an external program to poll the
+pings. I've included the program &quot;<font color="#FF0000">pingstat</font>&quot;
+which is a quick hack of Qstat v1.6 by Steve Jankowski. There's
+more info in the <a
+href="../../../home/fpweb/PureCTF/PROJECT/pingstat/pingstat.txt">pingstat
+readme</a>.</p>
+
+<h1><a name="Message of the day">Message of the day (MOTD)</a></h1>
+
+<p>Changing message of the day is the only server setting you
+have to recompile to change. Due to QuakeC's limitations it's
+just not possible to put it in your server.cfg. (At least if you
+want more than one line.) <u>NOTE!</u> You can't compile Pure CTF
+with regular QCC, since it's just to big. Proqcc or <a
+href="http://purectf.solgames.com/files/fastqcc101.zip">fastqcc</a>
+works ok.</p>
+
+<p>To change the MOTD, edit <font color="#FF0000">motd.qc</font>
+and change these lines: </p>
+
+<ul>
+    <li>motd1 = &quot;Welcome to this Server! \n&quot;; <br>
+        motd2 = &quot;Running Pure CTF by Methabol \n
+        methabol@hem.passagen.se \n\n&quot;; <br>
+        motd3 = &quot;Your admin is Mr.Anonymous \n
+        admin@server.com \n&quot;; <br>
+        motd4 = &quot;http://quake.server.com/ \n&quot;; <br>
+        motd5 = &quot; &quot;; <br>
+        motd6 = &quot; &quot;;</li>
+</ul>
+
+<h1><a name="Recompiling">Recompiling</a></h1>
+
+<p>&nbsp;</p>
+
+<h1><a name="ctfrank"></a>CTF Rank</h1>
+
+<p>Pure CTF supports the server ranking system &quot;CTF
+rank&quot;. For more info, check out <a
+href="http://bt.nu/frank/">ctfrank's homepage</a>. </p>
+
+<h1><a name="CTF Showdown">CTF Showdown</a> <font color="#FF8000"><strong>(v1.30)</strong></font></h1>
+
+<p><font color="#000000">Showdown mode is intended to run on a
+public match server where players can set up small fights by
+themselves without needing rcon. All the showdown commands works
+in <u>all</u> modes, but may be locked. They are available to a
+player if <strong>1) </strong>He is admin <strong>2) </strong>The
+servermode is Showdown and none else is admin. This means that
+you can set up a Showdown server so that everyone can change
+modes normally, but an admin can take &quot;control&quot; for a
+clanfight or suchlike.</font></p>
+
+<p><font color="#000000">All showdown commands can be found in
+the </font><a href="#Player Commands"><font color="#000000">player
+commands reference</font></a><font color="#000000">.</font></p>
+
+<h1><a name="Optimizations"></a>Optimizations</h1>
+
+<ul>
+    <li>TeamCheckLock</li>
+    <li>GetShortTeamColor</li>
+    <li>CheckDimlight</li>
+</ul>
+
+<h1><a name="fixedbugs"></a>Fixed Bugs</h1>
+
+<table border="1" width="100%">
+    <tr>
+        <td>Name</td>
+        <td>Bug Description</td>
+    </tr>
+    <tr>
+        <td><font size="3">Capture Server hang Bug</font></td>
+        <td>This bug makes the server hang in certain
+        circumstances when someone captures the flag. To recreate
+        the bug on a standard server, do the following: On DM4,
+        select red team. Get the blue flag and return to your
+        base. Don't capture but go so close to your flag as you
+        can. Kill yourself, by jumping in lava or suicide, not
+        the &quot;kill&quot; command. After respawn, go back to
+        pick up the flag and capture right after.</td>
+    </tr>
+    <tr>
+        <td>Multihook bug</td>
+        <td>If you grapple and then do &quot;impulse 22&quot;
+        when the grapple is out, another hook is released while
+        the last hook is in the air. This makes it possible to
+        grapple someone and then almost&nbsp; instantly shoot
+        several hooks into them, which can take out a player with
+        200a + 250h in seconds. Zoid tried to fix this bug in
+        v4.21, but it's still possible to shot multiple hooks
+        even if it's slower, and worse, your hook could freeze in
+        the air, leaving you without hook until you die.&nbsp; <br>
+        This bug can be disabled with:<font color="#FF0000">
+        localinfo hook 2</font><font color="#000000"> (</font><font
+        color="#330033">Check </font><a href="#server settings"><font
+        color="#330033">server settings</font></a><font
+        color="#330033"> for more options.)</font></td>
+    </tr>
+    <tr>
+        <td><font size="3">The floating flag bug</font></td>
+        <td>Makes the flag &quot;float around&quot; after it been
+        dropped on a platform.&nbsp; <br>
+        This bug can be disabled by: <font color="#FF0000">localinfo
+        floatflagbug 1</font></td>
+    </tr>
+    <tr>
+        <td>Teleporter servercrash</td>
+        <td>This fixes the servercrashes when the server
+        encounters a faulty teleporter. The teleporters that bugs
+        are the big round ones that are used as gateways to the
+        secret levels in single player. If you trigger the
+        teleporter by grappling up in it or standing on top of
+        it, it may crash or teleport you to a faulty location.
+        Two of these that crashes the server are the ones in the
+        red bases on E4M5 and E4M8.&nbsp; <ul>
+            <li>e1m4.ent: t40/*85</li>
+            <li>e1m7.ent: t15/*15</li>
+            <li>e2m6.ent: t88/*77</li>
+            <li>e3m4.ent: t174/*83</li>
+            <li>e3m6.ent: t169/*65</li>
+            <li>e4m5.ent: t178/*95</li>
+            <li>e4m8.ent t273/*75</li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Maps with Errors</td>
+        <td>Some maps have some faults, most often illegal start
+        positions.&nbsp; <br>
+        The maps fixed are:&nbsp; <ul>
+            <li>e1m7: Added 4 new: &quot;930 400 216&quot;
+                &quot;930 225 216&quot; &quot;930 .100 216&quot;
+                &quot;930 -250 216&quot;&nbsp;</li>
+            <li>e3m5: removed &quot;563 -1397 448&quot; and
+                &quot;563 -1455 448&quot; (Wrong base and
+                stuck.)&nbsp;</li>
+            <li>e4m4: changed &quot;832 -1496 24&quot; to correct
+                (blue) team.&nbsp;</li>
+            <li>e4m5: Changed &quot;1110 2370 120&quot; to
+                &quot;1110 2300 120&quot; (was stuck in wall)</li>
+            <li>ctf2: Changed the following respawns: (6)</li>
+        </ul>
+        <p>To fix these, you have to &quot;convert&quot; the maps
+        again with qbsp.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>Carrier kill bonus</td>
+        <td>When you kill a carrier and are awarded a 2 points
+        bonus, only you see this message. This makes all client
+        log parsers calculate the scores incorrectly. The new
+        strings that are printed are:&nbsp; <ul>
+            <li>&quot;&lt;name&gt; killed the flag carrier, no
+                bonus&quot;</li>
+            <li>&quot;&lt;name&gt; killed the flag carrier, 2
+                bonus frags&quot;</li>
+        </ul>
+        <p>This bug can be disabled by: <font color="#FF0000">localinfo
+        logbug 1</font></p>
+        </td>
+    </tr>
+    <tr>
+        <td>Discharge Bug</td>
+        <td>This bug makes discharges affect all players in
+        radius from the discharger, not just the ones in
+        water.&nbsp; <br>
+        With the fix only players in water will take
+        damage.&nbsp; <br>
+        This bug can be disabled by: <font color="#FF0000">localinfo
+        discharge 2&nbsp;</font><font color="#000000"> (</font><font
+        color="#330033">Check </font><a href="#server settings"><font
+        color="#330033">server settings</font></a><font
+        color="#330033"> for more options.)</font></td>
+    </tr>
+    <tr>
+        <td>Hook Jitter</td>
+        <td>This fixes the hook &quot;jittering&quot; resulting
+        from the prediction in QW not considering the hook. </td>
+    </tr>
+    <tr>
+        <td>Missile deathmessages</td>
+        <td>This fixes the bug that shows the wrong deathmessage
+        when you shoot some with GL or RL and swaps weapon before
+        they die.</td>
+    </tr>
+</table>
+
+<h1><a name="Todo and known bugs.">Todo and known bugs.</a></h1>
+
+<p>List of things I may (or may not) do/fix.</p>
+
+<p>&nbsp;</p>
+<!--webbot bot="Include" u-include="todo.html" tag="BODY"
+startspan -->
+
+<h1 align="center">Bugs</h1>
+
+<p align="center">Legend: <font color="#008000" size="3"><strong>DONE</strong></font><font
+color="#000000" size="3"> means that the bug/new feature is
+fixed. </font><font color="#FF0000"><strong>BETA</strong></font><font
+color="#000000"> means that it's probably fixed but needs some
+testing.</font></p>
+
+<h3>Known bugs that need workarounds.</h3>
+
+<ul>
+    <li>If the distribution qwprogs.dat works ok, but it don't
+        work when you recompile it: Make sure you don't use
+        regular QCC since it can't handle too large files. Both
+        Proqcc and fastqcc (my preferred choice) works ok.</li>
+</ul>
+
+<h3>Beta Bugs.</h3>
+
+<ul>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font>Vote
+        admin don't work as it should.</li>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#FF0000"><strong> - </strong></font>Anti
+        poweruptimer in nocheats spawns extras stuff visible.</li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000" size="3">modechanges by non-Superadmin.
+        is broken.</font></li>
+</ul>
+
+<h3>Misc. Bugs.</h3>
+
+<ul>
+    <li><font color="#008000" size="3"><strong>DONE -</strong></font><font
+        color="#000000" size="3"> Players connecting sometimes
+        change teams without doing anything. </font></li>
+    <li><font color="#008000" size="3"><strong>DONE </strong></font>Sometimes
+        stuffing fails, seems to result in harmless warning
+        message only though.</li>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#000000" size="3"> Some maps bugs in competition
+        mode.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000" size="3">Add the TW &quot;exploding
+        head&quot; model to the modelcheck.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE </strong></font><font
+        color="#000000">the commands mode0, mode1 etc don't work.
+        (Well they're replaced with others so...)</font></li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000" size="3">Telefrags in standby could lock
+        players.</font></li>
+    <li><font color="#FF0000"><strong>BETA</strong></font><font
+        color="#000000"> If you turn on/off runes in midgame they
+        aren't removed correctly.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000">Spectators still overflows a lot when
+        connecting. (Argh! Why is QW 2.21 so overflow sensitive?)</font></li>
+    <li>impulse 69 won't work correctly after impulse 50 or 51.
+        (Hrm... But, I think it's better as it is. :)</li>
+    <li><font color="#000000" size="3">Need to fix freezes, but
+        then again QW got pauses now so...</font></li>
+    <li><font color="#000000" size="3">Flag shows the wrong
+        status in spectator mode.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000" size="3">Bot sensitivity seems to be too
+        high. (Ok, removed botchecks totally, they simply
+        sucked.)</font></li>
+    <li><font color="#000000" size="3">Observers need to be
+        fixed. (remove some sounds, etc)</font></li>
+    <li><font color="#000000" size="3">Freezes need to be fixed.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000" size="3">KOS don't work in standby. (So?)</font></li>
+    <li><font color="#000000" size="3">Clients who dl files etc
+        can't be kicked without rcon.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000" size="3">Countdown sometimes counts
+        twice.</font></li>
+    <li><font color="#FF0000"><strong>BETA - </strong></font>Hook
+        mode 2 won't work as it should. Well, this isn't critical
+        I guess...</li>
+</ul>
+
+<h3><font color="#000000" size="3">Old 3wave bugs</font></h3>
+
+<ul>
+    <li><font color="#000000" size="3">If a player hooks another
+        and then leaves the server, the hook is still there.</font></li>
+    <li><font color="#000000" size="3">The standard imp 141 need
+        to be improved.</font></li>
+    <li>Still that old looping hook sound bug that's been in
+        3wave forever it seems.</li>
+</ul>
+
+<h3>Dynamic Map bugs.</h3>
+
+<ul>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font>e2m6:
+        One pillar missing in the single playerstart.</li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font>e2m6:
+        Extra GL in red base.</li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font>e3m6:
+        One rocket box of wrong type.</li>
+    <li><font color="#008000" size="3"><strong>DONE </strong></font>end:
+        precache bug that might crash the map.</li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font>dm2
+        and some other map bugs in dm.</li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font>e2m6
+        crashes sometimes</li>
+    <li>ctf3m3 and ctf3m5 has dropouts. Is this a general map
+        bug?</li>
+    <li>ctf3m6 crashes with: &quot;SV_Error: Bad surface
+        extents&quot; sometimes. Is this a Pure bug or a map bug?</li>
+    <li>e3m7: One bogus respawn in lava from the original maps
+        not fixed yet?</li>
+    <li>dm2: One malfunctioning teleporter in DM mode. Haven't
+        seen this myself though...</li>
+</ul>
+
+<h3>Thunderwalker mode</h3>
+
+<ul>
+    <li>Spectator tracking for TW runes.</li>
+    <li>Ammo in TW arena/clan arena?</li>
+    <li>Misc. stuff won't work as it should in standby. Nothing
+        that affects gameplay though.</li>
+    <li>Dynamic maps is still like 3wave. Save your converted
+        maps until later.</li>
+    <li>Need to update the doc with credits, links etc before the
+        &quot;real&quot; release.</li>
+</ul>
+
+<h3>Arena Mode (beta)</h3>
+
+<ul>
+    <li><font color="#FF0000"><strong>BETA</strong> - </font>Runes
+        won't work very well.</li>
+    <li>Some messages and stuff to fix.</li>
+</ul>
+
+<h3>Clan Arena Mode (beta)</h3>
+
+<ul>
+    <li>This is still very beta, lot's of stuff to fix.</li>
+</ul>
+
+<h3>Deathmatch (beta)</h3>
+
+<ul>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#FF0000"> - </font>TP1 don't work as it should,
+        but none uses this anyway, right?</li>
+    <li><font color="#FF0000"><strong>BETA - </strong></font>Teamplay
+        won't work always. CTF handles this very differently, so
+        I have to rewrite some stuff.</li>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#FF0000"><strong> - </strong></font>Crashes the
+        server sometimes at matchstart</li>
+    <li>Scores still says red and blue team.</li>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#FF0000"><strong> </strong></font><font
+        color="#000000">Respawn at matchstart.</font></li>
+    <li><font color="#000000">Lock teams in competition.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#FF0000"><strong> - </strong></font><font
+        color="#000000">Need force respawns in matches.</font></li>
+</ul>
+
+<h1 align="center">Ideas</h1>
+
+<p align="center">These are the stuff I'll include as soon as I
+get the time. Bugfixes is usually more important though. Legend: <font
+color="#008000" size="3"><strong>DONE</strong></font><font
+color="#000000" size="3"> means that the feature is already
+implemented. </font><font color="#FF0000"><strong>BETA</strong></font><font
+color="#000000"> means that it's ready but needs some testing.</font></p>
+
+<h3>Admin and player <font color="#000000" size="4">Commands.
+(Simple fixes, just have to get the time.)</font></h3>
+
+<ul>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000" size="3">nextmap - let the admin go to
+        next map in queue</font></li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000" size="3">forcebreak by admin</font></li>
+    <li><font color="#008000" size="3"><strong>DONE - </strong></font><font
+        color="#000000" size="3">giveadmin - gives your
+        adminstatus away to another player.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE </strong></font><font
+        color="#000000" size="3">- ipban - Ban by IP.</font></li>
+    <li>&nbsp;</li>
+</ul>
+
+<h3 align="left">High Priority.</h3>
+
+<ul>
+    <li><font color="#008000" size="3"><strong>DONE -</strong></font><font
+        color="#000000" size="3"> Average ping for a matches.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#000000" size="3"> - Allow spectalk in
+        &quot;standby mode&quot; even if it's disabled in
+        matches. maybe reset it to allowed between games (had
+        problems with it on my server because people didn't know
+        how to enable it again.)</font></li>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#000000" size="3"> - Grapple on sky.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE </strong></font><font
+        color="#000000" size="3">Fix up the statusbar a bit. Make
+        it look better with the QW HUD, add your current weapon
+        to show along with other stuff.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#000000" size="3"> - New Score table, showing
+        stuff like average ping and other stuff.</font></li>
+    <li><font color="#008000" size="3"><strong>DONE</strong></font><font
+        color="#000000" size="3"> - Automatic update of the
+        &quot;idplayer function&quot;.</font></li>
+    <li><font color="#FF0000"><strong>BETA</strong></font><font
+        color="#000000" size="3"> - Qizmo support, Cheapo
+        support.</font></li>
+    <li><font color="#000000" size="3">Custom skins.</font></li>
+</ul>
+
+<h3>Medium Priority.</h3>
+
+<ul>
+    <li><font size="3">Water friction fixes.</font></li>
+    <li><font size="3">Expert hook. (E.g., hooking with it's own
+        impulse.)</font></li>
+    <li><font color="#FF0000"><strong>BETA</strong></font><font
+        color="#000000" size="3"> - CTF+ lightningbolt</font></li>
+    <li><font color="#000000" size="3">Lights out. Should be
+        quite easy really.</font></li>
+    <li><font color="#000000" size="3">Tosshealth and tossarmor -
+        do you really need this?</font></li>
+    <li><font color="#000000" size="3">Auto team swap - for
+        matches and public servers running id maps. (the same map
+        again but as the other team.)</font></li>
+    <li><font color="#FF0000"><strong>BETA</strong></font><font
+        color="#000000" size="3"> Auto team adjustment.</font></li>
+    <li><font color="#FF0000"><strong>BETA</strong></font><font
+        color="#000000" size="3"> Team sounds and locs.</font></li>
+    <li><font color="#FF0000"><strong>BETA </strong></font><font
+        color="#000000" size="3">Gibstats and GSlog mod support -
+        almost done, but some things just cant be done in QuakeC</font></li>
+    <li><font color="#000000" size="3">player info table - to
+        easily show model checks, faqproxy, rate, etc</font></li>
+    <li><font color="#000000" size="3">&quot;in game&quot; stats
+        - best fragger of the map, ratio, deaths, caps etc. </font></li>
+    <li><font color="#000000" size="3">lock settings for admin -
+        useful on public servers so normal admins can only change
+        map or swap/kick players but not change server settings</font></li>
+    <li><font color="#000000" size="3">If you disconnect and your
+        team caps, you miss 10 frags that your team should have.
+        Need to add this to the disconnect code.</font></li>
+    <li><font color="#000000" size="3">Helptexts for localinfo
+        and stuff</font></li>
+    <li>Improve spectator tracking to integrate it with
+        &quot;normal&quot; tracking.</li>
+    <li><font color="#FF0000"><strong>BETA</strong></font><font
+        color="#000000" size="3"> </font>Misc. things from QW 2.0
+        squishes, dmm4, dmm5 etc.</li>
+    <li><font color="#FF0000"><strong>BETA</strong></font><font
+        color="#000000" size="3"> </font>Fix custom skins and
+        team. (Although I don't like that really. Some admin
+        switch I guess? )</li>
+    <li>Seems like hook 2 doesn't work exactly like Threewave
+        v4.2. Perhaps connected to my impulse tweaks.</li>
+    <li><font color="#FF0000"><strong>BETA</strong></font><font
+        color="#000000" size="3"> </font>Some anti-cheating
+        fixes. Perhaps add a a botkick module if it works as it
+        is supposed to. I have some ideas of how to find out
+        about fake pings and rates.</li>
+    <li>Custom tourney settings.</li>
+</ul>
+
+<h3>Low priority</h3>
+
+<ul>
+    <li><font color="#000000" size="3">FAQ ban - Easy to fix, but
+        why? You may already disable all FAQ functions.</font></li>
+    <li><font color="#000000" size="3">dropsuit - well, for
+        completeness sake I guess.</font></li>
+    <li><font color="#000000" size="3">Visible weapons in TW
+        mode. Would need new models though.</font></li>
+    <li>Oncle support. It wouldn't take long, but I don't know
+        anyone who would want this. (At least until there's a
+        Oncle 2:)</li>
+    <li>Clanring CTF support. (but Pure CTF's comp. mode really
+        handles things more cleanly, IMHO. I might be a bit
+        biased though. :)</li>
+    <li>Dynamic Anka maps. Don't know if this really is needed.
+        Perhaps just a forced map change when you switch that.</li>
+    <li>Ghost codes, and advanced handling of disconnects. But
+        you already get your frags back so...</li>
+    <li>Votekick. Is this really useful?</li>
+</ul>
+<!--webbot bot="Include" endspan i-checksum="1573" -->
+
+<h1><a name="History"></a>History</h1>
+
+<p>&nbsp;</p>
+<!--webbot bot="Include" u-include="history.html" tag="BODY"
+startspan -->
+
+<p><strong>v1.55 - 980622</strong></p>
+
+<ul>
+    <li>Major feature: Thunderwalker Support. Gameplay is just
+        like standard TW but with the extra admin features in
+        Pure like competition mode, etc.</li>
+    <li>New Menu system for easier configuration, both for
+        servers and players.</li>
+    <li>Enhanced statusbar now shows (separately selectable) rune
+        status., flag status, time left, current weapon and team
+        scores. Also a two-line mode that works better with the
+        QW HUD and toggle for automatic &quot;idplayer&quot;.</li>
+    <li>Beta support for Arena, Hook Arena and Clan Arena.
+        Converted some arena maps for CTF. (Try a 2on2 Clanarena
+        CTF on Zaphod's arena, it's a blast. :)</li>
+    <li>More DM support. dmm4, dmm5, and the standard tp modes
+        works ok now. Fixed a lot of bugs related to dm.</li>
+    <li>Misc. new features: Enable grappling on sky. Support for
+        ctf3 maps (LoC CTF) and the Allstar 1.1 update. Airfist
+        support. Set player minimum rate. Poweruptimer disabler.
+        (For eg Qizmo.) Separate eyes.mdl and player.mdl checks,
+        and player.mdl check now recognizes the TW
+        &quot;exploding head&quot; model. Support for the Qizmo
+        proxy.</li>
+    <li>Misc bugfixes: Fixed some map errors in e2m6 and e3m6.
+        Fixed a lot of overflow errors. Fixed a lot of errors
+        with maps that could bug in matches. Reg rune bug fxed.
+        Rune removal now removes runes from players too. </li>
+</ul>
+
+<p><strong>v1.51 - 980525</strong></p>
+
+<ul>
+    <li>Freeze function to enhance the pause function in QW.
+        Pauses is only allowed by admins or by vote. Also the
+        game is <em>automatically </em>paused if someone drops in
+        a match, and when he returns the games is continued.</li>
+    <li>Fixed most of the remaining overflow problems with QW
+        2.21 and hopefully fixed the &quot;color 0&quot; bug.</li>
+    <li>All setinfo settings are now in <em>one</em> variable,
+        &quot;pure&quot;.</li>
+    <li>Anticheat features: Botcheck/kick and kick on illegal
+        models.</li>
+    <li>Fixed most bugs in DM. (Armor is set correctly, hook and
+        runes is off automatically.) Yes, some people actually
+        use the competition mode in Pure to play DM fights. :)
+        You just have to reset the bit 256 in teamplay to disable
+        CTF.</li>
+    <li>When you kick/ban/swap someone you have to confirm it.
+        (Pure could select the wrong player in some
+        circumstances.)</li>
+    <li>The autodemo feature now supports QW built-in record
+        command along with FAQ-recording. Gives you one demo per
+        round, nicely cut at the start and end so you don't have
+        to watch 15 minutes of &quot;prematch&quot;, and with a
+        unique name.</li>
+    <li>New chasecam mode in spectator/observer tracking. Switch
+        with the &quot;cam&quot; command.</li>
+    <li>Lots of small fixes: Fixed some annoying cprinted
+        messages. Removed some debug impulses for spectators.
+        Fixed a bug in e2m1. Did some small CPU optimizations.
+        Added parameters for powerup respawn times.</li>
+</ul>
+
+<p><strong>v1.50b - 980517</strong></p>
+
+<ul>
+    <li>Fixed a bug that could crash a server running QWSV v2.2.</li>
+</ul>
+
+<p><strong>v1.50 - 980515</strong></p>
+
+<ul>
+    <li>MAJOR FEATURE: New paintball mode. You start in your base
+        with weapons and runes, and each round goes on until only
+        one team is standing or one team made a cap. Then a new
+        round starts. This is much like &quot;practice mode&quot;
+        but some new features is auto teamswapping after every
+        round, and observer mode when you wait for next round. If
+        you've played Clan Arena it's very much like it. (But for
+        CTF :)</li>
+    <li>3WAVE FIX: The missile obituary message bugs are fixed.
+        (Quite easy to do really, and I know it's been done
+        before, but couldn't find a mod that had it.)</li>
+    <li>3WAVE FIX: The &quot;hook jitter&quot; resulting from
+        prediction when you hang from the roof etc is (mostly)
+        fixed.</li>
+    <li>BUGFIX: Misc. servercrashes fixed. (Entity&gt;=512 bug,
+        color 0 0 bug., swapping players in endgame.)</li>
+    <li>FEATURE: Presets for settings to easily set up matches
+        and stuff. Presets included are: &quot;standard&quot;,
+        &quot;3wave&quot;, &quot;2on2&quot; and two Tourneys:
+        &quot;ctfsm&quot; and &quot;oncle&quot;.</li>
+    <li>FEATURE: Variable startdelay which works like a
+        &quot;fairstart&quot; but on a public server. You get a
+        countdown before start so every one gets a chance to get
+        on the server after a mapchange.</li>
+    <li>FEATURE: You can tweak some more stuff to your liking,
+        like runestrengths.</li>
+    <li>FEATURE: Optional support for clientpaks from other mods.
+        (Rocket arena sounds and visible weapons.)</li>
+    <li>BUGFIXES FOR SPECTATORS: Tracking works a little better:
+        In tracking you get &quot;outside the world&quot; less
+        often. When you track an item (quad, rune etc.) and
+        someone picks it up you track them instead. Target
+        selection is smarter. No binding for specs. (Screwed up
+        some peoples configs.) Impulse 141 works as it should.</li>
+    <li>FIX: You can turn off centerprinted messages and the
+        advanced spectatortracking. (Some found these annoying.)</li>
+    <li>MISC. BUGFIXES from Pure v1.40: Players appearing at the
+        final scoreboard after a map fixed. Misc. bugging
+        messages fixed. (KoS, &quot;you got flag&quot;, capture
+        time, &quot;turning of proxy&quot;, flooding in practice
+        mode.) &quot;Teamplay 0&quot; works. Xdressing checks
+        faster. Penta glow overrides Quad. Dynamic e1m5 works.
+        Bug in tempban fixed. Tossflag can be turned off. You
+        don't get stuck in other players on matchstart when
+        you're out of spots. LG diss in standby fixed. Lock
+        maxclients works safer. (Got an unconfirmed bugreport.)
+        Removed flooding when trying to pick up flag by yourself.</li>
+</ul>
+
+<p>v1.40 - 980409</p>
+
+<ul>
+    <li>Hopefully practice mode works ok now. I think I fixed all
+        servercrashes when restarting a practice round, and now
+        you get a score bonus for winning a round. The scoreboard
+        also maintains total team victories. (Using practice mode
+        for a 2on2 &quot;paintball&quot; game on a small map like
+        e2m2 is a blast. :)</li>
+    <li>Kick on sight. You just aim at someone and use
+        &quot;kos&quot; to kick them.</li>
+    <li>Included a beta of pingstat.</li>
+    <li>A player that disconnects in a match gets his frags back
+        immediately. With multiple disconnects and swapping of
+        players, the frags might not go to the right player, but
+        the teamscore will always be intact. (That's all that
+        matters in a match anyway, right?)</li>
+    <li>Misc. fixes: Smaller info texts when you track a player.
+        You se a player's rune when tracking. Added a lot more
+        helptexts. Illegal topcolors are not allowed anymore.
+        Spectator admin status are remembered at map
+        changes.(might bug?) To change maps you just type the
+        name of the map.(as in the showdown/duel mods) The info
+        message in spectator mode is removed after 15 seconds.
+        Spectator skins are set to speed up skinchecking for all
+        clients.</li>
+    <li>Fixed bugs: Mapqueue works correctly now, but has a
+        limitation to the next 10 maps. Fraglimit works again.
+        Swapping players with flags works ok. Timer showed 60
+        sometimes instead of 0. Missing spawnfunction for e1m7
+        replaced. Freezes works correctly. Restarts only work in
+        comp. mode.</li>
+</ul>
+
+<p><strong>v1.35 - 980404</strong></p>
+
+<ul>
+    <li>Improved spectator tracking a lot. Now runes works ok,
+        tracking don't changes randomly and you get a bunch of
+        info on the item you track. (Such as health/armor when
+        you track a player.)</li>
+    <li>Rate limit for both players and spectators.</li>
+    <li>Added some info messages for standby mode. (Now you see
+        who it is who can't spell to &quot;ready&quot;. :)</li>
+    <li>Optional flagtossing.</li>
+    <li>Added support for disabling faqproxy functions.</li>
+    <li>Added capture time.</li>
+    <li>Bugfix: Fixed most bugs for the map conversions.</li>
+    <li>Bugfix: Crashes in practice mode.</li>
+    <li>Bugfix: Commands flooding if you typed a command while
+        being dead.</li>
+    <li>Bugfix: Quiet standby now works.</li>
+    <li>Bugfix: Autoshot and autodemo now works as in v1.20<strong>.</strong></li>
+</ul>
+
+<p><strong>v1.30b - 980401<br>
+</strong>Fixed two small bugs:</p>
+
+<ul>
+    <li>Showdown mode didn't work without admin. (Doh! :)</li>
+    <li>Frags now resets at matchstart.</li>
+</ul>
+
+<p><strong>v1.30-980401</strong> <br>
+Major features:</p>
+
+<ul>
+    <li><font size="3"><strong>Dynamic Map conversion: </strong>This
+        converts all the id maps on-the-fly by the QuakeC code!
+        This means that you don't have to do the work of
+        converting them when you set up a server and that you
+        save 43 meg of HD space. As a bonus this means that all
+        map bugs I've found (bogus teleporters, spawnspots in the
+        ground, etc.) are fixed automatically.</font></li>
+    <li><strong>Showdown Support</strong>: CTF showdown is a
+        competition mode intended to run on a public server where
+        players can set up small games (2on2 or suchlike) by
+        themselves without needing rcon. This version of showdown
+        has more options and some improvements from the original
+        CTF showdown by [LoRD]Tar. In showdown mode (and always
+        as admin) you can easily change timelimit, fraglimit,
+        teamplay. dq, dr, tr, sv_spectalk, maxspecs, hook,
+        discharge, runes, etc.</li>
+    <li><strong>Admin function:</strong> The admin functions
+        helps to configure and administrate the server more
+        easily. They include a lot of commands that's much easier
+        to use than rcon , and some commands that does things you
+        can't do as rcon such as swapping players or teams. Also,
+        you can give people a special admin pass so you don't
+        have to give the full rcon access. Admin commands
+        include: kick, ban, swap, swapall(smartly), start,
+        restart</li>
+</ul>
+
+<p>Other features</p>
+
+<ul>
+    <li>LPB Spectators rate is limited to 2500 so they don't bog
+        down the server.</li>
+    <li>Fixed the bugs in ctf2.</li>
+    <li>Voteexit for public servers.</li>
+    <li>&quot;settings&quot; gives a comprehensive table with all
+        important server settings.</li>
+    <li>&quot;mapqueue&quot; gives the mapqueue.</li>
+    <li>&quot;models&quot; autochecks for changed models.</li>
+    <li>autoshot and autodemo is timed better, and have to
+        commands to turn them on/off easy. Autoshot captures a
+        screenshot with <em><strong>both </strong></em>scoreboard
+        and the scores with included disconnects.</li>
+    <li>Variable to revert a match server to standard mode after
+        x minutes.</li>
+    <li>Runes respawn much more randomly now.</li>
+    <li>Variable hookspeed. Hookspeed is also accelerated with
+        higher sv_maxspeed.</li>
+    <li>&quot;Standby mode&quot; optionally quiet (no shooting or
+        players freeze), by admin or localinfo.</li>
+    <li>Powerup disable works without restarting map:</li>
+    <li>Tweaked impulses to work faster.</li>
+    <li>Fine-tune haste with hasterate and hastespeed.</li>
+    <li>Sets friction automatic.</li>
+    <li>timestamps for connects &amp; disconnects</li>
+    <li>Hooks that hits teammates disappear. (Because that's what
+        all other missiles do.) This prevents &quot;floating
+        hooks&quot;.</li>
+    <li>Support for Anka maps on the following maps: e2m1, e2m2,
+        e2m3, e2m5. (If you don't know what this is, just forget
+        it. :)</li>
+    <li>BUGFIX: powerup disable works ok now.</li>
+    <li>BUGFIX: Rocket damage when no discharge mode set works
+        ok.</li>
+    <li>BUGFIX: dropring fixed</li>
+    <li>BUGFIX: all bugs with servermode change.</li>
+    <li>BUGFIX: removed missiles at match start.</li>
+    <li>BUGFIX: Bug with two dropped quads picked up.<br>
+    </li>
+</ul>
+
+<h3><font size="3">v1.20 - 980322 - First Public Release</font></h3>
+
+<ul>
+    <li><font size="3">Added &quot;autodemo&quot; and
+        &quot;autoshot&quot;</font></li>
+    <li><font size="3">Cleaned up a lot of serverinfo variables.</font></li>
+    <li><font size="3">Added option for faster maxspeed with
+        haste. (Was introduced in v4.21)</font></li>
+    <li><font size="3">Hook disable.</font></li>
+    <li><font size="3">Added some serverinfo variables for server
+        status: &quot;mode&quot; shows the server mode,
+        &quot;status&quot; show competition match status and
+        &quot;map queue&quot; shows the map queue starting with
+        the current map.</font></li>
+    <li><font size="3">Fixed some small bugs from earlier
+        versions.</font></li>
+    <li><font size="3">Finally finished the documentation. (Hey,
+        your reading it right now! :)</font></li>
+</ul>
+
+<h3><font size="3">v1.11 - 980316</font></h3>
+
+<ul>
+    <li>Added practice mode.</li>
+    <li>Some bug fixes from v1.10, mostly with Competition mode
+        and toss rune</li>
+    <li>Made some simple performance tweaks to GetShortTeamColor
+        and TeamCheckLock</li>
+</ul>
+
+<h3><font size="3">v1.10 - 980314</font></h3>
+
+<ul>
+    <li>Started on new documentation.</li>
+    <li>New command, models, to show all player models.</li>
+    <li>Extended scores, with disconnects and caps.</li>
+    <li>Countdown timer.</li>
+    <li>Simple Competition Mode.</li>
+    <li>Added &quot;lock always&quot; to shirtlock. (previously
+        nosetshirt)</li>
+</ul>
+
+<p>v1.03 - 980312 </p>
+
+<ul>
+    <li>Big addition: Extended Spectator tracking.</li>
+    <li>Renamed runesoff to disablerunes</li>
+</ul>
+
+<p>v1.02 - 980310 </p>
+
+<ul>
+    <li>Expert statusbar</li>
+    <li>Spectator interaction ok.</li>
+    <li>glglow on flags</li>
+    <li>Fixed id maps with errors</li>
+    <li>added disable discharge</li>
+    <li>added alias commands</li>
+</ul>
+
+<p>v1.01 - 980308 </p>
+
+<ul>
+    <li>added disable powerups</li>
+</ul>
+
+<p>v1.00 - 980308 </p>
+
+<ul>
+    <li>Renamed my old servermod to Pure CTF and cleaned up some
+        code.</li>
+</ul>
+<!--webbot bot="Include" endspan i-checksum="23902" -->
+</body>
+</html>

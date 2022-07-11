@@ -333,9 +333,6 @@ void(vector org, vector vec) LaunchLaser =
 {
 	local	vector	vec;
 		
-	if (self.classname == "monster_enforcer")
-		sound (self, CHAN_WEAPON, "enforcer/enfire.wav", 1, ATTN_NORM);
-
 	vec = normalize(vec);
 	
 	newmis = spawn();
@@ -542,7 +539,7 @@ local vector	vtmp1, modi;
 
 Just for the debugging level.  Don't use
 */
-
+// *obsolete*
 void() viewthing =
 
 {
@@ -729,3 +726,4 @@ void() misc_noisemaker =
 	self.nextthink = time + 0.1 + random();
 	self.think = noise_think;
 };
+// *check*
