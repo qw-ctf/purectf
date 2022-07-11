@@ -4,10 +4,10 @@
 //  Report bugs and ideas to: methabol@bt.nu
 // *****************************************************************
 
-// v1.99beta3 : Removed 40 fields (!) 
+// v1.99beta3 : Removed 40 fields (!)
 
 // =================
-//      FIELDS  
+//      FIELDS
 // =================
 .float pure;			// setinfo.qc	// Pure player settings.
 .float admin;			// admin.qc	// Admin flags
@@ -30,7 +30,7 @@
 //.float menu;			// menu.qc	// Selected Menu
 .float input_type;				// Input type for multiimpulse commands (0-?)
 
-.vector freezevelocity;		// freeze.qc	// Velocity before freeze 
+.vector freezevelocity;		// freeze.qc	// Velocity before freeze
 .float oldmovetype;				// Movetype before freeze
 .float dmgtime;			// client.qc	// Used by watermove to set damage.
 .float pingcheck;				// ?
@@ -44,12 +44,13 @@
 .float packs;					// TW: ?
 .float	basetime;		// base.qc	// TW: Flag for basedefend check
 .float lisa;			// base.qc	// TW: Time since last basedefend. (time)
-.float flaretime;		// weapons.qc	// TW: Holds delay between flares. 
+.float flaretime;		// weapons.qc	// TW: Holds delay between flares.
 .float justin;					// TW: Invincibility time.
 .float flares;					// TW: Number of flares. (0-10?)
 .float sniper_ammo;				// TW: Ammo for sniper (0-5?)
 .float runes;					// Runes.
-// 
+.float scmd_flag;
+//
 // v1.99beta3
 //
 .float clientflags;		// client.qc	// Type of client
@@ -97,7 +98,7 @@
 // .float reload;				// TW: Reload (not used any more?)
 // .float log_kills;		// Kills
 // .float log_deaths;		// Deaths
-// .float log_suicides;		// Suicides 
+// .float log_suicides;		// Suicides
 // .float log_teamkills;		// Teamkills
 // .float log_captures;		// Captures
 // .float log_drops;		// Flagdrops
@@ -112,7 +113,7 @@
 // .float yessir; 		// tw50 ( 1bit)
 //
 // Removed prior to v1.99beta3
-// 
+//
 // obsolete .float admincheck;			// ?
 // obsolete .float lastmapcheck;		// ?
 // .float laststattime;		// status.qc	// time of last status update, replaced with "all" update

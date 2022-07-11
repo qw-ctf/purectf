@@ -22,6 +22,7 @@ entity ARENAPLAYER2;
 	// freeze.qc
 float FREEZEFLAGS;
 float FREEZETIME;
+float FREEZE;
 	// ctfgame.qc
 float VOTEEXIT_TIME_LIMIT;
 	//
@@ -84,6 +85,15 @@ float FORCEBLUEWIN;
 float FORCEREDWIN;
 	// admin.qc
 entity LAST_CONNECTED;	// Last connected player, used for kicklast.
+
+entity SPEC_JOINING;
+float SPEC_JOINING_FLAG;
+
+float BlueCaps;
+float BlueWins;
+
+float RedCaps;
+float RedWins;
 
 
 //
@@ -170,7 +180,6 @@ float PAUSES_BYVOTE;
 float VAR_PINGBAN;
 float VAR_HPBBAN;
 float STARTDELAY;
-	
 
 	// pureitem.qc
 float RANDOMRESPAWN;
@@ -190,3 +199,7 @@ float ARMORRESPAWN;			// armor respawns.
 string TP_STRING;
 string DMM_STRING;
 string TL_STRING;
+
+string VOTE_MAPT;
+string SEND_CMD;
+

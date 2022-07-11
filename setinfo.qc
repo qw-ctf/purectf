@@ -12,7 +12,7 @@
 
 //
 // Set the infokey for a client.
-//	
+//
 void(entity pl,string key, string str) setinfostring = {
 	if (!IsClient(pl))
 		return;
@@ -62,10 +62,15 @@ float (entity pl) ProxyType = {
 		return PROXY_FAQ;
 	if (infokey(pl, "Qizmo") != "")
 		return PROXY_QIZMO;
-	// *check* add cheapo
+	if (infokey(pl, "NITRO") != "")
+		return PROXY_NITRO;
+	if (infokey(pl, "NFProxy") != "")
+		return PROXY_NF;
+	if (infokey(pl, "Cheapo") != "")
+		return PROXY_CHEAPO;
 	return 0;
 };
-// 
+//
 // Returns the proxy version.
 //
 string (entity pl) ProxyVersion = {
@@ -77,8 +82,8 @@ string (entity pl) ProxyVersion = {
 };
 
 //
-// Demo capable proxy? *inline* 
-// 
+// Demo capable proxy? *inline*
+//
 float(entity pl) HaveDemoProxy = {
 	if (ProxyType(pl) == PROXY_FAQ)
 		return 1;
@@ -152,11 +157,11 @@ void (entity pl) SetPureFlags = {
 void(entity pl) SwapStuffFlag = {
 	local float x;
 	x = (pl.pure & SETINFO_STUFF);
-	if (x == SETINFO_STUFF1) 
+	if (x == SETINFO_STUFF1)
 		x = SETINFO_STUFF2;
-	else if (x == SETINFO_STUFF2) 
+	else if (x == SETINFO_STUFF2)
 		x = SETINFO_STUFF3;
-	else  
+	else
 		x = SETINFO_STUFF1;
 	pl.pure = pl.pure - (pl.pure & (SETINFO_STUFF));
 	pl.pure = pl.pure | (x);
@@ -209,7 +214,7 @@ void() CheckInfokey = {
 		OBSOLETEFLAG = 1;
 		unsetinfo(self, "statusbar");
 	}
-		
+
 	Obsoletebitflag("ad", SETINFO_AUTODEMO_PROXY);
 	Obsoletebitflag("autodemo", SETINFO_AUTODEMO_PROXY);
 

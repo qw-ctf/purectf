@@ -183,9 +183,9 @@ void() TeamCapturePlayerUpdate = {
 				t = getnum(x);
 				centerprint2(self, "Waiting for players to reconnect...\n\nTimeout:", t);
 			} else if (FLAG_ISAUTOPAUSED)
-				centerprint(self, "Game паусед because\na player disconnected!");			
+				centerprint(self, "Game паусед because\na player disconnected!");
 			else
-				centerprint(self, "Game паусед\nby admin or vote!");			
+				centerprint(self, "Game паусед\nby admin or vote!");
 			return;
 		} if (FLAG_STANDBY) {
 			UpdateStandby();

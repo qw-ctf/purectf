@@ -10,7 +10,7 @@ string COUNTDOWN_TEXT;
 float CountDown;
 
 entity team1_lastspawn;		// from teamplay.qc
-entity team2_lastspawn;	
+entity team2_lastspawn;
 
 /* obsolete
 float KILLME_NOT = 0;
@@ -67,7 +67,7 @@ float(float tp) GetCTFTP = {
 	if (x == 3) return 3;
 	else if (x == 4) return 4;
 	else if (x == 8) return 2;
-	else return 0;	
+	else return 0;
 };
 
 //
@@ -101,7 +101,7 @@ void() UpdateEveryMinute = {
 	SV_MAXSPEED = cvar("sv_maxspeed");
 	SV_FRICTION = cvar("sv_friction");
 	FLAG_NOAUTOFRICTION = localinfo("noautofriction", 0);
-	if (!FLAG_NOAUTOFRICTION) 
+	if (!FLAG_NOAUTOFRICTION)
 		SetAutoFriction();
 
 	// *** Pure CTF Features ***
@@ -128,9 +128,9 @@ void() UpdateEveryMinute = {
 	COUNTDOWNTIME = localinfo("countdowntime", 15);
 	x = localinfo("autostats",0);		// *check*
 	FLAG_SHOWSTATS = !(x & 1 );
-	FLAG_SHOWALLSTATS = (x & 2);		
+	FLAG_SHOWALLSTATS = (x & 2);
 	x = localinfo("teamaudio", 0);
-	FLAG_NOEXPERTSOUNDS = (x & 1);		
+	FLAG_NOEXPERTSOUNDS = (x & 1);
 	FLAG_NOREPORT = (x & 2);
 	FLAG_NOPUREAUDIO = (x & 4);
 	FLAG_NOCUSTOMAUDIO = (x & 8);
@@ -162,7 +162,7 @@ void() UpdateEverySecond = {
 	HOOKPULL = localinfo("hookpull", HOOKSPEED);
 	PLAYER_MAXRATE = localinfo("playermaxrate", 0);
 	PLAYER_MINRATE = localinfo("playerminrate", 2000);
-	SPEC_MAXRATE = localinfo("specmaxrate", 2500);
+	SPEC_MAXRATE = localinfo("specmaxrate", 10000);
 
 	FLAG_AUTOSPECTALK = localinfo("autospectalk", 0);
 
@@ -239,10 +239,12 @@ void() UpdateOnce = {
 	FLAG_GL_PLAYERS = tp & 1;
 	FLAG_GL_ITEMS  = tp & 2;
 	FLAG_GL_FLAGS  = tp & 4;
-	VAR_ANTICHEATS = localinfo("anticheats", 0);	
+	VAR_ANTICHEATS = localinfo("anticheats", 0);
 	SCRAMBLE = localinfo("scramble", 0);
 	if (FLAG_COMPETITION) SCRAMBLE = 0;
 	VAR_DISABLEPOWERUPS = localinfo("disablepowerups", 0);
+
+	VOTE_MAPT = "    ";
 };
 
 
@@ -288,7 +290,7 @@ void() CheckMapRestart = {
 		(DUMMY_MODE != MODE)) {
 		RestartSameMap();
 	} else {
-		NEXTCHECKMAPRESTART = 0;	
+		NEXTCHECKMAPRESTART = 0;
 	}
 };
 
@@ -296,7 +298,7 @@ void() CheckMapRestart = {
 // Schedule mapcheck
 //
 void() SetMapRestart = {
-	NEXTCHECKMAPRESTART = time + 3;	
+	NEXTCHECKMAPRESTART = time + 3;
 };
 
 //
@@ -310,7 +312,7 @@ void() UpdateVariables = {
 	if (!firstflag) {
 		firstflag = 1;
 		UpdateOnce();
-	} 
+	}
 	if (lastvariablecheck > time)
 		return;
 	lastvariablecheck = time + 1;
@@ -322,13 +324,13 @@ void() UpdateVariables = {
 	// *** Still Unsorted *** *check*
 	REVERTTOSTANDARD = localinfo("revert", 0);
 
-	// check settings variables	
+	// check settings variables
 	tp = localinfo("disablefreeze", 0);		// *check*
 	PAUSES_DISABLE = tp & 1;
 	PAUSES_AUTO = !(tp & 2);
 	PAUSES_BYVOTE = !(tp & 4);
 	if (localinfo("resetdefaults", 0))
-		SaveDefaults();	
+		SaveDefaults();
 
 	MAXCLIENTS = localinfo("maxclients", 1);
 
@@ -338,14 +340,14 @@ void() UpdateVariables = {
 	// *check*
 	FLAG_ERASE = localinfo("debugerase",0);		//*check*
 
-	
+
 
 
 	// *** Powerup Respawntimes ***
 	VAR_QUADRESPAWN = localinfo("quadrespawn", 60);
 	VAR_RINGRESPAWN = localinfo("ringrespawn", 5*60);
 	VAR_PENTARESPAWN = localinfo("pentarespawn", 5*60);
-	
+
 	AMMORESPAWN = localinfo("ammorespawn", 30);
 	WEAPONSRESPAWN = localinfo("weaponsrespawn", 30);
 	ARMORRESPAWN = localinfo("armorrespawn", 20);
@@ -357,7 +359,7 @@ void() UpdateVariables = {
 		RANDOMRESPAWN = RANDOMRESPAWN * 100;
 
 	RESPAWNFACTOR = localinfo("respawnfactor", 1);
-	FULLRESPAWNFACTOR = localinfo("fullrespawnfactor", RESPAWNFACTOR);	
+	FULLRESPAWNFACTOR = localinfo("fullrespawnfactor", RESPAWNFACTOR);
 
 
 

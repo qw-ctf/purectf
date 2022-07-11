@@ -586,6 +586,7 @@ float PF_GOTFLAG	= 32;	// Got Enemy flag.
 float PF_GHOST		= 64;	// Connection tracking.
 float PF_KILLMERESTART	= 128;	// Kill player and respawn.
 float PF_KILLMESWAP	= 256;	// Kill, change team and respawn.
+float PF_DENIED         = 512; 
 float PF_KILLME		= 384;	// Mask for Killme
 
 // ITEM_ENEMY_FLAG
