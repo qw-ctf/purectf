@@ -1,0 +1,96 @@
+Threewave Capture Map Mods
+
+To add capture support to the map the following entities must be added.
+I usually just grab the entity list out of a bsp file (it's in there as
+text) and hand edit it.  IMPULSE 99 with my code prints out your coordinates
+and I use that for a guide as to where to put the flags and spawn codes.
+
+As example, here's the extra section I added to e2m1:
+
+////////////////////////////////////////////////////////////////////////
+// Capture the flag map mods
+//
+
+// team1
+
+// This is team1's flag (gold key, usually red team)
+{
+"origin" "1800 416 244"
+"classname" "item_flag_team1"
+}
+
+// Base spawns.  These are used at start of level and when someone
+// joins.  They are not used for respawn, the regular deathmatch
+// start spots are used.
+{
+"angle" "90"
+"origin" "1736 410 248"
+"classname" "info_player_team1"
+}
+{
+"angle" "90"
+"origin" "1836 410 248"
+"classname" "info_player_team1"
+}
+{
+"angle" "90"
+"origin" "1736 490 248"
+"classname" "info_player_team1"
+}
+{
+"angle" "90"
+"origin" "1836 490 248"
+"classname" "info_player_team1"
+}
+{
+"angle" "90"
+"origin" "1736 570 248"
+"classname" "info_player_team1"
+}
+{
+"angle" "90"
+"origin" "1836 570 248"
+"classname" "info_player_team1"
+}
+
+// team2
+
+// Team2 flag, sliver key usually for blue team
+{
+"origin" "-300 -25 -30"
+"classname" "item_flag_team2"
+}
+
+// Team2 base spawns
+{
+"angle" "0"
+"origin" "-142 82 -40"
+"classname" "info_player_team2"
+}
+{
+"angle" "0"
+"origin" "-62 82 -40"
+"classname" "info_player_team2"
+}
+{
+"angle" "0"
+"origin" "42 82 -40"
+"classname" "info_player_team2"
+}
+{
+"angle" "0"
+"origin" "-142 162 -40"
+"classname" "info_player_team2"
+}
+{
+"angle" "0"
+"origin" "-62 162 -40"
+"classname" "info_player_team2"
+}
+{
+"angle" "0"
+"origin" "42 162 -40"
+"classname" "info_player_team2"
+}
+
+
